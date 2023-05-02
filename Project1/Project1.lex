@@ -125,7 +125,8 @@ symbol_table* table;
 LETTER [A-za-z]
 DIGIT [0-9]
 DIGITS {DIGIT}+
-NUMERIC {DIGITS}("."{DIGITS})?
+INTEGER {DIGITS}
+REAL {DIGITS}("."{DIGITS})
 IDENTIFIER {LETTER}({LETTER}|{DIGIT})*
 WHITESPACE [ \t]+
 
@@ -204,7 +205,11 @@ WHITESPACE [ \t]+
 }
 
 
-{NUMERIC} {tokenString(Numeric,yytext);}
+{REAL} {tokenString(Real,yytext);}
+
+{INTEGER} {tokenString(Integer,yytext);}
+
+
 
 "\"" {
         LIST;

@@ -2,12 +2,12 @@
 
 ## 編譯
 
-    $ make
+	$ make
 
-## how to run scanner
+## run scanner
 
-    $ ./scanner
+	$ ./scanner
     
 or
 
-    $ ./scanner fib.st
+	$ ./scanner fib.st
