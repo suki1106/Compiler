@@ -1,0 +1,187 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "symbols.hpp"
+
+
+
+Info::Info(){
+    name = "";
+}
+
+Info::~Info(){
+
+}
+
+// without initial value
+Info::Info(string name, data_type d_type, form_type f_type){
+    this->name = name;
+    this->d_type = d_type;
+    this->f_type = f_type;
+    switch (d_type) {
+        case INT_TYPE:
+            this->i_v = 0;
+            break;
+        case BOOL_TYPE:
+            this->b_v = 0;
+            break;
+        case STR_TYPE:
+            this->s_v = NULL;
+            break;
+        case REAL_TYPE:
+            this->r_v = 0.0;
+            break;
+    }
+}
+
+Symboltable::Symboltable(){
+    index=0;
+}
+
+Symboltable::~Symboltable(){
+    
+}
+
+
+
+int Symboltable::Insert(Info id){
+    if(table.find(id.name) == table.end()){
+        table[id.name] = index;
+
+        this->identifiers.push_back(Info());
+        
+        identifiers[index].name = id.name;
+        identifiers[index].d_type = id.d_type;
+        identifiers[index].f_type = id.f_type;
+        
+        switch (id.d_type) {
+            case INT_TYPE:
+                identifiers[index].i_v = id.i_v;
+                break;
+            case BOOL_TYPE:
+                identifiers[index].b_v = id.b_v;
+                break;
+            case STR_TYPE:
+                //cout << *(id.s_v) << endl;
+                identifiers[index].s_v = id.s_v;
+                break;
+            case REAL_TYPE:
+                identifiers[index].r_v = id.r_v;
+                break;
+        }
+        return index++;
+    }else{
+        return -1;
+    }
+}
+
+int Symboltable::Insert(string id,data_type d_type, form_type f_type,value v){
+    if( table.find(id) != table.end() ){
+        table[id] = index;
+
+        this->identifiers.push_back(Info());
+        
+        identifiers[index].name = id;
+        identifiers[index].d_type = d_type;
+        identifiers[index].f_type = f_type;
+        
+        switch (d_type) {
+            case INT_TYPE:
+                identifiers[index].i_v = v.i_v;
+                break;
+            case BOOL_TYPE:
+                identifiers[index].b_v = v.b_v;
+                break;
+            case STR_TYPE:
+
+                identifiers[index].s_v = v.s_v;
+                break;
+            case REAL_TYPE:
+                identifiers[index].r_v = v.r_v;
+                break;
+        }
+        return index++;   
+    }else{
+        // already exists
+        return -1;
+    }
+}
+
+int Symboltable::lookup(string id){
+    if( table.find(id) != table.end() ){
+        return table[id];
+    }else{
+        cout << "Not exists" << endl;
+        return -1;
+    }
+}
+
+string Symboltable::getType(int Type){
+    switch (Type) {
+            case INT_TYPE:
+                return "INT";
+                break;
+            case BOOL_TYPE:
+                return "BOOL";
+                break;
+            case STR_TYPE:            
+                return "STRING";
+                break;
+            case REAL_TYPE:
+                return "REAL";
+                break;
+            default:
+                return "ERROR!";
+                break;
+        }
+}
+string Symboltable::getForm(int Type){
+    switch (Type) {
+            case CONST_f:
+                return "CONST";
+                break;
+            case VAR_f:
+                return "VARIABLE";
+                break;
+            case FUNC_f:            
+                return "FUNCTION";
+                break;
+            case ARRAY_f:
+                return "ARRAY";
+                break;
+            default:
+                return "ERROR!";
+                break;
+        }
+
+}
+
+void Symboltable::dump(){
+    int cnt=0;
+    cout << "------Symboltable------" << endl;
+    //cout << "index\tid\tdata_type\tform_type\tvalue" << endl; 
+    cout << "index" << setw(5) << "id" << setw(13) << "data_type" << setw(13) << "form_type" << setw(13) << "value" << endl;
+    for(auto& id :identifiers){
+        cout << cnt 
+        << setw(8)  << id.name 
+        << setw(13) << getType(id.d_type) 
+        << setw(13) << getForm(id.f_type) << setw(13);
+        switch (id.d_type) {
+            case INT_TYPE:
+                cout << id.i_v << endl;
+                break;
+            case BOOL_TYPE:
+                cout << id.b_v << endl;
+                break;
+            case STR_TYPE:
+                if(id.s_v != NULL)cout << *(id.s_v) << endl;
+                else cout << "\"\"" << endl; //empty string
+                break;
+            case REAL_TYPE:
+                cout << id.r_v << endl;
+                break;
+        }
+        ++cnt;
+    }
+}
+
