@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <stack>
 
 #include "symbols.hpp"
 #include "lex.yy.cpp"
@@ -11,9 +12,13 @@ using namespace std;
 
 void yyerror(string s);
 #define Trace(t)        printf("%s\n",t);
-Symboltable tb;
+
+
 vector<arg_info> args_info;
+Symboltable_List stb_list;
+
 %}
+
 %union{
     int i_v;
     bool b_v;
@@ -72,16 +77,23 @@ const_dec:  CONST ID AS EXPRESSION
         {
             Trace("constant declaration without type declaration");
             if($4->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
-            $4->name = *$2;
-            if(tb.Insert(*($4)) ==-1)yyerror("<ERROR> identifier already exists");
+            //$4->name = *$2;
+            Info tmp = *$4;
+            tmp.name = *$2;
+
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
         }
         | CONST ID ':'TYPE AS EXPRESSION
         {
             Trace("constant declaration with type declaration");
             if($6->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
-            $6->name = *$2;
-            if(tb.Insert(*($6)) ==-1)yyerror("<ERROR> identifier already exists");
+            //$6->name = *$2;
+            Info tmp = *$6;
+            tmp.name = *$2;
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
         }
         ;
@@ -108,48 +120,88 @@ TYPE: INT {$$ = INT_TYPE;}
 var_dec: VAR ID ':'TYPE
         {
             Trace("variable declaration without value initialization");
-            if(tb.Insert(Info(*($2),$4,VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(Info(*($2),$4,VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
         }
         | VAR ID ':'TYPE AS EXPRESSION
         {
             Trace("variable declaration with value initialization and type");
-            $6->name = *$2;
-            if($6->d_type != $4)  yyerror("<ERROR> Type not compatible");
-            if(tb.Insert(*($6))  == -1) yyerror("<ERROR> identifier already exists");
+            //$6->name = *$2;
+            //$6->f_type = VAR_f;
+            Info tmp = *$6;
+            if(tmp.d_type != $4)  yyerror("<ERROR> Type not compatible");
+            Symboltable* tb = stb_list.getCurrentTable();
+            tmp.name = *$2;
+            tmp.f_type = VAR_f;
+            if(tb->Insert(tmp)  == -1) yyerror("<ERROR> identifier already exists");
         }
         | VAR ID AS EXPRESSION
         {
             Trace("variable declaration iwth value initialization but not type");
-            $4->name = *$2;
-            if(tb.Insert(*$4) == -1)yyerror("<ERROR> identifier already exists");
+            //$4->name = *$2;
+            //$4->f_type = VAR_f;
+            Info tmp = *$4;
+            tmp.name = *$2;
+            tmp.f_type = VAR_f;
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(tmp) == -1)yyerror("<ERROR> identifier already exists");
         }   
         | VAR ID ':' ARRAY val_INTEGER '.''.' val_INTEGER OF TYPE
         {
             Trace("Array declaration");
-            if(tb.Insert(Info(*($2), $10,ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(Info(*($2), $10,ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
         }
         ;
 
-func_dec: FUNCTION ID '('args')'':'TYPE func_stmts END ID
+func_dec: FUNCTION ID '('args')'':'TYPE
         {
+            //if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
+
             Trace("Func declaration");
-            
 
-            if(tb.Insert(Info(*$2,$7,FUNC_f,args_info) ) ==-1)yyerror("<ERROR> identifier already exists");
+            Symboltable* tb = stb_list.getCurrentTable();
+            if(tb->Insert(Info(*$2,$7,FUNC_f,args_info) ) ==-1)yyerror("<ERROR> identifier already exists");
+            
+            // create new symbol table and switch
+            stb_list.create_table();
+            tb = stb_list.getCurrentTable(); // copy constructor?
+            for(auto& arg:args_info)
+                tb->Insert(Info(arg.name,arg.d_type,VAR_f)); // insert arg into table
+            
+            //tb->printTableSize();
             args_info.clear();
-            
-            // new symbol table
+        } 
+        func_stmts END ID
+        {
+            if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
+            //check result expression ?
 
-
+            stb_list.dumpCurrentTable();
+            stb_list.popTable();
         }
-        | PROCEDURE ID '('args')' func_stmts END ID
+        | PROCEDURE ID '('args')' 
         {
             Trace("procedure declaration");
             // new symbol table
-
+            Symboltable* tb = stb_list.getCurrentTable();
+            if( tb->Insert(Info(*$2,VOID_TYPE,FUNC_f,args_info)) ==-1) yyerror("<ERROR> identifier already exists");
+            
+            //create new table and switch
+            stb_list.create_table();
+            tb = stb_list.getCurrentTable(); // copy constructor?
+            for(auto& arg:args_info)
+                tb->Insert(Info(arg.name,arg.d_type,VAR_f)); // insert arg into table
+            
+            //tb->printTableSize();
+            args_info.clear();
+        }func_stmts END ID
+        {
+            if(*$2 != *$9) yyerror("<ERROR> Procedure declaration error");
+            stb_list.dumpCurrentTable();
+            stb_list.popTable();
         }
         ;
-
 
 
 func_stmts: func_stmt func_stmts
@@ -295,18 +347,25 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
             }
         |   const_val {Trace("const_value");}
         |   ID 
+            {
+                Symboltable* tb = stb_list.getCurrentTable(); 
+                int idx = tb->lookup(*$1);
+                if(idx == -1) yyerror("ID not exists");
+                $$ = tb->getInfo(idx);               
+            }
         |   ID'['EXPRESSION']'
             {
                 Trace("Array reference");
                 //check expression type
             }
-        |   proc_inv
+        |   func_inv
             {
 
             }
         ;   
 
-proc_inv:;
+func_inv:;
+
 
 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
                     {
@@ -351,7 +410,7 @@ void yyerror(string msg)
 int main()
 {
     yyparse();
-    tb.dump();
+    stb_list.dumpCurrentTable();
     return 0;
 }
 

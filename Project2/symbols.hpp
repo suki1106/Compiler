@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <stack>
 
 using namespace std;
 
@@ -13,7 +14,8 @@ enum data_type{
     STR_TYPE,
     INT_TYPE,
     BOOL_TYPE,
-    REAL_TYPE
+    REAL_TYPE,
+    VOID_TYPE // procedure
 };
 
 // const, var, function, array
@@ -86,6 +88,8 @@ class Symboltable{
         int Insert(string,data_type,form_type,value);
         int Insert(Info); 
         int lookup(string);
+        void printTableSize();
+        Info* getInfo(int);
         void dump();
     private:
         string getType(int); // int, bool, real ,string
@@ -95,6 +99,20 @@ class Symboltable{
         int index;
 };
 
+
+class Symboltable_List{
+    public:
+        Symboltable_List();
+        ~Symboltable_List();
+        void create_table(); // when enter block
+        void popTable(); // when block ends
+        void dumpCurrentTable(); // dump current scope table
+        Symboltable* getCurrentTable(); // get current scope table
+    private:
+        vector<Symboltable> Symboltables; // store all tables
+        stack<int> st; //deal with scope
+        int index;
+};
 
 
 #endif

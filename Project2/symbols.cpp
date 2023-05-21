@@ -112,11 +112,14 @@ int Symboltable::Insert(string id,data_type d_type, form_type f_type,value v){
     }
 }
 
+Info* Symboltable::getInfo(int index){
+    return (index < this->identifiers.size())? &identifiers[index] :  NULL; 
+}
+
 int Symboltable::lookup(string id){
     if( table.find(id) != table.end() ){
         return table[id];
     }else{
-        cout << "Not exists" << endl;
         return -1;
     }
 }
@@ -161,18 +164,22 @@ string Symboltable::getForm(int Type){
 
 }
 
+void Symboltable::printTableSize(){
+    cout << "table size:\t" << this->index << endl;
+}
+
 void Symboltable::dump(){
     int cnt=0;
     cout << "------Symboltable------" << endl;
     //cout << "index\tid\tdata_type\tform_type\tvalue" << endl; 
-    cout << "index" << setw(5) << "id" << setw(13) << "data_type" << setw(13) << "form_type" << setw(13) << "value" << endl;
+    cout << "index" << setw(15) << "id" << setw(20) << "data_type" << setw(20) << "form_type" << setw(20) << "value" << endl;
     for(auto& id :identifiers){
         cout << cnt 
-        << setw(8)  << id.name 
-        << setw(13) << getType(id.d_type) 
-        << setw(13) << getForm(id.f_type);
+        << setw(20)  << id.name 
+        << setw(20) << getType(id.d_type) 
+        << setw(20) << getForm(id.f_type);
         if(id.f_type != FUNC_f){
-            cout << setw(13);
+            cout << setw(20);
             switch (id.d_type) {
                 case INT_TYPE:
                     cout  <<id.i_v << endl;
@@ -201,3 +208,30 @@ void Symboltable::dump(){
     }
 }
 
+Symboltable_List::Symboltable_List(){
+    Symboltables.push_back(Symboltable());
+    this->index=0;
+    st.push(this->index);
+}
+
+Symboltable_List::~Symboltable_List(){
+
+}
+
+void Symboltable_List::create_table(){
+    Symboltables.push_back(Symboltable());
+    this->index++;
+    st.push(this->index);
+}
+
+void Symboltable_List::popTable(){
+    this->st.pop();
+}
+
+void Symboltable_List::dumpCurrentTable(){
+    this->Symboltables[st.top()].dump();
+}
+
+Symboltable* Symboltable_List::getCurrentTable(){
+    return &Symboltables[st.top()];
+}
