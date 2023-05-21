@@ -49,11 +49,19 @@ struct exp_Info {
     exp_Info() {}
 };
 
+struct arg_info{
+    string name;
+    data_type d_type;
+    arg_info(string name,data_type d_type): name(name),d_type(d_type){}
+    arg_info():name(""),d_type(STR_TYPE){}
+};
+
 // name, value, type, const?
 struct Info {
     string name;
     data_type d_type;
     form_type f_type;
+    vector<arg_info> params; // function parameter
     union{
         int i_v;
         bool b_v;
@@ -62,11 +70,13 @@ struct Info {
     };
     Info();
     ~Info();
+    
     Info(string name, data_type d_type, form_type f_type);
     Info(string name, data_type d_type, form_type f_type,int i_v) : name(name), d_type(d_type),f_type(f_type), i_v(i_v) {}
     Info(string name, data_type d_type, form_type f_type,bool b_v) : name(name), d_type(d_type), f_type(f_type),b_v(b_v) {}
     Info(string name, data_type d_type, form_type f_type,string* s_v) : name(name), d_type(d_type), f_type(f_type),s_v(s_v) {}
     Info(string name, data_type d_type, form_type f_type,double r_v) : name(name), d_type(d_type), f_type(f_type),r_v(r_v) {}
+    Info(string name, data_type d_type, form_type f_type,const vector<arg_info>& params) : name(name), d_type(d_type),f_type(f_type),params(params){}
 };
 
 class Symboltable{

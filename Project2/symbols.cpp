@@ -53,21 +53,26 @@ int Symboltable::Insert(Info id){
         identifiers[index].name = id.name;
         identifiers[index].d_type = id.d_type;
         identifiers[index].f_type = id.f_type;
+
+        if(id.f_type != FUNC_f){
         
-        switch (id.d_type) {
-            case INT_TYPE:
-                identifiers[index].i_v = id.i_v;
-                break;
-            case BOOL_TYPE:
-                identifiers[index].b_v = id.b_v;
-                break;
-            case STR_TYPE:
-                //cout << *(id.s_v) << endl;
-                identifiers[index].s_v = id.s_v;
-                break;
-            case REAL_TYPE:
-                identifiers[index].r_v = id.r_v;
-                break;
+            switch (id.d_type) {
+                case INT_TYPE:
+                    identifiers[index].i_v = id.i_v;
+                    break;
+                case BOOL_TYPE:
+                    identifiers[index].b_v = id.b_v;
+                    break;
+                case STR_TYPE:
+                    //cout << *(id.s_v) << endl;
+                    identifiers[index].s_v = id.s_v;
+                    break;
+                case REAL_TYPE:
+                    identifiers[index].r_v = id.r_v;
+                    break;
+            }
+        }else{
+            identifiers[index].params = id.params; // parameters
         }
         return index++;
     }else{
@@ -165,21 +170,32 @@ void Symboltable::dump(){
         cout << cnt 
         << setw(8)  << id.name 
         << setw(13) << getType(id.d_type) 
-        << setw(13) << getForm(id.f_type) << setw(13);
-        switch (id.d_type) {
-            case INT_TYPE:
-                cout << id.i_v << endl;
-                break;
-            case BOOL_TYPE:
-                cout << id.b_v << endl;
-                break;
-            case STR_TYPE:
-                if(id.s_v != NULL)cout << *(id.s_v) << endl;
-                else cout << "\"\"" << endl; //empty string
-                break;
-            case REAL_TYPE:
-                cout << id.r_v << endl;
-                break;
+        << setw(13) << getForm(id.f_type);
+        if(id.f_type != FUNC_f){
+            cout << setw(13);
+            switch (id.d_type) {
+                case INT_TYPE:
+                    cout  <<id.i_v << endl;
+                    break;
+                case BOOL_TYPE:
+                    cout   << id.b_v << endl;
+                    break;
+                case STR_TYPE:
+                    if(id.s_v != NULL)cout << *(id.s_v) << endl;
+                    else cout  << "\"\"" << endl; //empty string
+                    break;
+                case REAL_TYPE:
+                    cout  << id.r_v << endl;
+                    break;
+            }
+        }else{
+            // print formal parameters
+            //cout << "\tsize:" << id.params.size();
+            cout << setw(8);
+            for(auto& arg : id.params)
+                cout << "(" << arg.name << ":" << getType(arg.d_type) << ")";
+            cout << endl;
+            
         }
         ++cnt;
     }

@@ -82,8 +82,9 @@ using namespace std;
 void yyerror(string s);
 #define Trace(t)        printf("%s\n",t);
 Symboltable tb;
+vector<arg_info> args_info;
 
-#line 87 "y.tab.cpp"
+#line 88 "y.tab.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -583,13 +584,13 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    55,    55,    57,    58,    61,    62,    66,    67,    68,
-      71,    81,    92,    93,    94,    95,   105,   106,   107,   108,
-     111,   116,   124,   130,   137,   142,   150,   151,   156,   157,
-     158,   161,   162,   163,   166,   171,   172,   173,   174,   176,
-     184,   188,   192,   196,   200,   204,   208,   214,   218,   224,
-     228,   232,   236,   240,   244,   248,   252,   256,   260,   264,
-     268,   272,   276,   280,   284,   288,   289,   290,   295,   301,
-     303,   307,   317,   321,   327,   328
+      71,    79,    89,    90,    91,    92,   102,   103,   104,   105,
+     108,   113,   120,   126,   133,   145,   155,   156,   161,   162,
+     163,   166,   167,   168,   171,   179,   180,   181,   182,   184,
+     192,   196,   200,   204,   208,   212,   216,   222,   226,   232,
+     236,   240,   244,   248,   252,   256,   260,   264,   268,   272,
+     276,   280,   284,   288,   292,   296,   297,   298,   303,   309,
+     311,   315,   325,   329,   335,   336
 };
 #endif
 
@@ -1273,397 +1274,410 @@ yyreduce:
             if((yyvsp[0].Inf)->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             (yyvsp[0].Inf)->name = *(yyvsp[-2].s_v);
             if(tb.Insert(*((yyvsp[0].Inf))) ==-1)yyerror("<ERROR> identifier already exists");
-            
-
             //tb.dump();
         }
-#line 1281 "y.tab.cpp"
+#line 1280 "y.tab.cpp"
     break;
 
   case 11: /* const_dec: CONST ID ':' TYPE AS EXPRESSION  */
-#line 82 "y.y"
+#line 80 "y.y"
         {
             Trace("constant declaration with type declaration");
             if((yyvsp[0].Inf)->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             (yyvsp[0].Inf)->name = *(yyvsp[-4].s_v);
             if(tb.Insert(*((yyvsp[0].Inf))) ==-1)yyerror("<ERROR> identifier already exists");
-
             //tb.dump();
         }
-#line 1294 "y.tab.cpp"
+#line 1292 "y.tab.cpp"
     break;
 
   case 12: /* const_val: val_REAL  */
-#line 92 "y.y"
+#line 89 "y.y"
                     {(yyval.Inf) = new Info("",REAL_TYPE,CONST_f,(yyvsp[0].r_v));}
-#line 1300 "y.tab.cpp"
+#line 1298 "y.tab.cpp"
     break;
 
   case 13: /* const_val: val_INTEGER  */
-#line 93 "y.y"
+#line 90 "y.y"
                       {(yyval.Inf)= new Info("",INT_TYPE,CONST_f,(yyvsp[0].i_v));}
-#line 1306 "y.tab.cpp"
+#line 1304 "y.tab.cpp"
     break;
 
   case 14: /* const_val: val_STR  */
-#line 94 "y.y"
+#line 91 "y.y"
                   {(yyval.Inf)=new Info("",STR_TYPE,CONST_f,(yyvsp[0].s_v));}
-#line 1312 "y.tab.cpp"
+#line 1310 "y.tab.cpp"
     break;
 
   case 15: /* const_val: val_BOOL  */
-#line 95 "y.y"
+#line 92 "y.y"
                    {(yyval.Inf)=new Info("",BOOL_TYPE,CONST_f,(yyvsp[0].b_v));}
-#line 1318 "y.tab.cpp"
+#line 1316 "y.tab.cpp"
     break;
 
   case 16: /* TYPE: INT  */
-#line 105 "y.y"
+#line 102 "y.y"
           {(yyval.d_t) = INT_TYPE;}
-#line 1324 "y.tab.cpp"
+#line 1322 "y.tab.cpp"
     break;
 
   case 17: /* TYPE: BOOL  */
-#line 106 "y.y"
+#line 103 "y.y"
             {(yyval.d_t) = BOOL_TYPE;}
-#line 1330 "y.tab.cpp"
+#line 1328 "y.tab.cpp"
     break;
 
   case 18: /* TYPE: STRING  */
-#line 107 "y.y"
+#line 104 "y.y"
              {(yyval.d_t)=STR_TYPE;}
-#line 1336 "y.tab.cpp"
+#line 1334 "y.tab.cpp"
     break;
 
   case 19: /* TYPE: REAL  */
-#line 108 "y.y"
+#line 105 "y.y"
             {(yyval.d_t)=REAL_TYPE;}
-#line 1342 "y.tab.cpp"
+#line 1340 "y.tab.cpp"
     break;
 
   case 20: /* var_dec: VAR ID ':' TYPE  */
-#line 112 "y.y"
+#line 109 "y.y"
         {
             Trace("variable declaration without value initialization");
             if(tb.Insert(Info(*((yyvsp[-2].s_v)),(yyvsp[0].d_t),VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
         }
-#line 1351 "y.tab.cpp"
+#line 1349 "y.tab.cpp"
     break;
 
   case 21: /* var_dec: VAR ID ':' TYPE AS EXPRESSION  */
-#line 117 "y.y"
+#line 114 "y.y"
         {
             Trace("variable declaration with value initialization and type");
             (yyvsp[0].Inf)->name = *(yyvsp[-4].s_v);
             if((yyvsp[0].Inf)->d_type != (yyvsp[-2].d_t))  yyerror("<ERROR> Type not compatible");
             if(tb.Insert(*((yyvsp[0].Inf)))  == -1) yyerror("<ERROR> identifier already exists");
-
         }
-#line 1363 "y.tab.cpp"
+#line 1360 "y.tab.cpp"
     break;
 
   case 22: /* var_dec: VAR ID AS EXPRESSION  */
-#line 125 "y.y"
+#line 121 "y.y"
         {
             Trace("variable declaration iwth value initialization but not type");
             (yyvsp[0].Inf)->name = *(yyvsp[-2].s_v);
             if(tb.Insert(*(yyvsp[0].Inf)) == -1)yyerror("<ERROR> identifier already exists");
         }
-#line 1373 "y.tab.cpp"
+#line 1370 "y.tab.cpp"
     break;
 
   case 23: /* var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF TYPE  */
-#line 131 "y.y"
+#line 127 "y.y"
         {
             Trace("Array declaration");
             if(tb.Insert(Info(*((yyvsp[-8].s_v)), (yyvsp[0].d_t),ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
         }
-#line 1382 "y.tab.cpp"
+#line 1379 "y.tab.cpp"
     break;
 
   case 24: /* func_dec: FUNCTION ID '(' args ')' ':' TYPE func_stmts END ID  */
-#line 138 "y.y"
+#line 134 "y.y"
         {
-
             Trace("Func declaration");
+            
+
+            if(tb.Insert(Info(*(yyvsp[-8].s_v),(yyvsp[-3].d_t),FUNC_f,args_info) ) ==-1)yyerror("<ERROR> identifier already exists");
+            args_info.clear();
+            
+            // new symbol table
+
+
         }
-#line 1391 "y.tab.cpp"
+#line 1395 "y.tab.cpp"
     break;
 
   case 25: /* func_dec: PROCEDURE ID '(' args ')' func_stmts END ID  */
-#line 143 "y.y"
+#line 146 "y.y"
         {
             Trace("procedure declaration");
+            // new symbol table
+
         }
-#line 1399 "y.tab.cpp"
+#line 1405 "y.tab.cpp"
+    break;
+
+  case 34: /* arg: ID ':' TYPE  */
+#line 172 "y.y"
+    {
+        args_info.push_back(arg_info(*(yyvsp[-2].s_v),(yyvsp[0].d_t)));
+    }
+#line 1413 "y.tab.cpp"
     break;
 
   case 39: /* BLOCK_stmt: BEG func_stmts END  */
-#line 177 "y.y"
+#line 185 "y.y"
         {
             // new symbol table
             Trace("find block");
         }
-#line 1408 "y.tab.cpp"
+#line 1422 "y.tab.cpp"
     break;
 
   case 40: /* simple_stmt: ID AS EXPRESSION  */
-#line 185 "y.y"
+#line 193 "y.y"
             {
                 Trace("Assign value to ID");
             }
-#line 1416 "y.tab.cpp"
+#line 1430 "y.tab.cpp"
     break;
 
   case 41: /* simple_stmt: PUT EXPRESSION  */
-#line 189 "y.y"
+#line 197 "y.y"
             {
                 Trace("Find PUT");
             }
-#line 1424 "y.tab.cpp"
+#line 1438 "y.tab.cpp"
     break;
 
   case 42: /* simple_stmt: GET ID  */
-#line 193 "y.y"
+#line 201 "y.y"
             {
                 Trace("Find GET");
             }
-#line 1432 "y.tab.cpp"
+#line 1446 "y.tab.cpp"
     break;
 
   case 43: /* simple_stmt: RESULT EXPRESSION  */
-#line 197 "y.y"
+#line 205 "y.y"
             {
                 Trace("Find result");
             }
-#line 1440 "y.tab.cpp"
+#line 1454 "y.tab.cpp"
     break;
 
   case 44: /* simple_stmt: RETURN  */
-#line 201 "y.y"
+#line 209 "y.y"
             {
                 Trace("Find RETURN");
             }
-#line 1448 "y.tab.cpp"
+#line 1462 "y.tab.cpp"
     break;
 
   case 45: /* simple_stmt: EXIT_STMT  */
-#line 205 "y.y"
+#line 213 "y.y"
             {
                 
             }
-#line 1456 "y.tab.cpp"
+#line 1470 "y.tab.cpp"
     break;
 
   case 46: /* simple_stmt: SKIP  */
-#line 209 "y.y"
+#line 217 "y.y"
             {
                 Trace("Find skip");
             }
-#line 1464 "y.tab.cpp"
+#line 1478 "y.tab.cpp"
     break;
 
   case 47: /* EXIT_STMT: EXIT  */
-#line 215 "y.y"
+#line 223 "y.y"
             {
                 Trace("Find EXIT");
             }
-#line 1472 "y.tab.cpp"
+#line 1486 "y.tab.cpp"
     break;
 
   case 48: /* EXIT_STMT: EXIT WHEN EXPRESSION  */
-#line 219 "y.y"
+#line 227 "y.y"
             {
                 Trace("Find EXIT with boolean expression");
             }
-#line 1480 "y.tab.cpp"
+#line 1494 "y.tab.cpp"
     break;
 
   case 49: /* EXPRESSION: EXPRESSION '+' EXPRESSION  */
-#line 225 "y.y"
+#line 233 "y.y"
             {
                 Trace("expression + expression");
             }
-#line 1488 "y.tab.cpp"
+#line 1502 "y.tab.cpp"
     break;
 
   case 50: /* EXPRESSION: EXPRESSION '-' EXPRESSION  */
-#line 229 "y.y"
+#line 237 "y.y"
             {
                 Trace("expression - expression");
             }
-#line 1496 "y.tab.cpp"
+#line 1510 "y.tab.cpp"
     break;
 
   case 51: /* EXPRESSION: EXPRESSION '*' EXPRESSION  */
-#line 233 "y.y"
+#line 241 "y.y"
             {
                  Trace("expression * expression");
             }
-#line 1504 "y.tab.cpp"
+#line 1518 "y.tab.cpp"
     break;
 
   case 52: /* EXPRESSION: EXPRESSION '/' EXPRESSION  */
-#line 237 "y.y"
+#line 245 "y.y"
             {
                 Trace("expression / expression");
             }
-#line 1512 "y.tab.cpp"
+#line 1526 "y.tab.cpp"
     break;
 
   case 53: /* EXPRESSION: '-' EXPRESSION  */
-#line 241 "y.y"
+#line 249 "y.y"
             {
                 Trace("- expression");
             }
-#line 1520 "y.tab.cpp"
+#line 1534 "y.tab.cpp"
     break;
 
   case 54: /* EXPRESSION: EXPRESSION MOD EXPRESSION  */
-#line 245 "y.y"
+#line 253 "y.y"
             {
                 Trace("expression mod expression");
             }
-#line 1528 "y.tab.cpp"
+#line 1542 "y.tab.cpp"
     break;
 
   case 55: /* EXPRESSION: EXPRESSION '>' EXPRESSION  */
-#line 249 "y.y"
+#line 257 "y.y"
             {
                 Trace("EXPRESSION > EXPRESSION");
             }
-#line 1536 "y.tab.cpp"
+#line 1550 "y.tab.cpp"
     break;
 
   case 56: /* EXPRESSION: EXPRESSION '<' EXPRESSION  */
-#line 253 "y.y"
+#line 261 "y.y"
             {
                 Trace("EXPRESSION < EXPRESSION");
             }
-#line 1544 "y.tab.cpp"
+#line 1558 "y.tab.cpp"
     break;
 
   case 57: /* EXPRESSION: EXPRESSION '=' EXPRESSION  */
-#line 257 "y.y"
+#line 265 "y.y"
             {
                 Trace("EXPRESSION = EXPRESSION");
             }
-#line 1552 "y.tab.cpp"
+#line 1566 "y.tab.cpp"
     break;
 
   case 58: /* EXPRESSION: EXPRESSION NE EXPRESSION  */
-#line 261 "y.y"
+#line 269 "y.y"
             {
                 Trace("EXPRESSION != EXPRESSION");
             }
-#line 1560 "y.tab.cpp"
+#line 1574 "y.tab.cpp"
     break;
 
   case 59: /* EXPRESSION: EXPRESSION LE EXPRESSION  */
-#line 265 "y.y"
+#line 273 "y.y"
             {
                 Trace("EXPRESSION <= EXPRESSION");
             }
-#line 1568 "y.tab.cpp"
+#line 1582 "y.tab.cpp"
     break;
 
   case 60: /* EXPRESSION: EXPRESSION GE EXPRESSION  */
-#line 269 "y.y"
+#line 277 "y.y"
             {
                 Trace("EXPRESSION >= EXPRESSION");
             }
-#line 1576 "y.tab.cpp"
+#line 1590 "y.tab.cpp"
     break;
 
   case 61: /* EXPRESSION: EXPRESSION AND EXPRESSION  */
-#line 273 "y.y"
+#line 281 "y.y"
             {
                 Trace("EXPRESSION and EXPRESSION");
             }
-#line 1584 "y.tab.cpp"
+#line 1598 "y.tab.cpp"
     break;
 
   case 62: /* EXPRESSION: EXPRESSION OR EXPRESSION  */
-#line 277 "y.y"
+#line 285 "y.y"
             {
                 Trace("EXPRESSION or EXPRESSION");
             }
-#line 1592 "y.tab.cpp"
+#line 1606 "y.tab.cpp"
     break;
 
   case 63: /* EXPRESSION: NOT EXPRESSION  */
-#line 281 "y.y"
+#line 289 "y.y"
             {
                 Trace("Negation operator");
             }
-#line 1600 "y.tab.cpp"
-    break;
-
-  case 64: /* EXPRESSION: '(' EXPRESSION ')'  */
-#line 285 "y.y"
-            {
-                (yyval.Inf) = (yyvsp[-1].Inf);
-            }
-#line 1608 "y.tab.cpp"
-    break;
-
-  case 65: /* EXPRESSION: const_val  */
-#line 288 "y.y"
-                      {Trace("const_value");}
 #line 1614 "y.tab.cpp"
     break;
 
+  case 64: /* EXPRESSION: '(' EXPRESSION ')'  */
+#line 293 "y.y"
+            {
+                (yyval.Inf) = (yyvsp[-1].Inf);
+            }
+#line 1622 "y.tab.cpp"
+    break;
+
+  case 65: /* EXPRESSION: const_val  */
+#line 296 "y.y"
+                      {Trace("const_value");}
+#line 1628 "y.tab.cpp"
+    break;
+
   case 67: /* EXPRESSION: ID '[' EXPRESSION ']'  */
-#line 291 "y.y"
+#line 299 "y.y"
             {
                 Trace("Array reference");
                 //check expression type
             }
-#line 1623 "y.tab.cpp"
+#line 1637 "y.tab.cpp"
     break;
 
   case 68: /* EXPRESSION: proc_inv  */
-#line 296 "y.y"
+#line 304 "y.y"
             {
 
             }
-#line 1631 "y.tab.cpp"
+#line 1645 "y.tab.cpp"
     break;
 
   case 70: /* conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF  */
-#line 304 "y.y"
+#line 312 "y.y"
                     {
                         Trace("if-ELSE stmt");
                     }
-#line 1639 "y.tab.cpp"
+#line 1653 "y.tab.cpp"
     break;
 
   case 71: /* conditional_stmt: IF EXPRESSION THEN func_stmts END IF  */
-#line 308 "y.y"
+#line 316 "y.y"
                     {
                         Trace("if stmt");
                     }
-#line 1647 "y.tab.cpp"
+#line 1661 "y.tab.cpp"
     break;
 
   case 72: /* loop_stmt: LOOP func_stmts END LOOP  */
-#line 318 "y.y"
+#line 326 "y.y"
             {
                 Trace("loop");
             }
-#line 1655 "y.tab.cpp"
+#line 1669 "y.tab.cpp"
     break;
 
   case 73: /* loop_stmt: FOR opt_r ID ':' val_INTEGER '.' '.' val_INTEGER func_stmts END FOR  */
-#line 322 "y.y"
+#line 330 "y.y"
             {
                 Trace("For loop");
             }
-#line 1663 "y.tab.cpp"
+#line 1677 "y.tab.cpp"
     break;
 
 
-#line 1667 "y.tab.cpp"
+#line 1681 "y.tab.cpp"
 
       default: break;
     }
@@ -1856,7 +1870,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 334 "y.y"
+#line 342 "y.y"
 
 
 

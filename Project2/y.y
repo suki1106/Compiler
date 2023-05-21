@@ -12,6 +12,7 @@ using namespace std;
 void yyerror(string s);
 #define Trace(t)        printf("%s\n",t);
 Symboltable tb;
+vector<arg_info> args_info;
 %}
 %union{
     int i_v;
@@ -40,7 +41,6 @@ Symboltable tb;
 
 %type <d_t> TYPE
 %type <Inf> EXPRESSION const_val
-
 
 %left OR
 %left AND
@@ -74,8 +74,6 @@ const_dec:  CONST ID AS EXPRESSION
             if($4->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             $4->name = *$2;
             if(tb.Insert(*($4)) ==-1)yyerror("<ERROR> identifier already exists");
-            
-
             //tb.dump();
         }
         | CONST ID ':'TYPE AS EXPRESSION
@@ -84,7 +82,6 @@ const_dec:  CONST ID AS EXPRESSION
             if($6->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             $6->name = *$2;
             if(tb.Insert(*($6)) ==-1)yyerror("<ERROR> identifier already exists");
-
             //tb.dump();
         }
         ;
@@ -119,7 +116,6 @@ var_dec: VAR ID ':'TYPE
             $6->name = *$2;
             if($6->d_type != $4)  yyerror("<ERROR> Type not compatible");
             if(tb.Insert(*($6))  == -1) yyerror("<ERROR> identifier already exists");
-
         }
         | VAR ID AS EXPRESSION
         {
@@ -136,12 +132,21 @@ var_dec: VAR ID ':'TYPE
 
 func_dec: FUNCTION ID '('args')'':'TYPE func_stmts END ID
         {
-
             Trace("Func declaration");
+            
+
+            if(tb.Insert(Info(*$2,$7,FUNC_f,args_info) ) ==-1)yyerror("<ERROR> identifier already exists");
+            args_info.clear();
+            
+            // new symbol table
+
+
         }
         | PROCEDURE ID '('args')' func_stmts END ID
         {
             Trace("procedure declaration");
+            // new symbol table
+
         }
         ;
 
@@ -160,10 +165,13 @@ func_stmt: var_dec
 
 args: arg ',' args
     | arg
-    |
+    | 
     ;
     
-arg: ID':'TYPE
+arg: ID':'TYPE  
+    {
+        args_info.push_back(arg_info(*$1,$3));
+    }
     ;
 
 
