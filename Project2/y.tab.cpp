@@ -598,10 +598,10 @@ static const yytype_int16 yyrline[] =
      123,   129,   143,   156,   165,   164,   191,   190,   213,   214,
      219,   220,   221,   224,   225,   226,   229,   237,   238,   239,
      240,   243,   242,   254,   266,   270,   278,   283,   287,   288,
-     294,   298,   306,   316,   323,   330,   337,   343,   350,   357,
-     364,   371,   378,   385,   392,   399,   406,   412,   416,   417,
-     424,   431,   434,   456,   457,   458,   461,   467,   471,   481,
-     485,   491,   492
+     294,   298,   306,   317,   324,   331,   338,   344,   351,   358,
+     365,   372,   379,   386,   393,   400,   407,   413,   417,   418,
+     425,   432,   435,   457,   458,   459,   462,   468,   472,   482,
+     486,   492,   493
 };
 #endif
 
@@ -1599,205 +1599,206 @@ yyreduce:
             {
                 Trace("expression + expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                //stb_list.dumpCurrentTable();
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
                 if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
                     
                 }
             }
-#line 1609 "y.tab.cpp"
+#line 1610 "y.tab.cpp"
     break;
 
   case 53: /* EXPRESSION: EXPRESSION '-' EXPRESSION  */
-#line 317 "y.y"
+#line 318 "y.y"
             {
                 Trace("expression - expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1620 "y.tab.cpp"
+#line 1621 "y.tab.cpp"
     break;
 
   case 54: /* EXPRESSION: EXPRESSION '*' EXPRESSION  */
-#line 324 "y.y"
+#line 325 "y.y"
             {
                 Trace("expression * expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1631 "y.tab.cpp"
+#line 1632 "y.tab.cpp"
     break;
 
   case 55: /* EXPRESSION: EXPRESSION '/' EXPRESSION  */
-#line 331 "y.y"
+#line 332 "y.y"
             {
                 Trace("expression / expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1642 "y.tab.cpp"
+#line 1643 "y.tab.cpp"
     break;
 
   case 56: /* EXPRESSION: '-' EXPRESSION  */
-#line 338 "y.y"
+#line 339 "y.y"
             {
                 Trace("- expression");
-                if((yyvsp[0].Inf)->d_type != REAL_TYPE || (yyvsp[0].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[0].Inf)->d_type != REAL_TYPE && (yyvsp[0].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("unary minus is not support array");
             }
-#line 1652 "y.tab.cpp"
+#line 1653 "y.tab.cpp"
     break;
 
   case 57: /* EXPRESSION: EXPRESSION MOD EXPRESSION  */
-#line 344 "y.y"
+#line 345 "y.y"
             {
                 Trace("expression mod expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1663 "y.tab.cpp"
+#line 1664 "y.tab.cpp"
     break;
 
   case 58: /* EXPRESSION: EXPRESSION '>' EXPRESSION  */
-#line 351 "y.y"
+#line 352 "y.y"
             {
                 Trace("EXPRESSION > EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1674 "y.tab.cpp"
+#line 1675 "y.tab.cpp"
     break;
 
   case 59: /* EXPRESSION: EXPRESSION '<' EXPRESSION  */
-#line 358 "y.y"
+#line 359 "y.y"
             {
                 Trace("EXPRESSION < EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1685 "y.tab.cpp"
+#line 1686 "y.tab.cpp"
     break;
 
   case 60: /* EXPRESSION: EXPRESSION '=' EXPRESSION  */
-#line 365 "y.y"
+#line 366 "y.y"
             {
                 Trace("EXPRESSION = EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1696 "y.tab.cpp"
+#line 1697 "y.tab.cpp"
     break;
 
   case 61: /* EXPRESSION: EXPRESSION NE EXPRESSION  */
-#line 372 "y.y"
+#line 373 "y.y"
             {
                 Trace("EXPRESSION != EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1707 "y.tab.cpp"
+#line 1708 "y.tab.cpp"
     break;
 
   case 62: /* EXPRESSION: EXPRESSION LE EXPRESSION  */
-#line 379 "y.y"
+#line 380 "y.y"
             {
                 Trace("EXPRESSION <= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1718 "y.tab.cpp"
+#line 1719 "y.tab.cpp"
     break;
 
   case 63: /* EXPRESSION: EXPRESSION GE EXPRESSION  */
-#line 386 "y.y"
+#line 387 "y.y"
             {
                 Trace("EXPRESSION >= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE || (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1729 "y.tab.cpp"
+#line 1730 "y.tab.cpp"
     break;
 
   case 64: /* EXPRESSION: EXPRESSION AND EXPRESSION  */
-#line 393 "y.y"
+#line 394 "y.y"
             {
                 Trace("EXPRESSION and EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1740 "y.tab.cpp"
+#line 1741 "y.tab.cpp"
     break;
 
   case 65: /* EXPRESSION: EXPRESSION OR EXPRESSION  */
-#line 400 "y.y"
+#line 401 "y.y"
             {
                 Trace("EXPRESSION or EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1751 "y.tab.cpp"
+#line 1752 "y.tab.cpp"
     break;
 
   case 66: /* EXPRESSION: NOT EXPRESSION  */
-#line 407 "y.y"
+#line 408 "y.y"
             {
                 Trace("Negation operator");
                 if((yyvsp[0].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
-#line 1761 "y.tab.cpp"
+#line 1762 "y.tab.cpp"
     break;
 
   case 67: /* EXPRESSION: '(' EXPRESSION ')'  */
-#line 413 "y.y"
+#line 414 "y.y"
             {
                 (yyval.Inf) = (yyvsp[-1].Inf);
             }
-#line 1769 "y.tab.cpp"
+#line 1770 "y.tab.cpp"
     break;
 
   case 68: /* EXPRESSION: const_val  */
-#line 416 "y.y"
+#line 417 "y.y"
                       {Trace("const_value");}
-#line 1775 "y.tab.cpp"
+#line 1776 "y.tab.cpp"
     break;
 
   case 69: /* EXPRESSION: ID  */
-#line 418 "y.y"
+#line 419 "y.y"
             {
                 Symboltable* tb = stb_list.getCurrentTable(); 
                 int idx = tb->lookup(*(yyvsp[0].s_v));
                 if(idx == -1) yyerror("ID not exists");
                 (yyval.Inf) = tb->getInfo(idx);               
             }
-#line 1786 "y.tab.cpp"
+#line 1787 "y.tab.cpp"
     break;
 
   case 70: /* EXPRESSION: ID '[' EXPRESSION ']'  */
-#line 425 "y.y"
+#line 426 "y.y"
             {
                 Trace("Array reference");
                 //check expression type
                 if((yyvsp[-1].Inf)->d_type != INT_TYPE)yyerror("expression should be INT_EXPR");
                 if((yyvsp[-1].Inf)->f_type == FUNC_f || (yyvsp[-1].Inf)->f_type== ARRAY_f)yyerror("can not pass Array or Function id");
             }
-#line 1797 "y.tab.cpp"
+#line 1798 "y.tab.cpp"
     break;
 
   case 72: /* func_inv: ID '(' actual_params ')'  */
-#line 435 "y.y"
+#line 436 "y.y"
         {
             Trace("function invocation");
             Symboltable* tb =stb_list.getCurrentTable();
@@ -1817,51 +1818,51 @@ yyreduce:
 
             
         }
-#line 1821 "y.tab.cpp"
+#line 1822 "y.tab.cpp"
     break;
 
   case 76: /* actual_param: EXPRESSION  */
-#line 462 "y.y"
+#line 463 "y.y"
             {
                 params.push_back(*(yyvsp[0].Inf));
             }
-#line 1829 "y.tab.cpp"
+#line 1830 "y.tab.cpp"
     break;
 
   case 77: /* conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF  */
-#line 468 "y.y"
+#line 469 "y.y"
                     {
                         Trace("if-ELSE stmt");
                     }
-#line 1837 "y.tab.cpp"
+#line 1838 "y.tab.cpp"
     break;
 
   case 78: /* conditional_stmt: IF EXPRESSION THEN func_stmts END IF  */
-#line 472 "y.y"
+#line 473 "y.y"
                     {
                         Trace("if stmt");
                     }
-#line 1845 "y.tab.cpp"
+#line 1846 "y.tab.cpp"
     break;
 
   case 79: /* loop_stmt: LOOP func_stmts END LOOP  */
-#line 482 "y.y"
+#line 483 "y.y"
             {
                 Trace("loop");
             }
-#line 1853 "y.tab.cpp"
+#line 1854 "y.tab.cpp"
     break;
 
   case 80: /* loop_stmt: FOR opt_r ID ':' val_INTEGER '.' '.' val_INTEGER func_stmts END FOR  */
-#line 486 "y.y"
+#line 487 "y.y"
             {
                 Trace("For loop");
             }
-#line 1861 "y.tab.cpp"
+#line 1862 "y.tab.cpp"
     break;
 
 
-#line 1865 "y.tab.cpp"
+#line 1866 "y.tab.cpp"
 
       default: break;
     }
@@ -2054,7 +2055,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 498 "y.y"
+#line 499 "y.y"
 
 
 

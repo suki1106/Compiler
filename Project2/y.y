@@ -307,7 +307,8 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
             {
                 Trace("expression + expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                //stb_list.dumpCurrentTable();
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
                 if($1->f_type == CONST_f && $3->f_type == CONST_f){
                     
@@ -317,76 +318,76 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
             {
                 Trace("expression - expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }    
         |   EXPRESSION '*' EXPRESSION
             {
                 Trace("expression * expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION '/' EXPRESSION
             {
                 Trace("expression / expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   '-' EXPRESSION %prec UMINUS
             {
                 Trace("- expression");
-                if($2->d_type != REAL_TYPE || $2->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($2->d_type != REAL_TYPE && $2->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($2->f_type == ARRAY_f) yyerror("unary minus is not support array");
             }
         |   EXPRESSION MOD EXPRESSION
             {
                 Trace("expression mod expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION '>' EXPRESSION
             {
                 Trace("EXPRESSION > EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION '<' EXPRESSION
             {
                 Trace("EXPRESSION < EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION '=' EXPRESSION
             {
                 Trace("EXPRESSION = EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION NE EXPRESSION
             {
                 Trace("EXPRESSION != EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION LE EXPRESSION
             {
                 Trace("EXPRESSION <= EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION GE EXPRESSION
             {
                 Trace("EXPRESSION >= EXPRESSION");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE || $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
             }
         |   EXPRESSION AND EXPRESSION
