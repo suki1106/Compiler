@@ -206,6 +206,7 @@ void Symboltable::dump(){
         }
         ++cnt;
     }
+    cout << "------FINISH------" << endl;
 }
 
 Symboltable_List::Symboltable_List(){
@@ -234,4 +235,12 @@ void Symboltable_List::dumpCurrentTable(){
 
 Symboltable* Symboltable_List::getCurrentTable(){
     return &Symboltables[st.top()];
+}
+
+void Symboltable_List::dumpAllTable(){
+
+    cout << "\n\n------Start dump all Symbol tables------\n\n";
+
+    for(auto& Symboltable : Symboltables)
+        Symboltable.dump();
 }

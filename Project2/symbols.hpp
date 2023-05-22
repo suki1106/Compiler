@@ -18,9 +18,9 @@ enum data_type{
     VOID_TYPE // procedure
 };
 
-// const, var, function, array
+// const , var, function, array
 enum form_type{
-    CONST_f,
+    CONST_f,  // const expression or const vairable
     VAR_f,
     FUNC_f,
     ARRAY_f
@@ -96,7 +96,7 @@ class Symboltable{
         string getForm(int); // const, var, func, array?
         vector<Info> identifiers;
         map<string,int> table;
-        int index;
+        int index; // id index
 };
 
 
@@ -107,6 +107,7 @@ class Symboltable_List{
         void create_table(); // when enter block
         void popTable(); // when block ends
         void dumpCurrentTable(); // dump current scope table
+        void dumpAllTable(); // from top to bottom
         Symboltable* getCurrentTable(); // get current scope table
     private:
         vector<Symboltable> Symboltables; // store all tables
