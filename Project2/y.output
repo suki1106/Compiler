@@ -109,19 +109,25 @@ Grammar
 
    75 actual_param: EXPRESSION
 
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
-   77                 | IF EXPRESSION THEN func_stmts END IF
+   76 $@4: ε
 
-   78 $@4: ε
+   77 conditional_stmt: IF $@4 EXPRESSION THEN func_stmts ELSE_stmt
 
-   79 loop_stmt: LOOP $@4 func_stmts END LOOP
+   78 $@5: ε
 
-   80 $@5: ε
+   79 ELSE_stmt: ELSE $@5 func_stmts END IF
+   80          | END IF
 
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR
+   81 $@6: ε
 
-   82 opt_r: DECREASING
-   83      | ε
+   82 loop_stmt: LOOP $@6 func_stmts END LOOP
+
+   83 $@7: ε
+
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR
+
+   85 opt_r: DECREASING
+   86      | ε
 
 
 Terminals, with rules where they appear
@@ -133,9 +139,9 @@ Terminals, with rules where they appear
     '+' (43) 51
     ',' (44) 32 72
     '-' (45) 52 55
-    '.' (46) 22 81
+    '.' (46) 22 84
     '/' (47) 54
-    ':' (58) 10 19 20 22 24 35 81
+    ':' (58) 10 19 20 22 24 35 84
     '<' (60) 58
     '=' (61) 59
     '>' (62) 57
@@ -157,28 +163,28 @@ Terminals, with rules where they appear
     AND (270) 63
     OR (271) 64
     NOT (272) 65
-    DECREASING (273) 82
+    DECREASING (273) 85
     DEFAULT (274)
     DO (275)
-    ELSE (276) 76
-    END (277) 24 26 41 76 77 79 81
+    ELSE (276) 79
+    END (277) 24 26 41 79 80 82 84
     EXIT (278) 49 50
-    FOR (279) 81
+    FOR (279) 84
     GET (280) 44
-    IF (281) 76 77
-    LOOP (282) 79
+    IF (281) 77 79 80
+    LOOP (282) 82
     PUT (283) 43
     PROCEDURE (284) 26
     RESULT (285) 45
     RETURN (286) 46
     SKIP (287) 48
-    THEN (288) 76 77
+    THEN (288) 77
     WHEN (289) 50
     BEG (290) 41
     LE (291) 61
     GE (292) 62
     NE (293) 60
-    ID <s_v> (294) 9 10 19 20 21 22 24 26 35 42 44 68 69 71 81
+    ID <s_v> (294) 9 10 19 20 21 22 24 26 35 42 44 68 69 71 84
     val_STR <s_v> (295) 13
     val_INTEGER <i_v> (296) 12 22
     val_REAL <r_v> (297) 11
@@ -225,7 +231,7 @@ Nonterminals, with rules where they appear
         on right: 26
     func_stmts (71)
         on left: 27 28
-        on right: 24 26 27 41 76 77 79 81
+        on right: 24 26 27 41 77 79 82 84
     func_stmt (72)
         on left: 29 30 31
         on right: 27
@@ -252,7 +258,7 @@ Nonterminals, with rules where they appear
         on right: 47
     EXPRESSION <Inf> (80)
         on left: 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
-        on right: 9 10 20 21 42 43 45 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 69 75 76 77 81
+        on right: 9 10 20 21 42 43 45 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 69 75 77 84
     func_inv <Inf> (81)
         on left: 71
         on right: 70
@@ -263,20 +269,29 @@ Nonterminals, with rules where they appear
         on left: 75
         on right: 72 73
     conditional_stmt (84)
-        on left: 76 77
+        on left: 77
         on right: 38
-    loop_stmt (85)
-        on left: 79 81
-        on right: 39
-    $@4 (86)
+    $@4 (85)
+        on left: 76
+        on right: 77
+    ELSE_stmt (86)
+        on left: 79 80
+        on right: 77
+    $@5 (87)
         on left: 78
         on right: 79
-    $@5 (87)
-        on left: 80
-        on right: 81
-    opt_r (88)
-        on left: 82 83
-        on right: 81
+    loop_stmt (88)
+        on left: 82 84
+        on right: 39
+    $@6 (89)
+        on left: 81
+        on right: 82
+    $@7 (90)
+        on left: 83
+        on right: 84
+    opt_r (91)
+        on left: 85 86
+        on right: 84
 
 
 State 0
@@ -456,11 +471,11 @@ State 16
 
 State 17
 
-   81 loop_stmt: FOR • opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR • opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR
 
     DECREASING  shift, and go to state 42
 
-    $default  reduce using rule 83 (opt_r)
+    $default  reduce using rule 86 (opt_r)
 
     opt_r  go to state 43
 
@@ -474,66 +489,56 @@ State 18
 
 State 19
 
-   76 conditional_stmt: IF • EXPRESSION THEN func_stmts ELSE func_stmts END IF
-   77                 | IF • EXPRESSION THEN func_stmts END IF
+   77 conditional_stmt: IF • $@4 EXPRESSION THEN func_stmts ELSE_stmt
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    $default  reduce using rule 76 ($@4)
 
-    const_val   go to state 53
-    EXPRESSION  go to state 54
-    func_inv    go to state 55
+    $@4  go to state 45
 
 
 State 20
 
-   79 loop_stmt: LOOP • $@4 func_stmts END LOOP
+   82 loop_stmt: LOOP • $@6 func_stmts END LOOP
 
-    $default  reduce using rule 78 ($@4)
+    $default  reduce using rule 81 ($@6)
 
-    $@4  go to state 56
+    $@6  go to state 46
 
 
 State 21
 
    43 simple_stmt: PUT • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
-    EXPRESSION  go to state 57
-    func_inv    go to state 55
+    const_val   go to state 55
+    EXPRESSION  go to state 56
+    func_inv    go to state 57
 
 
 State 22
 
    45 simple_stmt: RESULT • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 58
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 23
@@ -646,18 +651,18 @@ State 35
 
    21 var_dec: VAR ID AS • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 62
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 36
@@ -679,18 +684,18 @@ State 37
 
     9 const_dec: CONST ID AS • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 69
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 38
@@ -733,30 +738,30 @@ State 41
 
    50 EXIT_STMT: EXIT WHEN • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 75
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 42
 
-   82 opt_r: DECREASING •
+   85 opt_r: DECREASING •
 
-    $default  reduce using rule 82 (opt_r)
+    $default  reduce using rule 85 (opt_r)
 
 
 State 43
 
-   81 loop_stmt: FOR opt_r • ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r • ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR
 
     ID  shift, and go to state 76
 
@@ -770,149 +775,25 @@ State 44
 
 State 45
 
-   65 EXPRESSION: NOT • EXPRESSION
+   77 conditional_stmt: IF $@4 • EXPRESSION THEN func_stmts ELSE_stmt
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 77
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 46
 
-   68 EXPRESSION: ID •
-   69           | ID • '[' EXPRESSION ']'
-   71 func_inv: ID • '(' actual_params ')'
-
-    '('  shift, and go to state 78
-    '['  shift, and go to state 79
-
-    $default  reduce using rule 68 (EXPRESSION)
-
-
-State 47
-
-   13 const_val: val_STR •
-
-    $default  reduce using rule 13 (const_val)
-
-
-State 48
-
-   12 const_val: val_INTEGER •
-
-    $default  reduce using rule 12 (const_val)
-
-
-State 49
-
-   11 const_val: val_REAL •
-
-    $default  reduce using rule 11 (const_val)
-
-
-State 50
-
-   14 const_val: val_BOOL •
-
-    $default  reduce using rule 14 (const_val)
-
-
-State 51
-
-   55 EXPRESSION: '-' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 80
-    func_inv    go to state 55
-
-
-State 52
-
-   66 EXPRESSION: '(' • EXPRESSION ')'
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 81
-    func_inv    go to state 55
-
-
-State 53
-
-   67 EXPRESSION: const_val •
-
-    $default  reduce using rule 67 (EXPRESSION)
-
-
-State 54
-
-   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
-   52           | EXPRESSION • '-' EXPRESSION
-   53           | EXPRESSION • '*' EXPRESSION
-   54           | EXPRESSION • '/' EXPRESSION
-   56           | EXPRESSION • MOD EXPRESSION
-   57           | EXPRESSION • '>' EXPRESSION
-   58           | EXPRESSION • '<' EXPRESSION
-   59           | EXPRESSION • '=' EXPRESSION
-   60           | EXPRESSION • NE EXPRESSION
-   61           | EXPRESSION • LE EXPRESSION
-   62           | EXPRESSION • GE EXPRESSION
-   63           | EXPRESSION • AND EXPRESSION
-   64           | EXPRESSION • OR EXPRESSION
-   76 conditional_stmt: IF EXPRESSION • THEN func_stmts ELSE func_stmts END IF
-   77                 | IF EXPRESSION • THEN func_stmts END IF
-
-    MOD   shift, and go to state 82
-    AND   shift, and go to state 83
-    OR    shift, and go to state 84
-    THEN  shift, and go to state 85
-    LE    shift, and go to state 86
-    GE    shift, and go to state 87
-    NE    shift, and go to state 88
-    '<'   shift, and go to state 89
-    '='   shift, and go to state 90
-    '>'   shift, and go to state 91
-    '-'   shift, and go to state 92
-    '+'   shift, and go to state 93
-    '*'   shift, and go to state 94
-    '/'   shift, and go to state 95
-
-
-State 55
-
-   70 EXPRESSION: func_inv •
-
-    $default  reduce using rule 70 (EXPRESSION)
-
-
-State 56
-
-   79 loop_stmt: LOOP $@4 • func_stmts END LOOP
+   82 loop_stmt: LOOP $@6 • func_stmts END LOOP
 
     VAR     shift, and go to state 1
     CONST   shift, and go to state 2
@@ -930,11 +811,11 @@ State 56
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 98
-    func_stmt         go to state 99
-    stmt              go to state 100
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 80
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -942,7 +823,108 @@ State 56
     loop_stmt         go to state 33
 
 
-State 57
+State 47
+
+   65 EXPRESSION: NOT • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 83
+    func_inv    go to state 57
+
+
+State 48
+
+   68 EXPRESSION: ID •
+   69           | ID • '[' EXPRESSION ']'
+   71 func_inv: ID • '(' actual_params ')'
+
+    '('  shift, and go to state 84
+    '['  shift, and go to state 85
+
+    $default  reduce using rule 68 (EXPRESSION)
+
+
+State 49
+
+   13 const_val: val_STR •
+
+    $default  reduce using rule 13 (const_val)
+
+
+State 50
+
+   12 const_val: val_INTEGER •
+
+    $default  reduce using rule 12 (const_val)
+
+
+State 51
+
+   11 const_val: val_REAL •
+
+    $default  reduce using rule 11 (const_val)
+
+
+State 52
+
+   14 const_val: val_BOOL •
+
+    $default  reduce using rule 14 (const_val)
+
+
+State 53
+
+   55 EXPRESSION: '-' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 86
+    func_inv    go to state 57
+
+
+State 54
+
+   66 EXPRESSION: '(' • EXPRESSION ')'
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 87
+    func_inv    go to state 57
+
+
+State 55
+
+   67 EXPRESSION: const_val •
+
+    $default  reduce using rule 67 (EXPRESSION)
+
+
+State 56
 
    43 simple_stmt: PUT EXPRESSION •
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
@@ -959,21 +941,28 @@ State 57
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 43 (simple_stmt)
+
+
+State 57
+
+   70 EXPRESSION: func_inv •
+
+    $default  reduce using rule 70 (EXPRESSION)
 
 
 State 58
@@ -993,19 +982,19 @@ State 58
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 45 (simple_stmt)
 
@@ -1030,11 +1019,11 @@ State 59
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
+    const_dec         go to state 78
+    var_dec           go to state 79
     func_stmts        go to state 101
-    func_stmt         go to state 99
-    stmt              go to state 100
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -1046,18 +1035,18 @@ State 60
 
    42 simple_stmt: ID AS • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 102
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 61
@@ -1084,19 +1073,19 @@ State 62
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 21 (var_dec)
 
@@ -1163,19 +1152,19 @@ State 69
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 9 (const_dec)
 
@@ -1235,26 +1224,26 @@ State 75
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 50 (EXIT_STMT)
 
 
 State 76
 
-   81 loop_stmt: FOR opt_r ID • ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r ID • ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR
 
     ':'  shift, and go to state 110
 
@@ -1274,405 +1263,46 @@ State 77
    62           | EXPRESSION • GE EXPRESSION
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
-   65           | NOT EXPRESSION •
+   77 conditional_stmt: IF $@4 EXPRESSION • THEN func_stmts ELSE_stmt
 
-    MOD  shift, and go to state 82
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
-
-    $default  reduce using rule 65 (EXPRESSION)
+    MOD   shift, and go to state 88
+    AND   shift, and go to state 89
+    OR    shift, and go to state 90
+    THEN  shift, and go to state 111
+    LE    shift, and go to state 91
+    GE    shift, and go to state 92
+    NE    shift, and go to state 93
+    '<'   shift, and go to state 94
+    '='   shift, and go to state 95
+    '>'   shift, and go to state 96
+    '-'   shift, and go to state 97
+    '+'   shift, and go to state 98
+    '*'   shift, and go to state 99
+    '/'   shift, and go to state 100
 
 
 State 78
-
-   71 func_inv: ID '(' • actual_params ')'
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    $default  reduce using rule 74 (actual_params)
-
-    const_val      go to state 53
-    EXPRESSION     go to state 111
-    func_inv       go to state 55
-    actual_params  go to state 112
-    actual_param   go to state 113
-
-
-State 79
-
-   69 EXPRESSION: ID '[' • EXPRESSION ']'
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 114
-    func_inv    go to state 55
-
-
-State 80
-
-   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
-   52           | EXPRESSION • '-' EXPRESSION
-   53           | EXPRESSION • '*' EXPRESSION
-   54           | EXPRESSION • '/' EXPRESSION
-   55           | '-' EXPRESSION •
-   56           | EXPRESSION • MOD EXPRESSION
-   57           | EXPRESSION • '>' EXPRESSION
-   58           | EXPRESSION • '<' EXPRESSION
-   59           | EXPRESSION • '=' EXPRESSION
-   60           | EXPRESSION • NE EXPRESSION
-   61           | EXPRESSION • LE EXPRESSION
-   62           | EXPRESSION • GE EXPRESSION
-   63           | EXPRESSION • AND EXPRESSION
-   64           | EXPRESSION • OR EXPRESSION
-
-    $default  reduce using rule 55 (EXPRESSION)
-
-
-State 81
-
-   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
-   52           | EXPRESSION • '-' EXPRESSION
-   53           | EXPRESSION • '*' EXPRESSION
-   54           | EXPRESSION • '/' EXPRESSION
-   56           | EXPRESSION • MOD EXPRESSION
-   57           | EXPRESSION • '>' EXPRESSION
-   58           | EXPRESSION • '<' EXPRESSION
-   59           | EXPRESSION • '=' EXPRESSION
-   60           | EXPRESSION • NE EXPRESSION
-   61           | EXPRESSION • LE EXPRESSION
-   62           | EXPRESSION • GE EXPRESSION
-   63           | EXPRESSION • AND EXPRESSION
-   64           | EXPRESSION • OR EXPRESSION
-   66           | '(' EXPRESSION • ')'
-
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
-    ')'  shift, and go to state 115
-
-
-State 82
-
-   56 EXPRESSION: EXPRESSION MOD • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 116
-    func_inv    go to state 55
-
-
-State 83
-
-   63 EXPRESSION: EXPRESSION AND • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 117
-    func_inv    go to state 55
-
-
-State 84
-
-   64 EXPRESSION: EXPRESSION OR • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 118
-    func_inv    go to state 55
-
-
-State 85
-
-   76 conditional_stmt: IF EXPRESSION THEN • func_stmts ELSE func_stmts END IF
-   77                 | IF EXPRESSION THEN • func_stmts END IF
-
-    VAR     shift, and go to state 1
-    CONST   shift, and go to state 2
-    EXIT    shift, and go to state 16
-    FOR     shift, and go to state 17
-    GET     shift, and go to state 18
-    IF      shift, and go to state 19
-    LOOP    shift, and go to state 20
-    PUT     shift, and go to state 21
-    RESULT  shift, and go to state 22
-    RETURN  shift, and go to state 23
-    SKIP    shift, and go to state 24
-    BEG     shift, and go to state 25
-    ID      shift, and go to state 26
-
-    $default  reduce using rule 28 (func_stmts)
-
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 119
-    func_stmt         go to state 99
-    stmt              go to state 100
-    BLOCK_stmt        go to state 29
-    simple_stmt       go to state 30
-    EXIT_STMT         go to state 31
-    conditional_stmt  go to state 32
-    loop_stmt         go to state 33
-
-
-State 86
-
-   61 EXPRESSION: EXPRESSION LE • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 120
-    func_inv    go to state 55
-
-
-State 87
-
-   62 EXPRESSION: EXPRESSION GE • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 121
-    func_inv    go to state 55
-
-
-State 88
-
-   60 EXPRESSION: EXPRESSION NE • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 122
-    func_inv    go to state 55
-
-
-State 89
-
-   58 EXPRESSION: EXPRESSION '<' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 123
-    func_inv    go to state 55
-
-
-State 90
-
-   59 EXPRESSION: EXPRESSION '=' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 124
-    func_inv    go to state 55
-
-
-State 91
-
-   57 EXPRESSION: EXPRESSION '>' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 125
-    func_inv    go to state 55
-
-
-State 92
-
-   52 EXPRESSION: EXPRESSION '-' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 126
-    func_inv    go to state 55
-
-
-State 93
-
-   51 EXPRESSION: EXPRESSION '+' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 127
-    func_inv    go to state 55
-
-
-State 94
-
-   53 EXPRESSION: EXPRESSION '*' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 128
-    func_inv    go to state 55
-
-
-State 95
-
-   54 EXPRESSION: EXPRESSION '/' • EXPRESSION
-
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
-
-    const_val   go to state 53
-    EXPRESSION  go to state 129
-    func_inv    go to state 55
-
-
-State 96
 
    30 func_stmt: const_dec •
 
     $default  reduce using rule 30 (func_stmt)
 
 
-State 97
+State 79
 
    29 func_stmt: var_dec •
 
     $default  reduce using rule 29 (func_stmt)
 
 
-State 98
+State 80
 
-   79 loop_stmt: LOOP $@4 func_stmts • END LOOP
+   82 loop_stmt: LOOP $@6 func_stmts • END LOOP
 
-    END  shift, and go to state 130
+    END  shift, and go to state 112
 
 
-State 99
+State 81
 
    27 func_stmts: func_stmt • func_stmts
 
@@ -1692,11 +1322,11 @@ State 99
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 131
-    func_stmt         go to state 99
-    stmt              go to state 100
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 113
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -1704,11 +1334,370 @@ State 99
     loop_stmt         go to state 33
 
 
-State 100
+State 82
 
    31 func_stmt: stmt •
 
     $default  reduce using rule 31 (func_stmt)
+
+
+State 83
+
+   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
+   52           | EXPRESSION • '-' EXPRESSION
+   53           | EXPRESSION • '*' EXPRESSION
+   54           | EXPRESSION • '/' EXPRESSION
+   56           | EXPRESSION • MOD EXPRESSION
+   57           | EXPRESSION • '>' EXPRESSION
+   58           | EXPRESSION • '<' EXPRESSION
+   59           | EXPRESSION • '=' EXPRESSION
+   60           | EXPRESSION • NE EXPRESSION
+   61           | EXPRESSION • LE EXPRESSION
+   62           | EXPRESSION • GE EXPRESSION
+   63           | EXPRESSION • AND EXPRESSION
+   64           | EXPRESSION • OR EXPRESSION
+   65           | NOT EXPRESSION •
+
+    MOD  shift, and go to state 88
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+
+    $default  reduce using rule 65 (EXPRESSION)
+
+
+State 84
+
+   71 func_inv: ID '(' • actual_params ')'
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    $default  reduce using rule 74 (actual_params)
+
+    const_val      go to state 55
+    EXPRESSION     go to state 114
+    func_inv       go to state 57
+    actual_params  go to state 115
+    actual_param   go to state 116
+
+
+State 85
+
+   69 EXPRESSION: ID '[' • EXPRESSION ']'
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 117
+    func_inv    go to state 57
+
+
+State 86
+
+   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
+   52           | EXPRESSION • '-' EXPRESSION
+   53           | EXPRESSION • '*' EXPRESSION
+   54           | EXPRESSION • '/' EXPRESSION
+   55           | '-' EXPRESSION •
+   56           | EXPRESSION • MOD EXPRESSION
+   57           | EXPRESSION • '>' EXPRESSION
+   58           | EXPRESSION • '<' EXPRESSION
+   59           | EXPRESSION • '=' EXPRESSION
+   60           | EXPRESSION • NE EXPRESSION
+   61           | EXPRESSION • LE EXPRESSION
+   62           | EXPRESSION • GE EXPRESSION
+   63           | EXPRESSION • AND EXPRESSION
+   64           | EXPRESSION • OR EXPRESSION
+
+    $default  reduce using rule 55 (EXPRESSION)
+
+
+State 87
+
+   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
+   52           | EXPRESSION • '-' EXPRESSION
+   53           | EXPRESSION • '*' EXPRESSION
+   54           | EXPRESSION • '/' EXPRESSION
+   56           | EXPRESSION • MOD EXPRESSION
+   57           | EXPRESSION • '>' EXPRESSION
+   58           | EXPRESSION • '<' EXPRESSION
+   59           | EXPRESSION • '=' EXPRESSION
+   60           | EXPRESSION • NE EXPRESSION
+   61           | EXPRESSION • LE EXPRESSION
+   62           | EXPRESSION • GE EXPRESSION
+   63           | EXPRESSION • AND EXPRESSION
+   64           | EXPRESSION • OR EXPRESSION
+   66           | '(' EXPRESSION • ')'
+
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+    ')'  shift, and go to state 118
+
+
+State 88
+
+   56 EXPRESSION: EXPRESSION MOD • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 119
+    func_inv    go to state 57
+
+
+State 89
+
+   63 EXPRESSION: EXPRESSION AND • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 120
+    func_inv    go to state 57
+
+
+State 90
+
+   64 EXPRESSION: EXPRESSION OR • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 121
+    func_inv    go to state 57
+
+
+State 91
+
+   61 EXPRESSION: EXPRESSION LE • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 122
+    func_inv    go to state 57
+
+
+State 92
+
+   62 EXPRESSION: EXPRESSION GE • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 123
+    func_inv    go to state 57
+
+
+State 93
+
+   60 EXPRESSION: EXPRESSION NE • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 124
+    func_inv    go to state 57
+
+
+State 94
+
+   58 EXPRESSION: EXPRESSION '<' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 125
+    func_inv    go to state 57
+
+
+State 95
+
+   59 EXPRESSION: EXPRESSION '=' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 126
+    func_inv    go to state 57
+
+
+State 96
+
+   57 EXPRESSION: EXPRESSION '>' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 127
+    func_inv    go to state 57
+
+
+State 97
+
+   52 EXPRESSION: EXPRESSION '-' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 128
+    func_inv    go to state 57
+
+
+State 98
+
+   51 EXPRESSION: EXPRESSION '+' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 129
+    func_inv    go to state 57
+
+
+State 99
+
+   53 EXPRESSION: EXPRESSION '*' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 130
+    func_inv    go to state 57
+
+
+State 100
+
+   54 EXPRESSION: EXPRESSION '/' • EXPRESSION
+
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
+
+    const_val   go to state 55
+    EXPRESSION  go to state 131
+    func_inv    go to state 57
 
 
 State 101
@@ -1735,19 +1724,19 @@ State 102
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 42 (simple_stmt)
 
@@ -1763,36 +1752,36 @@ State 104
 
    20 var_dec: VAR ID ':' TYPE AS • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 134
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 105
 
    10 const_dec: CONST ID ':' TYPE AS • EXPRESSION
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 135
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 106
@@ -1837,71 +1826,66 @@ State 109
 
 State 110
 
-   81 loop_stmt: FOR opt_r ID ':' • EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r ID ':' • EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
+    const_val   go to state 55
     EXPRESSION  go to state 140
-    func_inv    go to state 55
+    func_inv    go to state 57
 
 
 State 111
 
-   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
-   52           | EXPRESSION • '-' EXPRESSION
-   53           | EXPRESSION • '*' EXPRESSION
-   54           | EXPRESSION • '/' EXPRESSION
-   56           | EXPRESSION • MOD EXPRESSION
-   57           | EXPRESSION • '>' EXPRESSION
-   58           | EXPRESSION • '<' EXPRESSION
-   59           | EXPRESSION • '=' EXPRESSION
-   60           | EXPRESSION • NE EXPRESSION
-   61           | EXPRESSION • LE EXPRESSION
-   62           | EXPRESSION • GE EXPRESSION
-   63           | EXPRESSION • AND EXPRESSION
-   64           | EXPRESSION • OR EXPRESSION
-   75 actual_param: EXPRESSION •
+   77 conditional_stmt: IF $@4 EXPRESSION THEN • func_stmts ELSE_stmt
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    VAR     shift, and go to state 1
+    CONST   shift, and go to state 2
+    EXIT    shift, and go to state 16
+    FOR     shift, and go to state 17
+    GET     shift, and go to state 18
+    IF      shift, and go to state 19
+    LOOP    shift, and go to state 20
+    PUT     shift, and go to state 21
+    RESULT  shift, and go to state 22
+    RETURN  shift, and go to state 23
+    SKIP    shift, and go to state 24
+    BEG     shift, and go to state 25
+    ID      shift, and go to state 26
 
-    $default  reduce using rule 75 (actual_param)
+    $default  reduce using rule 28 (func_stmts)
+
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 141
+    func_stmt         go to state 81
+    stmt              go to state 82
+    BLOCK_stmt        go to state 29
+    simple_stmt       go to state 30
+    EXIT_STMT         go to state 31
+    conditional_stmt  go to state 32
+    loop_stmt         go to state 33
 
 
 State 112
 
-   71 func_inv: ID '(' actual_params • ')'
+   82 loop_stmt: LOOP $@6 func_stmts END • LOOP
 
-    ')'  shift, and go to state 141
+    LOOP  shift, and go to state 142
 
 
 State 113
 
-   72 actual_params: actual_param • ',' actual_params
-   73              | actual_param •
+   27 func_stmts: func_stmt func_stmts •
 
-    ','  shift, and go to state 142
-
-    $default  reduce using rule 73 (actual_params)
+    $default  reduce using rule 27 (func_stmts)
 
 
 State 114
@@ -1919,32 +1903,83 @@ State 114
    62           | EXPRESSION • GE EXPRESSION
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
-   69           | ID '[' EXPRESSION • ']'
+   75 actual_param: EXPRESSION •
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
-    ']'  shift, and go to state 143
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+
+    $default  reduce using rule 75 (actual_param)
 
 
 State 115
+
+   71 func_inv: ID '(' actual_params • ')'
+
+    ')'  shift, and go to state 143
+
+
+State 116
+
+   72 actual_params: actual_param • ',' actual_params
+   73              | actual_param •
+
+    ','  shift, and go to state 144
+
+    $default  reduce using rule 73 (actual_params)
+
+
+State 117
+
+   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
+   52           | EXPRESSION • '-' EXPRESSION
+   53           | EXPRESSION • '*' EXPRESSION
+   54           | EXPRESSION • '/' EXPRESSION
+   56           | EXPRESSION • MOD EXPRESSION
+   57           | EXPRESSION • '>' EXPRESSION
+   58           | EXPRESSION • '<' EXPRESSION
+   59           | EXPRESSION • '=' EXPRESSION
+   60           | EXPRESSION • NE EXPRESSION
+   61           | EXPRESSION • LE EXPRESSION
+   62           | EXPRESSION • GE EXPRESSION
+   63           | EXPRESSION • AND EXPRESSION
+   64           | EXPRESSION • OR EXPRESSION
+   69           | ID '[' EXPRESSION • ']'
+
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+    ']'  shift, and go to state 145
+
+
+State 118
 
    66 EXPRESSION: '(' EXPRESSION ')' •
 
     $default  reduce using rule 66 (EXPRESSION)
 
 
-State 116
+State 119
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -1964,7 +1999,7 @@ State 116
     $default  reduce using rule 56 (EXPRESSION)
 
 
-State 117
+State 120
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -1981,22 +2016,22 @@ State 117
    63           | EXPRESSION AND EXPRESSION •
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 63 (EXPRESSION)
 
 
-State 118
+State 121
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2013,32 +2048,23 @@ State 118
    64           | EXPRESSION • OR EXPRESSION
    64           | EXPRESSION OR EXPRESSION •
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 64 (EXPRESSION)
 
 
-State 119
-
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts • ELSE func_stmts END IF
-   77                 | IF EXPRESSION THEN func_stmts • END IF
-
-    ELSE  shift, and go to state 144
-    END   shift, and go to state 145
-
-
-State 120
+State 122
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2055,16 +2081,16 @@ State 120
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 61 (EXPRESSION)
 
 
-State 121
+State 123
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2081,16 +2107,16 @@ State 121
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 62 (EXPRESSION)
 
 
-State 122
+State 124
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2107,16 +2133,16 @@ State 122
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 60 (EXPRESSION)
 
 
-State 123
+State 125
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2133,16 +2159,16 @@ State 123
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 58 (EXPRESSION)
 
 
-State 124
+State 126
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2159,16 +2185,16 @@ State 124
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 59 (EXPRESSION)
 
 
-State 125
+State 127
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2185,16 +2211,16 @@ State 125
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 57 (EXPRESSION)
 
 
-State 126
+State 128
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2211,14 +2237,14 @@ State 126
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 52 (EXPRESSION)
 
 
-State 127
+State 129
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    51           | EXPRESSION '+' EXPRESSION •
@@ -2235,14 +2261,14 @@ State 127
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 51 (EXPRESSION)
 
 
-State 128
+State 130
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2262,7 +2288,7 @@ State 128
     $default  reduce using rule 53 (EXPRESSION)
 
 
-State 129
+State 131
 
    51 EXPRESSION: EXPRESSION • '+' EXPRESSION
    52           | EXPRESSION • '-' EXPRESSION
@@ -2282,20 +2308,6 @@ State 129
     $default  reduce using rule 54 (EXPRESSION)
 
 
-State 130
-
-   79 loop_stmt: LOOP $@4 func_stmts END • LOOP
-
-    LOOP  shift, and go to state 146
-
-
-State 131
-
-   27 func_stmts: func_stmt func_stmts •
-
-    $default  reduce using rule 27 (func_stmts)
-
-
 State 132
 
    41 BLOCK_stmt: BEG $@3 func_stmts END •
@@ -2307,7 +2319,7 @@ State 133
 
    22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' • '.' val_INTEGER OF TYPE
 
-    '.'  shift, and go to state 147
+    '.'  shift, and go to state 146
 
 
 State 134
@@ -2327,19 +2339,19 @@ State 134
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 20 (var_dec)
 
@@ -2361,19 +2373,19 @@ State 135
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
 
     $default  reduce using rule 10 (const_dec)
 
@@ -2394,7 +2406,7 @@ State 137
     INT     shift, and go to state 65
     STRING  shift, and go to state 66
 
-    TYPE  go to state 148
+    TYPE  go to state 147
 
 
 State 138
@@ -2424,11 +2436,11 @@ State 139
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 149
-    func_stmt         go to state 99
-    stmt              go to state 100
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 148
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -2451,114 +2463,85 @@ State 140
    62           | EXPRESSION • GE EXPRESSION
    63           | EXPRESSION • AND EXPRESSION
    64           | EXPRESSION • OR EXPRESSION
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION • '.' '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION • '.' '.' EXPRESSION $@7 func_stmts END FOR
 
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
-    '.'  shift, and go to state 150
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+    '.'  shift, and go to state 149
 
 
 State 141
+
+   77 conditional_stmt: IF $@4 EXPRESSION THEN func_stmts • ELSE_stmt
+
+    ELSE  shift, and go to state 150
+    END   shift, and go to state 151
+
+    ELSE_stmt  go to state 152
+
+
+State 142
+
+   82 loop_stmt: LOOP $@6 func_stmts END LOOP •
+
+    $default  reduce using rule 82 (loop_stmt)
+
+
+State 143
 
    71 func_inv: ID '(' actual_params ')' •
 
     $default  reduce using rule 71 (func_inv)
 
 
-State 142
+State 144
 
    72 actual_params: actual_param ',' • actual_params
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
     $default  reduce using rule 74 (actual_params)
 
-    const_val      go to state 53
-    EXPRESSION     go to state 111
-    func_inv       go to state 55
-    actual_params  go to state 151
-    actual_param   go to state 113
+    const_val      go to state 55
+    EXPRESSION     go to state 114
+    func_inv       go to state 57
+    actual_params  go to state 153
+    actual_param   go to state 116
 
 
-State 143
+State 145
 
    69 EXPRESSION: ID '[' EXPRESSION ']' •
 
     $default  reduce using rule 69 (EXPRESSION)
 
 
-State 144
-
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE • func_stmts END IF
-
-    VAR     shift, and go to state 1
-    CONST   shift, and go to state 2
-    EXIT    shift, and go to state 16
-    FOR     shift, and go to state 17
-    GET     shift, and go to state 18
-    IF      shift, and go to state 19
-    LOOP    shift, and go to state 20
-    PUT     shift, and go to state 21
-    RESULT  shift, and go to state 22
-    RETURN  shift, and go to state 23
-    SKIP    shift, and go to state 24
-    BEG     shift, and go to state 25
-    ID      shift, and go to state 26
-
-    $default  reduce using rule 28 (func_stmts)
-
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 152
-    func_stmt         go to state 99
-    stmt              go to state 100
-    BLOCK_stmt        go to state 29
-    simple_stmt       go to state 30
-    EXIT_STMT         go to state 31
-    conditional_stmt  go to state 32
-    loop_stmt         go to state 33
-
-
-State 145
-
-   77 conditional_stmt: IF EXPRESSION THEN func_stmts END • IF
-
-    IF  shift, and go to state 153
-
-
 State 146
-
-   79 loop_stmt: LOOP $@4 func_stmts END LOOP •
-
-    $default  reduce using rule 79 (loop_stmt)
-
-
-State 147
 
    22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' • val_INTEGER OF TYPE
 
     val_INTEGER  shift, and go to state 154
 
 
-State 148
+State 147
 
    24 func_dec: FUNCTION ID '(' args ')' ':' TYPE • $@1 func_stmts END ID
 
@@ -2567,46 +2550,55 @@ State 148
     $@1  go to state 155
 
 
-State 149
+State 148
 
    26 func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts • END ID
 
     END  shift, and go to state 156
 
 
-State 150
+State 149
 
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' • '.' EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' • '.' EXPRESSION $@7 func_stmts END FOR
 
     '.'  shift, and go to state 157
 
 
+State 150
+
+   79 ELSE_stmt: ELSE • $@5 func_stmts END IF
+
+    $default  reduce using rule 78 ($@5)
+
+    $@5  go to state 158
+
+
 State 151
+
+   80 ELSE_stmt: END • IF
+
+    IF  shift, and go to state 159
+
+
+State 152
+
+   77 conditional_stmt: IF $@4 EXPRESSION THEN func_stmts ELSE_stmt •
+
+    $default  reduce using rule 77 (conditional_stmt)
+
+
+State 153
 
    72 actual_params: actual_param ',' actual_params •
 
     $default  reduce using rule 72 (actual_params)
 
 
-State 152
-
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts • END IF
-
-    END  shift, and go to state 158
-
-
-State 153
-
-   77 conditional_stmt: IF EXPRESSION THEN func_stmts END IF •
-
-    $default  reduce using rule 77 (conditional_stmt)
-
-
 State 154
 
    22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER • OF TYPE
 
-    OF  shift, and go to state 159
+    OF  shift, and go to state 160
 
 
 State 155
@@ -2629,11 +2621,11 @@ State 155
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 160
-    func_stmt         go to state 99
-    stmt              go to state 100
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 161
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -2645,120 +2637,30 @@ State 156
 
    26 func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts END • ID
 
-    ID  shift, and go to state 161
+    ID  shift, and go to state 162
 
 
 State 157
 
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' • EXPRESSION $@5 func_stmts END FOR
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' • EXPRESSION $@7 func_stmts END FOR
 
-    NOT          shift, and go to state 45
-    ID           shift, and go to state 46
-    val_STR      shift, and go to state 47
-    val_INTEGER  shift, and go to state 48
-    val_REAL     shift, and go to state 49
-    val_BOOL     shift, and go to state 50
-    '-'          shift, and go to state 51
-    '('          shift, and go to state 52
+    NOT          shift, and go to state 47
+    ID           shift, and go to state 48
+    val_STR      shift, and go to state 49
+    val_INTEGER  shift, and go to state 50
+    val_REAL     shift, and go to state 51
+    val_BOOL     shift, and go to state 52
+    '-'          shift, and go to state 53
+    '('          shift, and go to state 54
 
-    const_val   go to state 53
-    EXPRESSION  go to state 162
-    func_inv    go to state 55
+    const_val   go to state 55
+    EXPRESSION  go to state 163
+    func_inv    go to state 57
 
 
 State 158
 
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END • IF
-
-    IF  shift, and go to state 163
-
-
-State 159
-
-   22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF • TYPE
-
-    BOOL    shift, and go to state 63
-    REAL    shift, and go to state 64
-    INT     shift, and go to state 65
-    STRING  shift, and go to state 66
-
-    TYPE  go to state 164
-
-
-State 160
-
-   24 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts • END ID
-
-    END  shift, and go to state 165
-
-
-State 161
-
-   26 func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts END ID •
-
-    $default  reduce using rule 26 (func_dec)
-
-
-State 162
-
-   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
-   52           | EXPRESSION • '-' EXPRESSION
-   53           | EXPRESSION • '*' EXPRESSION
-   54           | EXPRESSION • '/' EXPRESSION
-   56           | EXPRESSION • MOD EXPRESSION
-   57           | EXPRESSION • '>' EXPRESSION
-   58           | EXPRESSION • '<' EXPRESSION
-   59           | EXPRESSION • '=' EXPRESSION
-   60           | EXPRESSION • NE EXPRESSION
-   61           | EXPRESSION • LE EXPRESSION
-   62           | EXPRESSION • GE EXPRESSION
-   63           | EXPRESSION • AND EXPRESSION
-   64           | EXPRESSION • OR EXPRESSION
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION • $@5 func_stmts END FOR
-
-    MOD  shift, and go to state 82
-    AND  shift, and go to state 83
-    OR   shift, and go to state 84
-    LE   shift, and go to state 86
-    GE   shift, and go to state 87
-    NE   shift, and go to state 88
-    '<'  shift, and go to state 89
-    '='  shift, and go to state 90
-    '>'  shift, and go to state 91
-    '-'  shift, and go to state 92
-    '+'  shift, and go to state 93
-    '*'  shift, and go to state 94
-    '/'  shift, and go to state 95
-
-    $default  reduce using rule 80 ($@5)
-
-    $@5  go to state 166
-
-
-State 163
-
-   76 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF •
-
-    $default  reduce using rule 76 (conditional_stmt)
-
-
-State 164
-
-   22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF TYPE •
-
-    $default  reduce using rule 22 (var_dec)
-
-
-State 165
-
-   24 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts END • ID
-
-    ID  shift, and go to state 167
-
-
-State 166
-
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 • func_stmts END FOR
+   79 ELSE_stmt: ELSE $@5 • func_stmts END IF
 
     VAR     shift, and go to state 1
     CONST   shift, and go to state 2
@@ -2776,11 +2678,11 @@ State 166
 
     $default  reduce using rule 28 (func_stmts)
 
-    const_dec         go to state 96
-    var_dec           go to state 97
-    func_stmts        go to state 168
-    func_stmt         go to state 99
-    stmt              go to state 100
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 164
+    func_stmt         go to state 81
+    stmt              go to state 82
     BLOCK_stmt        go to state 29
     simple_stmt       go to state 30
     EXIT_STMT         go to state 31
@@ -2788,29 +2690,165 @@ State 166
     loop_stmt         go to state 33
 
 
+State 159
+
+   80 ELSE_stmt: END IF •
+
+    $default  reduce using rule 80 (ELSE_stmt)
+
+
+State 160
+
+   22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF • TYPE
+
+    BOOL    shift, and go to state 63
+    REAL    shift, and go to state 64
+    INT     shift, and go to state 65
+    STRING  shift, and go to state 66
+
+    TYPE  go to state 165
+
+
+State 161
+
+   24 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts • END ID
+
+    END  shift, and go to state 166
+
+
+State 162
+
+   26 func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts END ID •
+
+    $default  reduce using rule 26 (func_dec)
+
+
+State 163
+
+   51 EXPRESSION: EXPRESSION • '+' EXPRESSION
+   52           | EXPRESSION • '-' EXPRESSION
+   53           | EXPRESSION • '*' EXPRESSION
+   54           | EXPRESSION • '/' EXPRESSION
+   56           | EXPRESSION • MOD EXPRESSION
+   57           | EXPRESSION • '>' EXPRESSION
+   58           | EXPRESSION • '<' EXPRESSION
+   59           | EXPRESSION • '=' EXPRESSION
+   60           | EXPRESSION • NE EXPRESSION
+   61           | EXPRESSION • LE EXPRESSION
+   62           | EXPRESSION • GE EXPRESSION
+   63           | EXPRESSION • AND EXPRESSION
+   64           | EXPRESSION • OR EXPRESSION
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION • $@7 func_stmts END FOR
+
+    MOD  shift, and go to state 88
+    AND  shift, and go to state 89
+    OR   shift, and go to state 90
+    LE   shift, and go to state 91
+    GE   shift, and go to state 92
+    NE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '='  shift, and go to state 95
+    '>'  shift, and go to state 96
+    '-'  shift, and go to state 97
+    '+'  shift, and go to state 98
+    '*'  shift, and go to state 99
+    '/'  shift, and go to state 100
+
+    $default  reduce using rule 83 ($@7)
+
+    $@7  go to state 167
+
+
+State 164
+
+   79 ELSE_stmt: ELSE $@5 func_stmts • END IF
+
+    END  shift, and go to state 168
+
+
+State 165
+
+   22 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF TYPE •
+
+    $default  reduce using rule 22 (var_dec)
+
+
+State 166
+
+   24 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts END • ID
+
+    ID  shift, and go to state 169
+
+
 State 167
+
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 • func_stmts END FOR
+
+    VAR     shift, and go to state 1
+    CONST   shift, and go to state 2
+    EXIT    shift, and go to state 16
+    FOR     shift, and go to state 17
+    GET     shift, and go to state 18
+    IF      shift, and go to state 19
+    LOOP    shift, and go to state 20
+    PUT     shift, and go to state 21
+    RESULT  shift, and go to state 22
+    RETURN  shift, and go to state 23
+    SKIP    shift, and go to state 24
+    BEG     shift, and go to state 25
+    ID      shift, and go to state 26
+
+    $default  reduce using rule 28 (func_stmts)
+
+    const_dec         go to state 78
+    var_dec           go to state 79
+    func_stmts        go to state 170
+    func_stmt         go to state 81
+    stmt              go to state 82
+    BLOCK_stmt        go to state 29
+    simple_stmt       go to state 30
+    EXIT_STMT         go to state 31
+    conditional_stmt  go to state 32
+    loop_stmt         go to state 33
+
+
+State 168
+
+   79 ELSE_stmt: ELSE $@5 func_stmts END • IF
+
+    IF  shift, and go to state 171
+
+
+State 169
 
    24 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts END ID •
 
     $default  reduce using rule 24 (func_dec)
 
 
-State 168
-
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts • END FOR
-
-    END  shift, and go to state 169
-
-
-State 169
-
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END • FOR
-
-    FOR  shift, and go to state 170
-
-
 State 170
 
-   81 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR •
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts • END FOR
 
-    $default  reduce using rule 81 (loop_stmt)
+    END  shift, and go to state 172
+
+
+State 171
+
+   79 ELSE_stmt: ELSE $@5 func_stmts END IF •
+
+    $default  reduce using rule 79 (ELSE_stmt)
+
+
+State 172
+
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END • FOR
+
+    FOR  shift, and go to state 173
+
+
+State 173
+
+   84 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR •
+
+    $default  reduce using rule 84 (loop_stmt)

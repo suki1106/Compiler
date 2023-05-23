@@ -89,9 +89,12 @@ const_dec:  CONST ID AS EXPRESSION
         {
             Trace("constant declaration with type declaration");
             if($6->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
+            // check expression type
+            if($6->d_type != $4) yyerror("type is not compatible");
             //$6->name = *$2;
             Info tmp = *$6;
             tmp.name = *$2;
+            tmp.d_type = $4;
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
@@ -582,32 +585,19 @@ actual_param: EXPRESSION
             }
             ;
 
-/*
-conditional_stmt: IF EXPRESSION THEN
+
+conditional_stmt:   IF{stb_list.create_table();} EXPRESSION THEN func_stmts ELSE_stmt
                     {
-                        if($2->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
-                        stb_list.create_table();
-                    }func_stmts ELSE
-                    {
-                        stb_list.popTable();
-                        stb_list.create_table();
-                    }func_stmts END IF
-                    {
-                        stb_list.popTable();
-                        Trace("if-ELSE stmt");
-                    }
-                |   IF EXPRESSION THEN
-                    {
-                        if($2->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
-                        stb_list.create_table();
-                    }
-                    func_stmts END IF
-                    {
-                        Trace("if stmt");
-                        stb_list.popTable();
+                        if($3->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
                     }
                 ;
-*/
+
+ELSE_stmt: ELSE{stb_list.create_table();} func_stmts END IF {Trace("if-ELSE stmt");stb_list.popTable();}
+        | END IF {Trace("if stmt");}
+        ;
+
+
+/*
 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
                     {
                         Trace("if-ELSE stmt");
@@ -617,6 +607,7 @@ conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
                         Trace("if stmt");
                     }
                 ;
+*/
 
 loop_stmt: LOOP 
             {
