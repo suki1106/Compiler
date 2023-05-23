@@ -47,7 +47,6 @@ Symboltable::~Symboltable(){
 int Symboltable::Insert(Info id){
     if(table.find(id.name) == table.end()){
         table[id.name] = index;
-
         this->identifiers.push_back(Info());
         
         identifiers[index].name = id.name;
@@ -243,4 +242,10 @@ void Symboltable_List::dumpAllTable(){
 
     for(auto& Symboltable : Symboltables)
         Symboltable.dump();
+}
+Info* Symboltable_List::lookup(string id){
+    int current_table = st.top();
+    if(Symboltables[current_table].lookup(id) != -1)return Symboltables[current_table].getInfo(Symboltables[current_table].lookup(id));
+    if(Symboltables[0].lookup(id) !=-1)return Symboltables[0].getInfo(Symboltables[0].lookup(id));
+    return NULL;
 }

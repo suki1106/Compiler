@@ -81,7 +81,6 @@ const_dec:  CONST ID AS EXPRESSION
             //$4->name = *$2;
             Info tmp = *$4;
             tmp.name = *$2;
-
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
@@ -117,8 +116,6 @@ TYPE: INT {$$ = INT_TYPE;}
     | STRING {$$=STR_TYPE;}
     | REAL  {$$=REAL_TYPE;}
     ;
-
-
 
 var_dec: VAR ID ':'TYPE
         {
@@ -204,6 +201,7 @@ func_dec: FUNCTION ID '('args')'':'TYPE
         }func_stmts END ID
         {
             if(*$2 != *$9) yyerror("<ERROR> Procedure declaration error");
+            //check return?
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
@@ -254,14 +252,16 @@ BLOCK_stmt: BEG
 simple_stmt: ID AS EXPRESSION 
             {
                 Trace("Assign value to ID");
-                /* EXPRESSION only allow CONST? */
                 /* check ID const or not*/
-                Symboltable* tb = stb_list.getCurrentTable();
-                int idx=tb->lookup(*$1);
-                if(idx == -1) yyerror("<ERROR> identifier not exists");
-                Info* id = tb->getInfo(idx);
+                //Symboltable* tb = stb_list.getCurrentTable();
+                //int idx=tb->lookup(*$1);
+                //if(idx == -1) yyerror("<ERROR> identifier not exists");
+                //Info* id = tb->getInfo(idx);
+
+                Info* id = stb_list.lookup(*$1);
+                if(id == NULL) yyerror("<ERROR> identifier not exists");
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
-                if(id->d_type != $3->d_type) yyerror("type is not compatible");
+                if(id->d_type != $3->d_type) yyerror("type is not compatible"); // array?
             }
             | PUT EXPRESSION
             {
@@ -270,9 +270,13 @@ simple_stmt: ID AS EXPRESSION
             | GET ID
             {
                 Trace("Find GET");
-                Symboltable* tb = stb_list.getCurrentTable();
-                int idx=tb->lookup(*$2);
-                if(idx == -1) yyerror("<ERROR> identifier not exists");
+                //Symboltable* tb = stb_list.getCurrentTable();
+                //int idx=tb->lookup(*$2);
+                //if(idx == -1) yyerror("<ERROR> identifier not exists");
+                
+                Info* id = stb_list.lookup(*$2);
+                if(id == NULL) yyerror("<ERROR> identifier not exists");
+
                 //Info* id = tb->getInfo(idx);
             }
             | RESULT EXPRESSION
@@ -291,7 +295,7 @@ simple_stmt: ID AS EXPRESSION
             }
             ;
 
-EXIT_STMT : EXIT
+EXIT_STMT :  EXIT
             {
                 Trace("Find EXIT");
             }
@@ -299,7 +303,6 @@ EXIT_STMT : EXIT
             {
                 Trace("Find EXIT with expression");
                 if($3->d_type != BOOL_TYPE)yyerror("<ERROR> EXIT WHEN EXPRESSION, EXPRESSION SHOULD BE BOOL_EXPR");
-
             }
             ;
 
@@ -311,7 +314,14 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
                 if($1->f_type == CONST_f && $3->f_type == CONST_f){
-                    
+                    if($1->d_type == INT_TYPE){
+                        $$ = new Info("",INT_TYPE,CONST_f,($1->i_v+$3->i_v));
+                    }else{ 
+                        //real type
+                        $$ = new Info("",REAL_TYPE,CONST_f,($1->r_v+$3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",$1->d_type,VAR_f);
                 }
             }
         |   EXPRESSION '-' EXPRESSION
@@ -320,6 +330,17 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type == INT_TYPE){
+                        $$ = new Info("",INT_TYPE,CONST_f,($1->i_v-$3->i_v));
+                    }else{ 
+                        //real type
+                        $$ = new Info("",REAL_TYPE,CONST_f,($1->r_v-$3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",$1->d_type,VAR_f);
+                }
             }    
         |   EXPRESSION '*' EXPRESSION
             {
@@ -327,6 +348,17 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type == INT_TYPE){
+                        $$ = new Info("",INT_TYPE,CONST_f,($1->i_v*$3->i_v));
+                    }else{ 
+                        //real type
+                        $$ = new Info("",REAL_TYPE,CONST_f,($1->r_v*$3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",$1->d_type,VAR_f);
+                }
             }
         |   EXPRESSION '/' EXPRESSION
             {
@@ -334,6 +366,16 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type == INT_TYPE){
+                        $$ = new Info("",INT_TYPE,CONST_f,($1->i_v/$3->i_v));
+                    }else{ 
+                        //real type
+                        $$ = new Info("",REAL_TYPE,CONST_f,($1->r_v/$3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",$1->d_type,VAR_f);
+                }
             }
         |   '-' EXPRESSION %prec UMINUS
             {
@@ -345,8 +387,13 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
             {
                 Trace("expression mod expression");
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
-                if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if($1->d_type != INT_TYPE) yyerror("Type should be INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    $$ = new Info("",INT_TYPE,CONST_f,($1->i_v%$3->i_v));
+                }else{
+                    $$ = new Info("",INT_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION '>' EXPRESSION
             {
@@ -354,6 +401,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v > $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v > $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION '<' EXPRESSION
             {
@@ -361,6 +417,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v < $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v < $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION '=' EXPRESSION
             {
@@ -368,6 +433,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v == $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v == $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION NE EXPRESSION
             {
@@ -375,6 +449,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v != $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v != $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION LE EXPRESSION
             {
@@ -382,6 +465,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v <= $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v <= $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION GE EXPRESSION
             {
@@ -389,6 +481,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != REAL_TYPE && $1->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    if($1->d_type== INT_TYPE){
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->i_v >= $3->i_v));
+                    }else{
+                        $$ = new Info("",BOOL_TYPE,CONST_f,($1->r_v >= $3->r_v));
+                    }
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION AND EXPRESSION
             {
@@ -396,6 +497,11 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    $$ = new Info("",BOOL_TYPE,CONST_f,$1->b_v && $3->b_v);
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   EXPRESSION OR EXPRESSION
             {
@@ -403,12 +509,22 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($1->d_type != $3->d_type) yyerror("Type not compatible");
                 if($1->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if($1->f_type == ARRAY_f || $3->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if($1->f_type == CONST_f && $3->f_type == CONST_f){
+                    $$ = new Info("",BOOL_TYPE,CONST_f,$1->b_v || $3->b_v);
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   NOT EXPRESSION
             {
                 Trace("Negation operator");
                 if($2->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if($2->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                 if($2->f_type == CONST_f){
+                    $$ = new Info("",BOOL_TYPE,CONST_f,!$2->b_v);
+                }else{
+                    $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
         |   '(' EXPRESSION ')'
             {
@@ -417,10 +533,13 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
         |   const_val {Trace("const_value");}
         |   ID 
             {
-                Symboltable* tb = stb_list.getCurrentTable(); 
-                int idx = tb->lookup(*$1);
-                if(idx == -1) yyerror("ID not exists");
-                $$ = tb->getInfo(idx);               
+                //Symboltable* tb = stb_list.getCurrentTable(); 
+                //int idx = tb->lookup(*$1);
+                //if(idx == -1) yyerror("ID not exists");
+                //$$ = tb->getInfo(idx);
+                Info* id = stb_list.lookup(*$1);
+                if(id == NULL) yyerror("ID not exists");
+                $$ = id;           
             }
         |   ID'['EXPRESSION']'
             {
@@ -435,22 +554,20 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
 func_inv: ID '('actual_params')'
         {
             Trace("function invocation");
-            Symboltable* tb =stb_list.getCurrentTable();
-            int idx= tb->lookup(*$1);
-            if(idx==-1)yyerror("identifier not exists");
-            Info* func_info = tb->getInfo(idx);
+            //Symboltable* tb =stb_list.getCurrentTable();
+            //int idx= tb->lookup(*$1);
+            //if(idx==-1)yyerror("identifier not exists");
+            //Info* func_info = tb->getInfo(idx);
             
+            Info* func_info = stb_list.lookup(*$1);
+            if(func_info == NULL)yyerror("function not exists");
             if(params.size() != func_info->params.size())yyerror("number of parameters are not the same");
-
             // compare type
-
             for(int i = 0 ;i <params.size();i++){
                 if(params[i].d_type != func_info->params[i].d_type) yyerror("<ERROR>type is different");
             }
-
             params.clear();
-
-            
+            $$ = new Info("",func_info->d_type,VAR_f);
         }
         ;
 
@@ -465,6 +582,32 @@ actual_param: EXPRESSION
             }
             ;
 
+/*
+conditional_stmt: IF EXPRESSION THEN
+                    {
+                        if($2->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
+                        stb_list.create_table();
+                    }func_stmts ELSE
+                    {
+                        stb_list.popTable();
+                        stb_list.create_table();
+                    }func_stmts END IF
+                    {
+                        stb_list.popTable();
+                        Trace("if-ELSE stmt");
+                    }
+                |   IF EXPRESSION THEN
+                    {
+                        if($2->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
+                        stb_list.create_table();
+                    }
+                    func_stmts END IF
+                    {
+                        Trace("if stmt");
+                        stb_list.popTable();
+                    }
+                ;
+*/
 conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
                     {
                         Trace("if-ELSE stmt");
@@ -474,16 +617,19 @@ conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
                         Trace("if stmt");
                     }
                 ;
-                    
 
-
-                
-
-loop_stmt: LOOP func_stmts END LOOP
+loop_stmt: LOOP 
+            {
+                stb_list.create_table();
+            }func_stmts END LOOP
             {
                 Trace("loop");
             }
-        |   FOR opt_r ID':' val_INTEGER'.''.'val_INTEGER func_stmts END FOR
+        |   FOR opt_r ID':' EXPRESSION'.''.'EXPRESSION 
+            {
+                if($5->f_type != CONST_f || $8->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
+                stb_list.create_table();
+            }func_stmts END FOR
             {
                 Trace("For loop");
             }

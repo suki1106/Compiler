@@ -1,16 +1,7 @@
-why
+const s:int := 10
 
-function add (a: int, b: int) : int
-  var c:string := "123"
-  result a+b
-end add
 
-hahaha
-
-begin
-  var c:string := "12"
-  begin
-    var c:string := "1"
-  end
-end
-
+if (s>9) then
+    var s:int := 100
+    
+end if

@@ -203,7 +203,9 @@ enum yysymbol_kind_t
   YYSYMBOL_actual_param = 83,              /* actual_param  */
   YYSYMBOL_conditional_stmt = 84,          /* conditional_stmt  */
   YYSYMBOL_loop_stmt = 85,                 /* loop_stmt  */
-  YYSYMBOL_opt_r = 86                      /* opt_r  */
+  YYSYMBOL_86_4 = 86,                      /* $@4  */
+  YYSYMBOL_87_5 = 87,                      /* $@5  */
+  YYSYMBOL_opt_r = 88                      /* opt_r  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -531,16 +533,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  15
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   281
+#define YYLAST   291
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  59
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  28
+#define YYNNTS  30
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  82
+#define YYNRULES  84
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  169
+#define YYNSTATES  171
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   299
@@ -594,14 +596,14 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    61,    61,    63,    64,    67,    68,    72,    73,    74,
-      77,    89,   102,   103,   104,   105,   115,   116,   117,   118,
-     123,   129,   143,   156,   165,   164,   191,   190,   213,   214,
+      77,    88,   101,   102,   103,   104,   114,   115,   116,   117,
+     122,   128,   142,   155,   164,   163,   190,   189,   213,   214,
      219,   220,   221,   224,   225,   226,   229,   237,   238,   239,
-     240,   243,   242,   254,   266,   270,   278,   283,   287,   288,
-     294,   298,   306,   317,   324,   331,   338,   344,   351,   358,
-     365,   372,   379,   386,   393,   400,   407,   413,   417,   418,
-     425,   432,   435,   457,   458,   459,   462,   468,   472,   482,
-     486,   492,   493
+     240,   243,   242,   254,   268,   272,   284,   289,   293,   294,
+     300,   304,   311,   329,   347,   365,   382,   388,   400,   416,
+     432,   448,   464,   480,   496,   508,   520,   531,   535,   536,
+     546,   553,   556,   576,   577,   578,   581,   613,   617,   624,
+     623,   631,   630,   640,   641
 };
 #endif
 
@@ -628,7 +630,7 @@ static const char *const yytname[] =
   "const_dec", "const_val", "TYPE", "var_dec", "func_dec", "$@1", "$@2",
   "func_stmts", "func_stmt", "args", "arg", "stmt", "BLOCK_stmt", "$@3",
   "simple_stmt", "EXIT_STMT", "EXPRESSION", "func_inv", "actual_params",
-  "actual_param", "conditional_stmt", "loop_stmt", "opt_r", YY_NULLPTR
+  "actual_param", "conditional_stmt", "loop_stmt", "$@4", "$@5", "opt_r", YY_NULLPTR
 };
 
 static const char *
@@ -638,7 +640,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-59)
+#define YYPACT_NINF (-56)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -652,23 +654,24 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       3,   -23,    -9,    -5,    -4,    36,   242,     3,   -59,   -59,
-     -59,    -1,     1,   -17,   -15,   -59,    12,    24,    13,    87,
-     225,    87,    87,   -59,   -59,   -59,    52,   -59,   242,   -59,
-     -59,   -59,   -59,   -59,   -59,    87,    16,    87,    11,    20,
-      20,    87,   -59,    22,   -59,    87,   -42,   -59,   -59,   -59,
-     -59,    87,    87,   -59,   132,   -59,   -59,   -59,    40,   225,
-     -59,   157,   157,   225,    87,   -59,   157,   -59,   -59,   -59,
-     -59,    27,    60,   157,    77,    30,    33,    28,    34,   157,
-      38,   197,    87,    87,   -59,   107,    87,    87,    87,   225,
-      87,    87,    87,    87,    87,    87,    87,    87,    87,    87,
-      58,   -59,    69,   157,    39,    87,    87,    11,    41,    20,
-     -59,    53,   157,    42,    44,    29,   -59,   -59,   197,   172,
-       7,     0,     0,     0,     0,     0,     0,     8,     8,   -59,
-     -59,   -59,   -59,    45,   157,   157,   -59,    11,   -59,   225,
-      48,   -59,    87,   -59,   225,    82,    54,   -59,    97,    78,
-     -59,   110,   -59,   121,   225,    96,    95,   111,    11,   116,
-     -59,   225,   -59,   -59,   100,   118,   -59,   125,   -59
+      23,   -31,   -24,   -20,   -14,    20,   252,    23,   -56,   -56,
+     -56,    -2,     2,   -23,   -11,   -56,    14,    22,    12,    -5,
+     -56,    -5,    -5,   -56,   -56,   -56,    42,   -56,   252,   -56,
+     -56,   -56,   -56,   -56,   -56,    -5,    72,    -5,    88,    16,
+      16,    -5,   -56,    27,   -56,    -5,   -33,   -56,   -56,   -56,
+     -56,    -5,    -5,   -56,   145,   -56,   235,   160,   160,   235,
+      -5,   -56,   160,   -56,   -56,   -56,   -56,    46,    50,   160,
+      85,    38,    44,    45,    47,   160,    51,   200,    -5,    -5,
+     -56,   103,    -5,    -5,    -5,   235,    -5,    -5,    -5,    -5,
+      -5,    -5,    -5,    -5,    -5,    -5,   -56,   -56,    82,   235,
+     -56,    83,   160,    53,    -5,    -5,    88,    55,    16,   -56,
+      -5,   160,    54,    56,    78,   -56,   -56,   200,   185,    40,
+       9,     9,     9,     9,     9,     9,    -3,    -3,   -56,   -56,
+      86,   -56,   -56,    57,   160,   160,   -56,    88,   -56,   235,
+     118,   -56,    -5,   -56,   235,    94,   -56,    80,   -56,   107,
+      84,   -56,   109,   -56,   123,   235,   104,    -5,   116,    88,
+     122,   -56,   160,   -56,   -56,   106,   235,   -56,   124,   133,
+     -56
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -677,38 +680,39 @@ static const yytype_int16 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        4,     0,     0,     0,     0,     0,     6,     4,     8,     7,
-       9,     0,     0,     0,     0,     1,    50,    82,     0,     0,
-      29,     0,     0,    47,    49,    41,     0,     2,     6,    37,
+       9,     0,     0,     0,     0,     1,    50,    84,     0,     0,
+      79,     0,     0,    47,    49,    41,     0,     2,     6,    37,
       38,    48,    39,    40,     3,     0,     0,     0,     0,    35,
-      35,     0,    81,     0,    45,     0,    69,    14,    13,    12,
-      15,     0,     0,    68,     0,    71,    31,    30,     0,    29,
-      32,    44,    46,    29,     0,     5,    22,    17,    19,    16,
-      18,     0,    20,    10,     0,     0,     0,    34,     0,    51,
-       0,    66,    75,     0,    56,     0,     0,     0,     0,    29,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    28,     0,    43,     0,     0,     0,     0,     0,    35,
-      26,     0,    76,     0,    74,     0,    67,    57,    64,    65,
-       0,    62,    63,    61,    59,    60,    58,    53,    52,    54,
-      55,    79,    42,     0,    21,    11,    36,     0,    33,    29,
-       0,    72,    75,    70,    29,     0,     0,    24,     0,     0,
-      73,     0,    78,     0,    29,     0,     0,     0,     0,     0,
-      27,    29,    77,    23,     0,     0,    25,     0,    80
+      35,     0,    83,     0,    45,     0,    69,    14,    13,    12,
+      15,     0,     0,    68,     0,    71,    29,    44,    46,    29,
+       0,     5,    22,    17,    19,    16,    18,     0,    20,    10,
+       0,     0,     0,    34,     0,    51,     0,    66,    75,     0,
+      56,     0,     0,     0,     0,    29,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    31,    30,     0,    29,
+      32,     0,    43,     0,     0,     0,     0,     0,    35,    26,
+       0,    76,     0,    74,     0,    67,    57,    64,    65,     0,
+      62,    63,    61,    59,    60,    58,    53,    52,    54,    55,
+       0,    28,    42,     0,    21,    11,    36,     0,    33,    29,
+       0,    72,    75,    70,    29,     0,    80,     0,    24,     0,
+       0,    73,     0,    78,     0,    29,     0,     0,     0,     0,
+       0,    27,    81,    77,    23,     0,    29,    25,     0,     0,
+      82
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -59,   -59,   135,   122,   -59,     6,   -59,   -38,    10,   -59,
-     -59,   -59,   -58,   -59,   -37,   -59,     5,   -59,   -59,   -59,
-     -59,    19,   -59,    17,   -59,   -59,   -59,   -59
+     -56,   -56,   162,   142,   -56,     6,   -56,   -29,     7,   -56,
+     -56,   -56,   -55,   -56,   -30,   -56,    11,   -56,   -56,   -56,
+     -56,   -19,   -56,    30,   -56,   -56,   -56,   -56,   -56,   -56
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_uint8 yydefgoto[] =
 {
-       0,     5,     6,    27,     7,    56,    53,    72,    57,    10,
-     154,   139,    58,    59,    76,    77,    60,    29,    63,    30,
-      31,   112,    55,   113,   114,    32,    33,    43
+       0,     5,     6,    27,     7,    96,    53,    68,    97,    10,
+     155,   139,    98,    99,    72,    73,   100,    29,    59,    30,
+      31,   111,    55,   112,   113,    32,    33,    56,   166,    43
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -716,31 +720,32 @@ static const yytype_uint8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      74,   101,    35,    78,    37,   102,     8,     1,     2,     3,
-       9,    28,    82,     8,    86,    83,    11,     9,    67,    68,
-      69,    70,    86,    67,    68,    69,    70,    71,   144,   145,
-      12,   120,     4,    28,    13,    14,    15,    39,    54,    40,
-      61,    62,    42,    86,    87,    88,    41,    96,    97,    98,
-      99,    36,    44,    38,    66,    64,    73,    98,    99,    75,
-      79,    80,   100,   105,    81,    90,    91,    92,   104,   136,
-      84,    85,   138,    93,    94,    95,    96,    97,    98,    99,
-     106,   148,   107,   103,   109,   131,   151,   143,   108,   110,
-     111,   132,   133,   137,   140,   153,   159,   141,   146,   147,
-     142,   149,   115,   165,    45,   117,   118,   119,   152,   121,
-     122,   123,   124,   125,   126,   127,   128,   129,   130,   155,
-     163,    86,    87,    88,   134,   135,    46,    47,    48,    49,
-      50,   156,   157,   158,    51,   160,   161,   162,   164,   166,
-     167,    52,    34,    90,    91,    92,    86,    87,    88,   168,
-      65,    93,    94,    95,    96,    97,    98,    99,     0,   150,
-       0,     0,   116,     0,     0,    89,     0,     0,    90,    91,
-      92,    86,    87,    88,     0,     0,    93,    94,    95,    96,
-      97,    98,    99,     0,     0,     0,    86,    87,     0,     0,
-       0,     0,     0,    90,    91,    92,     0,     0,     0,     0,
-       0,    93,    94,    95,    96,    97,    98,    99,    90,    91,
-      92,    86,     0,     0,     0,     0,    93,    94,    95,    96,
-      97,    98,    99,     0,     0,     0,     0,     0,     0,     1,
-       2,     0,     0,    90,    91,    92,     0,     0,     0,     0,
-       0,    93,    94,    95,    96,    97,    98,    99,    16,    17,
+      54,    35,    57,    58,   101,    37,     8,     9,    11,    70,
+      74,    82,    45,     8,     9,    12,    62,    28,    69,    13,
+      15,    78,    75,    82,    79,    14,    77,     1,     2,     3,
+     119,    39,    80,    81,    46,    47,    48,    49,    50,    28,
+      42,   102,    51,    40,   131,    60,    94,    95,    41,    52,
+      36,    44,     4,   104,    38,    71,    92,    93,    94,    95,
+     114,   144,   145,   116,   117,   118,    76,   120,   121,   122,
+     123,   124,   125,   126,   127,   128,   129,   136,   138,    63,
+      64,    65,    66,    67,   149,   134,   135,   103,   105,   152,
+     106,   140,    82,    83,    84,    63,    64,    65,    66,   107,
+     160,   108,   109,   110,   130,   132,   133,   137,   148,   141,
+     147,   168,   142,   146,    86,    87,    88,    82,    83,    84,
+     153,   154,    89,    90,    91,    92,    93,    94,    95,   156,
+     164,   158,    82,    83,    84,   159,   143,   157,   162,    86,
+      87,    88,   163,   161,   165,   167,   169,    89,    90,    91,
+      92,    93,    94,    95,    86,    87,    88,   170,   115,    82,
+      83,    84,    89,    90,    91,    92,    93,    94,    95,    34,
+      61,   150,   151,     0,    82,    83,    84,     0,    85,     0,
+       0,    86,    87,    88,     0,     0,     0,     0,     0,    89,
+      90,    91,    92,    93,    94,    95,    86,    87,    88,    82,
+      83,     0,     0,     0,    89,    90,    91,    92,    93,    94,
+      95,     0,     0,     0,    82,     0,     0,     0,     0,     0,
+       0,    86,    87,    88,     0,     0,     0,     0,     0,    89,
+      90,    91,    92,    93,    94,    95,    86,    87,    88,     1,
+       2,     0,     0,     0,    89,    90,    91,    92,    93,    94,
+      95,     0,     0,     0,     0,     0,     0,     0,    16,    17,
       18,    19,    20,    21,     0,    22,    23,    24,     0,     0,
       25,     0,     0,     0,    26,    16,    17,    18,    19,    20,
       21,     0,    22,    23,    24,     0,     0,    25,     0,     0,
@@ -749,31 +754,32 @@ static const yytype_uint8 yytable[] =
 
 static const yytype_int16 yycheck[] =
 {
-      38,    59,     3,    40,     3,    63,     0,     4,     5,     6,
-       0,     6,    54,     7,    14,    57,    39,     7,     7,     8,
-       9,    10,    14,     7,     8,     9,    10,    11,    21,    22,
-      39,    89,    29,    28,    39,    39,     0,    54,    19,    54,
-      21,    22,    18,    14,    15,    16,    34,    47,    48,    49,
-      50,    52,    39,    52,    35,     3,    37,    49,    50,    39,
-      41,    39,    22,     3,    45,    36,    37,    38,    41,   107,
-      51,    52,   109,    44,    45,    46,    47,    48,    49,    50,
-       3,   139,    52,    64,    56,    27,   144,    58,    55,    55,
-      52,    22,    53,    52,    41,    41,   154,    55,    53,   137,
-      56,    53,    83,   161,    17,    86,    87,    88,    26,    90,
-      91,    92,    93,    94,    95,    96,    97,    98,    99,    22,
-     158,    14,    15,    16,   105,   106,    39,    40,    41,    42,
-      43,    53,    22,    12,    47,    39,    41,    26,    22,    39,
-      22,    54,     7,    36,    37,    38,    14,    15,    16,    24,
-      28,    44,    45,    46,    47,    48,    49,    50,    -1,   142,
-      -1,    -1,    55,    -1,    -1,    33,    -1,    -1,    36,    37,
-      38,    14,    15,    16,    -1,    -1,    44,    45,    46,    47,
-      48,    49,    50,    -1,    -1,    -1,    14,    15,    -1,    -1,
-      -1,    -1,    -1,    36,    37,    38,    -1,    -1,    -1,    -1,
-      -1,    44,    45,    46,    47,    48,    49,    50,    36,    37,
-      38,    14,    -1,    -1,    -1,    -1,    44,    45,    46,    47,
-      48,    49,    50,    -1,    -1,    -1,    -1,    -1,    -1,     4,
-       5,    -1,    -1,    36,    37,    38,    -1,    -1,    -1,    -1,
-      -1,    44,    45,    46,    47,    48,    49,    50,    23,    24,
+      19,     3,    21,    22,    59,     3,     0,     0,    39,    38,
+      40,    14,    17,     7,     7,    39,    35,     6,    37,    39,
+       0,    54,    41,    14,    57,    39,    45,     4,     5,     6,
+      85,    54,    51,    52,    39,    40,    41,    42,    43,    28,
+      18,    60,    47,    54,    99,     3,    49,    50,    34,    54,
+      52,    39,    29,     3,    52,    39,    47,    48,    49,    50,
+      79,    21,    22,    82,    83,    84,    39,    86,    87,    88,
+      89,    90,    91,    92,    93,    94,    95,   106,   108,     7,
+       8,     9,    10,    11,   139,   104,   105,    41,     3,   144,
+      52,   110,    14,    15,    16,     7,     8,     9,    10,    55,
+     155,    56,    55,    52,    22,    22,    53,    52,   137,    55,
+      53,   166,    56,    27,    36,    37,    38,    14,    15,    16,
+      26,    41,    44,    45,    46,    47,    48,    49,    50,    22,
+     159,    22,    14,    15,    16,    12,    58,    53,   157,    36,
+      37,    38,    26,    39,    22,    39,    22,    44,    45,    46,
+      47,    48,    49,    50,    36,    37,    38,    24,    55,    14,
+      15,    16,    44,    45,    46,    47,    48,    49,    50,     7,
+      28,    53,   142,    -1,    14,    15,    16,    -1,    33,    -1,
+      -1,    36,    37,    38,    -1,    -1,    -1,    -1,    -1,    44,
+      45,    46,    47,    48,    49,    50,    36,    37,    38,    14,
+      15,    -1,    -1,    -1,    44,    45,    46,    47,    48,    49,
+      50,    -1,    -1,    -1,    14,    -1,    -1,    -1,    -1,    -1,
+      -1,    36,    37,    38,    -1,    -1,    -1,    -1,    -1,    44,
+      45,    46,    47,    48,    49,    50,    36,    37,    38,     4,
+       5,    -1,    -1,    -1,    44,    45,    46,    47,    48,    49,
+      50,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    23,    24,
       25,    26,    27,    28,    -1,    30,    31,    32,    -1,    -1,
       35,    -1,    -1,    -1,    39,    23,    24,    25,    26,    27,
       28,    -1,    30,    31,    32,    -1,    -1,    35,    -1,    -1,
@@ -788,19 +794,20 @@ static const yytype_int8 yystos[] =
       68,    39,    39,    39,    39,     0,    23,    24,    25,    26,
       27,    28,    30,    31,    32,    35,    39,    62,    75,    76,
       78,    79,    84,    85,    61,     3,    52,     3,    52,    54,
-      54,    34,    18,    86,    39,    17,    39,    40,    41,    42,
-      43,    47,    54,    65,    80,    81,    64,    67,    71,    72,
-      75,    80,    80,    77,     3,    62,    80,     7,     8,     9,
-      10,    11,    66,    80,    66,    39,    73,    74,    73,    80,
-      39,    80,    54,    57,    80,    80,    14,    15,    16,    33,
-      36,    37,    38,    44,    45,    46,    47,    48,    49,    50,
-      22,    71,    71,    80,    41,     3,     3,    52,    55,    56,
-      55,    52,    80,    82,    83,    80,    55,    80,    80,    80,
-      71,    80,    80,    80,    80,    80,    80,    80,    80,    80,
-      80,    27,    22,    53,    80,    80,    66,    52,    73,    70,
-      41,    55,    56,    58,    21,    22,    53,    66,    71,    53,
-      82,    71,    26,    41,    69,    22,    53,    22,    12,    71,
-      39,    41,    26,    66,    22,    71,    39,    22,    24
+      54,    34,    18,    88,    39,    17,    39,    40,    41,    42,
+      43,    47,    54,    65,    80,    81,    86,    80,    80,    77,
+       3,    62,    80,     7,     8,     9,    10,    11,    66,    80,
+      66,    39,    73,    74,    73,    80,    39,    80,    54,    57,
+      80,    80,    14,    15,    16,    33,    36,    37,    38,    44,
+      45,    46,    47,    48,    49,    50,    64,    67,    71,    72,
+      75,    71,    80,    41,     3,     3,    52,    55,    56,    55,
+      52,    80,    82,    83,    80,    55,    80,    80,    80,    71,
+      80,    80,    80,    80,    80,    80,    80,    80,    80,    80,
+      22,    71,    22,    53,    80,    80,    66,    52,    73,    70,
+      80,    55,    56,    58,    21,    22,    27,    53,    66,    71,
+      53,    82,    71,    26,    41,    69,    22,    53,    22,    12,
+      71,    39,    80,    26,    66,    22,    87,    39,    71,    22,
+      24
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -813,8 +820,8 @@ static const yytype_int8 yyr1[] =
       75,    77,    76,    78,    78,    78,    78,    78,    78,    78,
       79,    79,    80,    80,    80,    80,    80,    80,    80,    80,
       80,    80,    80,    80,    80,    80,    80,    80,    80,    80,
-      80,    80,    81,    82,    82,    82,    83,    84,    84,    85,
-      85,    86,    86
+      80,    80,    81,    82,    82,    82,    83,    84,    84,    86,
+      85,    87,    85,    88,    88
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -827,8 +834,8 @@ static const yytype_int8 yyr2[] =
        1,     0,     4,     3,     2,     2,     2,     1,     1,     1,
        1,     3,     3,     3,     3,     3,     2,     3,     3,     3,
        3,     3,     3,     3,     3,     3,     2,     3,     1,     1,
-       4,     1,     4,     3,     1,     0,     1,     8,     6,     4,
-      11,     1,     0
+       4,     1,     4,     3,     1,     0,     1,     8,     6,     0,
+       5,     0,    12,     1,     0
 };
 
 
@@ -1299,16 +1306,15 @@ yyreduce:
             //$4->name = *$2;
             Info tmp = *(yyvsp[0].Inf);
             tmp.name = *(yyvsp[-2].s_v);
-
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
         }
-#line 1308 "y.tab.cpp"
+#line 1314 "y.tab.cpp"
     break;
 
   case 11: /* const_dec: CONST ID ':' TYPE AS EXPRESSION  */
-#line 90 "y.y"
+#line 89 "y.y"
         {
             Trace("constant declaration with type declaration");
             if((yyvsp[0].Inf)->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
@@ -1319,69 +1325,69 @@ yyreduce:
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
             //tb.dump();
         }
-#line 1323 "y.tab.cpp"
-    break;
-
-  case 12: /* const_val: val_REAL  */
-#line 102 "y.y"
-                    {(yyval.Inf) = new Info("",REAL_TYPE,CONST_f,(yyvsp[0].r_v));}
 #line 1329 "y.tab.cpp"
     break;
 
-  case 13: /* const_val: val_INTEGER  */
-#line 103 "y.y"
-                      {(yyval.Inf)= new Info("",INT_TYPE,CONST_f,(yyvsp[0].i_v));}
+  case 12: /* const_val: val_REAL  */
+#line 101 "y.y"
+                    {(yyval.Inf) = new Info("",REAL_TYPE,CONST_f,(yyvsp[0].r_v));}
 #line 1335 "y.tab.cpp"
     break;
 
-  case 14: /* const_val: val_STR  */
-#line 104 "y.y"
-                  {(yyval.Inf)=new Info("",STR_TYPE,CONST_f,(yyvsp[0].s_v));}
+  case 13: /* const_val: val_INTEGER  */
+#line 102 "y.y"
+                      {(yyval.Inf)= new Info("",INT_TYPE,CONST_f,(yyvsp[0].i_v));}
 #line 1341 "y.tab.cpp"
     break;
 
-  case 15: /* const_val: val_BOOL  */
-#line 105 "y.y"
-                   {(yyval.Inf)=new Info("",BOOL_TYPE,CONST_f,(yyvsp[0].b_v));}
+  case 14: /* const_val: val_STR  */
+#line 103 "y.y"
+                  {(yyval.Inf)=new Info("",STR_TYPE,CONST_f,(yyvsp[0].s_v));}
 #line 1347 "y.tab.cpp"
     break;
 
-  case 16: /* TYPE: INT  */
-#line 115 "y.y"
-          {(yyval.d_t) = INT_TYPE;}
+  case 15: /* const_val: val_BOOL  */
+#line 104 "y.y"
+                   {(yyval.Inf)=new Info("",BOOL_TYPE,CONST_f,(yyvsp[0].b_v));}
 #line 1353 "y.tab.cpp"
     break;
 
-  case 17: /* TYPE: BOOL  */
-#line 116 "y.y"
-            {(yyval.d_t) = BOOL_TYPE;}
+  case 16: /* TYPE: INT  */
+#line 114 "y.y"
+          {(yyval.d_t) = INT_TYPE;}
 #line 1359 "y.tab.cpp"
     break;
 
-  case 18: /* TYPE: STRING  */
-#line 117 "y.y"
-             {(yyval.d_t)=STR_TYPE;}
+  case 17: /* TYPE: BOOL  */
+#line 115 "y.y"
+            {(yyval.d_t) = BOOL_TYPE;}
 #line 1365 "y.tab.cpp"
     break;
 
-  case 19: /* TYPE: REAL  */
-#line 118 "y.y"
-            {(yyval.d_t)=REAL_TYPE;}
+  case 18: /* TYPE: STRING  */
+#line 116 "y.y"
+             {(yyval.d_t)=STR_TYPE;}
 #line 1371 "y.tab.cpp"
     break;
 
+  case 19: /* TYPE: REAL  */
+#line 117 "y.y"
+            {(yyval.d_t)=REAL_TYPE;}
+#line 1377 "y.tab.cpp"
+    break;
+
   case 20: /* var_dec: VAR ID ':' TYPE  */
-#line 124 "y.y"
+#line 123 "y.y"
         {
             Trace("variable declaration without value initialization");
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(Info(*((yyvsp[-2].s_v)),(yyvsp[0].d_t),VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
         }
-#line 1381 "y.tab.cpp"
+#line 1387 "y.tab.cpp"
     break;
 
   case 21: /* var_dec: VAR ID ':' TYPE AS EXPRESSION  */
-#line 130 "y.y"
+#line 129 "y.y"
         {
             Trace("variable declaration with value initialization and type");
             //$6->name = *$2;
@@ -1395,11 +1401,11 @@ yyreduce:
             tmp.f_type = VAR_f;
             if(tb->Insert(tmp)  == -1) yyerror("<ERROR> identifier already exists");
         }
-#line 1399 "y.tab.cpp"
+#line 1405 "y.tab.cpp"
     break;
 
   case 22: /* var_dec: VAR ID AS EXPRESSION  */
-#line 144 "y.y"
+#line 143 "y.y"
         {
             Trace("variable declaration iwth value initialization but not type");
             //$4->name = *$2;
@@ -1412,21 +1418,21 @@ yyreduce:
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) == -1)yyerror("<ERROR> identifier already exists");
         }
-#line 1416 "y.tab.cpp"
+#line 1422 "y.tab.cpp"
     break;
 
   case 23: /* var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF TYPE  */
-#line 157 "y.y"
+#line 156 "y.y"
         {
             Trace("Array declaration");
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(Info(*((yyvsp[-8].s_v)), (yyvsp[0].d_t),ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
         }
-#line 1426 "y.tab.cpp"
+#line 1432 "y.tab.cpp"
     break;
 
   case 24: /* $@1: %empty  */
-#line 165 "y.y"
+#line 164 "y.y"
         {
             //if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
 
@@ -1444,11 +1450,11 @@ yyreduce:
             //tb->printTableSize();
             args_info.clear();
         }
-#line 1448 "y.tab.cpp"
+#line 1454 "y.tab.cpp"
     break;
 
   case 25: /* func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts END ID  */
-#line 183 "y.y"
+#line 182 "y.y"
         {
             if(*(yyvsp[-9].s_v) != *(yyvsp[0].s_v)) yyerror("<ERROR> Func declaration error");
             //check result expression ?
@@ -1456,11 +1462,11 @@ yyreduce:
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1460 "y.tab.cpp"
+#line 1466 "y.tab.cpp"
     break;
 
   case 26: /* $@2: %empty  */
-#line 191 "y.y"
+#line 190 "y.y"
         {
             Trace("procedure declaration");
             // new symbol table
@@ -1475,17 +1481,18 @@ yyreduce:
             //tb->printTableSize();
             args_info.clear();
         }
-#line 1479 "y.tab.cpp"
+#line 1485 "y.tab.cpp"
     break;
 
   case 27: /* func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts END ID  */
-#line 205 "y.y"
+#line 204 "y.y"
         {
             if(*(yyvsp[-7].s_v) != *(yyvsp[0].s_v)) yyerror("<ERROR> Procedure declaration error");
+            //check return?
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1489 "y.tab.cpp"
+#line 1496 "y.tab.cpp"
     break;
 
   case 36: /* arg: ID ':' TYPE  */
@@ -1493,7 +1500,7 @@ yyreduce:
     {
         args_info.push_back(arg_info(*(yyvsp[-2].s_v),(yyvsp[0].d_t)));
     }
-#line 1497 "y.tab.cpp"
+#line 1504 "y.tab.cpp"
     break;
 
   case 41: /* $@3: %empty  */
@@ -1501,7 +1508,7 @@ yyreduce:
         {
             stb_list.create_table();
         }
-#line 1505 "y.tab.cpp"
+#line 1512 "y.tab.cpp"
     break;
 
   case 42: /* BLOCK_stmt: BEG $@3 func_stmts END  */
@@ -1512,90 +1519,95 @@ yyreduce:
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1516 "y.tab.cpp"
+#line 1523 "y.tab.cpp"
     break;
 
   case 43: /* simple_stmt: ID AS EXPRESSION  */
 #line 255 "y.y"
             {
                 Trace("Assign value to ID");
-                /* EXPRESSION only allow CONST? */
                 /* check ID const or not*/
-                Symboltable* tb = stb_list.getCurrentTable();
-                int idx=tb->lookup(*(yyvsp[-2].s_v));
-                if(idx == -1) yyerror("<ERROR> identifier not exists");
-                Info* id = tb->getInfo(idx);
+                //Symboltable* tb = stb_list.getCurrentTable();
+                //int idx=tb->lookup(*$1);
+                //if(idx == -1) yyerror("<ERROR> identifier not exists");
+                //Info* id = tb->getInfo(idx);
+
+                Info* id = stb_list.lookup(*(yyvsp[-2].s_v));
+                if(id == NULL) yyerror("<ERROR> identifier not exists");
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
-                if(id->d_type != (yyvsp[0].Inf)->d_type) yyerror("type is not compatible");
+                if(id->d_type != (yyvsp[0].Inf)->d_type) yyerror("type is not compatible"); // array?
             }
-#line 1532 "y.tab.cpp"
+#line 1541 "y.tab.cpp"
     break;
 
   case 44: /* simple_stmt: PUT EXPRESSION  */
-#line 267 "y.y"
+#line 269 "y.y"
             {
                 Trace("Find PUT");
             }
-#line 1540 "y.tab.cpp"
+#line 1549 "y.tab.cpp"
     break;
 
   case 45: /* simple_stmt: GET ID  */
-#line 271 "y.y"
+#line 273 "y.y"
             {
                 Trace("Find GET");
-                Symboltable* tb = stb_list.getCurrentTable();
-                int idx=tb->lookup(*(yyvsp[0].s_v));
-                if(idx == -1) yyerror("<ERROR> identifier not exists");
+                //Symboltable* tb = stb_list.getCurrentTable();
+                //int idx=tb->lookup(*$2);
+                //if(idx == -1) yyerror("<ERROR> identifier not exists");
+                
+                Info* id = stb_list.lookup(*(yyvsp[0].s_v));
+                if(id == NULL) yyerror("<ERROR> identifier not exists");
+
                 //Info* id = tb->getInfo(idx);
             }
-#line 1552 "y.tab.cpp"
+#line 1565 "y.tab.cpp"
     break;
 
   case 46: /* simple_stmt: RESULT EXPRESSION  */
-#line 279 "y.y"
+#line 285 "y.y"
             {
                 Trace("Find result");
                 // check function type
             }
-#line 1561 "y.tab.cpp"
+#line 1574 "y.tab.cpp"
     break;
 
   case 47: /* simple_stmt: RETURN  */
-#line 284 "y.y"
+#line 290 "y.y"
             {
                 Trace("Find RETURN");
             }
-#line 1569 "y.tab.cpp"
+#line 1582 "y.tab.cpp"
     break;
 
   case 49: /* simple_stmt: SKIP  */
-#line 289 "y.y"
+#line 295 "y.y"
             {
                 Trace("Find skip");
             }
-#line 1577 "y.tab.cpp"
+#line 1590 "y.tab.cpp"
     break;
 
   case 50: /* EXIT_STMT: EXIT  */
-#line 295 "y.y"
+#line 301 "y.y"
             {
                 Trace("Find EXIT");
             }
-#line 1585 "y.tab.cpp"
+#line 1598 "y.tab.cpp"
     break;
 
   case 51: /* EXIT_STMT: EXIT WHEN EXPRESSION  */
-#line 299 "y.y"
+#line 305 "y.y"
             {
                 Trace("Find EXIT with expression");
                 if((yyvsp[0].Inf)->d_type != BOOL_TYPE)yyerror("<ERROR> EXIT WHEN EXPRESSION, EXPRESSION SHOULD BE BOOL_EXPR");
-
             }
-#line 1595 "y.tab.cpp"
+#line 1607 "y.tab.cpp"
     break;
 
   case 52: /* EXPRESSION: EXPRESSION '+' EXPRESSION  */
-#line 307 "y.y"
+#line 312 "y.y"
             {
                 Trace("expression + expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1603,266 +1615,397 @@ yyreduce:
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
                 if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
-                    
+                    if((yyvsp[-2].Inf)->d_type == INT_TYPE){
+                        (yyval.Inf) = new Info("",INT_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v+(yyvsp[0].Inf)->i_v));
+                    }else{ 
+                        //real type
+                        (yyval.Inf) = new Info("",REAL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v+(yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
                 }
             }
-#line 1610 "y.tab.cpp"
+#line 1629 "y.tab.cpp"
     break;
 
   case 53: /* EXPRESSION: EXPRESSION '-' EXPRESSION  */
-#line 318 "y.y"
+#line 330 "y.y"
             {
                 Trace("expression - expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type == INT_TYPE){
+                        (yyval.Inf) = new Info("",INT_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v-(yyvsp[0].Inf)->i_v));
+                    }else{ 
+                        //real type
+                        (yyval.Inf) = new Info("",REAL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v-(yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
+                }
             }
-#line 1621 "y.tab.cpp"
+#line 1651 "y.tab.cpp"
     break;
 
   case 54: /* EXPRESSION: EXPRESSION '*' EXPRESSION  */
-#line 325 "y.y"
+#line 348 "y.y"
             {
                 Trace("expression * expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type == INT_TYPE){
+                        (yyval.Inf) = new Info("",INT_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v*(yyvsp[0].Inf)->i_v));
+                    }else{ 
+                        //real type
+                        (yyval.Inf) = new Info("",REAL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v*(yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
+                }
             }
-#line 1632 "y.tab.cpp"
+#line 1673 "y.tab.cpp"
     break;
 
   case 55: /* EXPRESSION: EXPRESSION '/' EXPRESSION  */
-#line 332 "y.y"
+#line 366 "y.y"
             {
                 Trace("expression / expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type == INT_TYPE){
+                        (yyval.Inf) = new Info("",INT_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v/(yyvsp[0].Inf)->i_v));
+                    }else{ 
+                        //real type
+                        (yyval.Inf) = new Info("",REAL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v/(yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
+                }
             }
-#line 1643 "y.tab.cpp"
+#line 1694 "y.tab.cpp"
     break;
 
   case 56: /* EXPRESSION: '-' EXPRESSION  */
-#line 339 "y.y"
+#line 383 "y.y"
             {
                 Trace("- expression");
                 if((yyvsp[0].Inf)->d_type != REAL_TYPE && (yyvsp[0].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("unary minus is not support array");
             }
-#line 1653 "y.tab.cpp"
+#line 1704 "y.tab.cpp"
     break;
 
   case 57: /* EXPRESSION: EXPRESSION MOD EXPRESSION  */
-#line 345 "y.y"
+#line 389 "y.y"
             {
                 Trace("expression mod expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
-                if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
+                if((yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    (yyval.Inf) = new Info("",INT_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v%(yyvsp[0].Inf)->i_v));
+                }else{
+                    (yyval.Inf) = new Info("",INT_TYPE,VAR_f);
+                }
             }
-#line 1664 "y.tab.cpp"
+#line 1720 "y.tab.cpp"
     break;
 
   case 58: /* EXPRESSION: EXPRESSION '>' EXPRESSION  */
-#line 352 "y.y"
+#line 401 "y.y"
             {
                 Trace("EXPRESSION > EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v > (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v > (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1675 "y.tab.cpp"
+#line 1740 "y.tab.cpp"
     break;
 
   case 59: /* EXPRESSION: EXPRESSION '<' EXPRESSION  */
-#line 359 "y.y"
+#line 417 "y.y"
             {
                 Trace("EXPRESSION < EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v < (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v < (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1686 "y.tab.cpp"
+#line 1760 "y.tab.cpp"
     break;
 
   case 60: /* EXPRESSION: EXPRESSION '=' EXPRESSION  */
-#line 366 "y.y"
+#line 433 "y.y"
             {
                 Trace("EXPRESSION = EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v == (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v == (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1697 "y.tab.cpp"
+#line 1780 "y.tab.cpp"
     break;
 
   case 61: /* EXPRESSION: EXPRESSION NE EXPRESSION  */
-#line 373 "y.y"
+#line 449 "y.y"
             {
                 Trace("EXPRESSION != EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v != (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v != (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1708 "y.tab.cpp"
+#line 1800 "y.tab.cpp"
     break;
 
   case 62: /* EXPRESSION: EXPRESSION LE EXPRESSION  */
-#line 380 "y.y"
+#line 465 "y.y"
             {
                 Trace("EXPRESSION <= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v <= (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v <= (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1719 "y.tab.cpp"
+#line 1820 "y.tab.cpp"
     break;
 
   case 63: /* EXPRESSION: EXPRESSION GE EXPRESSION  */
-#line 387 "y.y"
+#line 481 "y.y"
             {
                 Trace("EXPRESSION >= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != REAL_TYPE && (yyvsp[-2].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    if((yyvsp[-2].Inf)->d_type== INT_TYPE){
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->i_v >= (yyvsp[0].Inf)->i_v));
+                    }else{
+                        (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,((yyvsp[-2].Inf)->r_v >= (yyvsp[0].Inf)->r_v));
+                    }
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1730 "y.tab.cpp"
+#line 1840 "y.tab.cpp"
     break;
 
   case 64: /* EXPRESSION: EXPRESSION AND EXPRESSION  */
-#line 394 "y.y"
+#line 497 "y.y"
             {
                 Trace("EXPRESSION and EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,(yyvsp[-2].Inf)->b_v && (yyvsp[0].Inf)->b_v);
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1741 "y.tab.cpp"
+#line 1856 "y.tab.cpp"
     break;
 
   case 65: /* EXPRESSION: EXPRESSION OR EXPRESSION  */
-#line 401 "y.y"
+#line 509 "y.y"
             {
                 Trace("EXPRESSION or EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
                 if((yyvsp[-2].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[-2].Inf)->f_type == ARRAY_f || (yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                if((yyvsp[-2].Inf)->f_type == CONST_f && (yyvsp[0].Inf)->f_type == CONST_f){
+                    (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,(yyvsp[-2].Inf)->b_v || (yyvsp[0].Inf)->b_v);
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1752 "y.tab.cpp"
+#line 1872 "y.tab.cpp"
     break;
 
   case 66: /* EXPRESSION: NOT EXPRESSION  */
-#line 408 "y.y"
+#line 521 "y.y"
             {
                 Trace("Negation operator");
                 if((yyvsp[0].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
                 if((yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("array is not allow to directly perform calculation");
+                 if((yyvsp[0].Inf)->f_type == CONST_f){
+                    (yyval.Inf) = new Info("",BOOL_TYPE,CONST_f,!(yyvsp[0].Inf)->b_v);
+                }else{
+                    (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
+                }
             }
-#line 1762 "y.tab.cpp"
+#line 1887 "y.tab.cpp"
     break;
 
   case 67: /* EXPRESSION: '(' EXPRESSION ')'  */
-#line 414 "y.y"
+#line 532 "y.y"
             {
                 (yyval.Inf) = (yyvsp[-1].Inf);
             }
-#line 1770 "y.tab.cpp"
+#line 1895 "y.tab.cpp"
     break;
 
   case 68: /* EXPRESSION: const_val  */
-#line 417 "y.y"
+#line 535 "y.y"
                       {Trace("const_value");}
-#line 1776 "y.tab.cpp"
+#line 1901 "y.tab.cpp"
     break;
 
   case 69: /* EXPRESSION: ID  */
-#line 419 "y.y"
+#line 537 "y.y"
             {
-                Symboltable* tb = stb_list.getCurrentTable(); 
-                int idx = tb->lookup(*(yyvsp[0].s_v));
-                if(idx == -1) yyerror("ID not exists");
-                (yyval.Inf) = tb->getInfo(idx);               
+                //Symboltable* tb = stb_list.getCurrentTable(); 
+                //int idx = tb->lookup(*$1);
+                //if(idx == -1) yyerror("ID not exists");
+                //$$ = tb->getInfo(idx);
+                Info* id = stb_list.lookup(*(yyvsp[0].s_v));
+                if(id == NULL) yyerror("ID not exists");
+                (yyval.Inf) = id;           
             }
-#line 1787 "y.tab.cpp"
+#line 1915 "y.tab.cpp"
     break;
 
   case 70: /* EXPRESSION: ID '[' EXPRESSION ']'  */
-#line 426 "y.y"
+#line 547 "y.y"
             {
                 Trace("Array reference");
                 //check expression type
                 if((yyvsp[-1].Inf)->d_type != INT_TYPE)yyerror("expression should be INT_EXPR");
                 if((yyvsp[-1].Inf)->f_type == FUNC_f || (yyvsp[-1].Inf)->f_type== ARRAY_f)yyerror("can not pass Array or Function id");
             }
-#line 1798 "y.tab.cpp"
+#line 1926 "y.tab.cpp"
     break;
 
   case 72: /* func_inv: ID '(' actual_params ')'  */
-#line 436 "y.y"
+#line 557 "y.y"
         {
             Trace("function invocation");
-            Symboltable* tb =stb_list.getCurrentTable();
-            int idx= tb->lookup(*(yyvsp[-3].s_v));
-            if(idx==-1)yyerror("identifier not exists");
-            Info* func_info = tb->getInfo(idx);
+            //Symboltable* tb =stb_list.getCurrentTable();
+            //int idx= tb->lookup(*$1);
+            //if(idx==-1)yyerror("identifier not exists");
+            //Info* func_info = tb->getInfo(idx);
             
+            Info* func_info = stb_list.lookup(*(yyvsp[-3].s_v));
+            if(func_info == NULL)yyerror("function not exists");
             if(params.size() != func_info->params.size())yyerror("number of parameters are not the same");
-
             // compare type
-
             for(int i = 0 ;i <params.size();i++){
                 if(params[i].d_type != func_info->params[i].d_type) yyerror("<ERROR>type is different");
             }
-
             params.clear();
-
-            
+            (yyval.Inf) = new Info("",func_info->d_type,VAR_f);
         }
-#line 1822 "y.tab.cpp"
+#line 1948 "y.tab.cpp"
     break;
 
   case 76: /* actual_param: EXPRESSION  */
-#line 463 "y.y"
+#line 582 "y.y"
             {
                 params.push_back(*(yyvsp[0].Inf));
             }
-#line 1830 "y.tab.cpp"
+#line 1956 "y.tab.cpp"
     break;
 
   case 77: /* conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF  */
-#line 469 "y.y"
+#line 614 "y.y"
                     {
                         Trace("if-ELSE stmt");
                     }
-#line 1838 "y.tab.cpp"
+#line 1964 "y.tab.cpp"
     break;
 
   case 78: /* conditional_stmt: IF EXPRESSION THEN func_stmts END IF  */
-#line 473 "y.y"
+#line 618 "y.y"
                     {
                         Trace("if stmt");
                     }
-#line 1846 "y.tab.cpp"
+#line 1972 "y.tab.cpp"
     break;
 
-  case 79: /* loop_stmt: LOOP func_stmts END LOOP  */
-#line 483 "y.y"
+  case 79: /* $@4: %empty  */
+#line 624 "y.y"
+            {
+                stb_list.create_table();
+            }
+#line 1980 "y.tab.cpp"
+    break;
+
+  case 80: /* loop_stmt: LOOP $@4 func_stmts END LOOP  */
+#line 627 "y.y"
             {
                 Trace("loop");
             }
-#line 1854 "y.tab.cpp"
+#line 1988 "y.tab.cpp"
     break;
 
-  case 80: /* loop_stmt: FOR opt_r ID ':' val_INTEGER '.' '.' val_INTEGER func_stmts END FOR  */
-#line 487 "y.y"
+  case 81: /* $@5: %empty  */
+#line 631 "y.y"
+            {
+                if((yyvsp[-3].Inf)->f_type != CONST_f || (yyvsp[0].Inf)->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
+                stb_list.create_table();
+            }
+#line 1997 "y.tab.cpp"
+    break;
+
+  case 82: /* loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@5 func_stmts END FOR  */
+#line 635 "y.y"
             {
                 Trace("For loop");
             }
-#line 1862 "y.tab.cpp"
+#line 2005 "y.tab.cpp"
     break;
 
 
-#line 1866 "y.tab.cpp"
+#line 2009 "y.tab.cpp"
 
       default: break;
     }
@@ -2055,7 +2198,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 499 "y.y"
+#line 647 "y.y"
 
 
 

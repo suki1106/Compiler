@@ -7,7 +7,7 @@ parser: lex.yy.cpp y.tab.cpp symbols.cpp symbols.hpp
 
 
 y.tab.cpp: y.y
-	bison -y -d -v $< -o $@ 
+	bison -d -y -v $< -o $@
 
 lex.yy.cpp: Project1.lex
 	flex -o $@ $<

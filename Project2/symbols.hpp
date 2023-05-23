@@ -108,6 +108,7 @@ class Symboltable_List{
         void popTable(); // when block ends
         void dumpCurrentTable(); // dump current scope table
         void dumpAllTable(); // from top to bottom
+        Info* lookup(string);
         Symboltable* getCurrentTable(); // get current scope table
     private:
         vector<Symboltable> Symboltables; // store all tables

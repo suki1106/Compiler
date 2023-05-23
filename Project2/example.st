@@ -12,8 +12,9 @@ function add (a: int, b: int) : int
 end add
 
 % main block
+c := add(a, 10)
 if (c > 10) then
-  put -c
+  put c
 else 
   put c
 end if
