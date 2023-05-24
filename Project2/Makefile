@@ -7,10 +7,10 @@ parser: lex.yy.cpp y.tab.cpp symbols.cpp symbols.hpp
 
 
 y.tab.cpp: y.y
-	bison -d -y -v $< -o $@
+	yacc -d -y -v $< -o $@
 
 lex.yy.cpp: Project1.lex
-	flex -o $@ $<
+	lex -o $@ $<
 
 clean:
 	rm -f parser lex.yy.cpp y.tab.* y.output

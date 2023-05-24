@@ -151,6 +151,8 @@ string Symboltable::getType(int Type){
             case REAL_TYPE:
                 return "REAL";
                 break;
+            case VOID_TYPE:
+                return "VOID";
             default:
                 return "ERROR!";
                 break;
