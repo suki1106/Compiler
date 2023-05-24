@@ -151,7 +151,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 23 "y.y"
+#line 25 "y.y"
 
     int i_v;
     bool b_v;

@@ -18,6 +18,8 @@ vector<arg_info> args_info;
 vector<Info> params; // deal with function invocation
 Symboltable_List stb_list;
 
+int result_stmt = 0;
+
 %}
 
 %union{
@@ -183,7 +185,9 @@ func_dec: FUNCTION ID '('args')'':'TYPE
         {
             if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
             //check result expression ?
-
+            if(result_stmt == 0) yyerror("<ERROR> Function should return value");
+            
+            result_stmt=0;
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
@@ -276,15 +280,16 @@ simple_stmt: ID AS EXPRESSION
                 //Symboltable* tb = stb_list.getCurrentTable();
                 //int idx=tb->lookup(*$2);
                 //if(idx == -1) yyerror("<ERROR> identifier not exists");
-                
+            
                 Info* id = stb_list.lookup(*$2);
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
-
                 //Info* id = tb->getInfo(idx);
             }
             | RESULT EXPRESSION
             {
                 Trace("Find result");
+                result_stmt = 1;
+                if($2->d_type != stb_list.getFunc()->d_type)yyerror("function return type is not compatible");
                 // check function type
             }
             | RETURN
@@ -593,21 +598,8 @@ conditional_stmt:   IF{stb_list.create_table();} EXPRESSION THEN func_stmts ELSE
                 ;
 
 ELSE_stmt: ELSE{stb_list.create_table();} func_stmts END IF {Trace("if-ELSE stmt");stb_list.popTable();}
-        | END IF {Trace("if stmt");}
+        | END IF {Trace("if stmt");stb_list.popTable();}
         ;
-
-
-/*
-conditional_stmt: IF EXPRESSION THEN func_stmts ELSE func_stmts END IF
-                    {
-                        Trace("if-ELSE stmt");
-                    }
-                |  IF EXPRESSION THEN func_stmts END IF
-                    {
-                        Trace("if stmt");
-                    }
-                ;
-*/
 
 loop_stmt: LOOP 
             {

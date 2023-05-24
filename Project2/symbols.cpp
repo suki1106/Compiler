@@ -163,8 +163,8 @@ string Symboltable::getForm(int Type){
 
 }
 
-void Symboltable::printTableSize(){
-    cout << "table size:\t" << this->index << endl;
+int Symboltable::getTableSize(){
+    return this->index;
 }
 
 void Symboltable::dump(){
@@ -244,6 +244,7 @@ void Symboltable_List::dumpAllTable(){
         Symboltable.dump();
 }
 Info* Symboltable_List::lookup(string id){
+
     // int current_table = st.top();
     // if(Symboltables[current_table].lookup(id) != -1)return Symboltables[current_table].getInfo(Symboltables[current_table].lookup(id));
     // if(Symboltables[0].lookup(id) !=-1)return Symboltables[0].getInfo(Symboltables[0].lookup(id));
@@ -255,5 +256,10 @@ Info* Symboltable_List::lookup(string id){
         if(Symboltables[index].lookup(id) != -1)return Symboltables[index].getInfo(Symboltables[index].lookup(id));
         tmp_st.pop();
     }
+    return NULL;
+}
+Info* Symboltable_List::getFunc(){ // get first symbol table's last element
+    Symboltable first = Symboltables[0];
+    if (first.getTableSize()>0 ) return first.getInfo(first.getTableSize()-1);
     return NULL;
 }

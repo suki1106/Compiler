@@ -88,7 +88,7 @@ class Symboltable{
         int Insert(string,data_type,form_type,value);
         int Insert(Info); 
         int lookup(string);
-        void printTableSize();
+        int getTableSize();
         Info* getInfo(int);
         void dump();
     private:
@@ -110,6 +110,7 @@ class Symboltable_List{
         void dumpAllTable(); // from top to bottom
         Info* lookup(string);
         Symboltable* getCurrentTable(); // get current scope table
+        Info* getFunc(); // used to check function return type
     private:
         vector<Symboltable> Symboltables; // store all tables
         stack<int> st; //deal with scope
