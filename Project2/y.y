@@ -210,7 +210,6 @@ func_dec: FUNCTION ID '('args')'':'TYPE
         }func_stmts END ID
         {
             if(*$2 != *$9) yyerror("<ERROR> Procedure declaration error");
-            //check return?
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
@@ -632,7 +631,7 @@ opt_r: DECREASING
 void yyerror(string msg)
 {
     cerr << "line: " << linenum << " " <<msg << endl;
-    exit(1);
+    //exit(1);
 }
 
 int main()
