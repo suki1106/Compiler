@@ -608,7 +608,7 @@ static const yytype_int16 yyrline[] =
      302,   306,   313,   331,   349,   367,   384,   392,   404,   420,
      436,   452,   468,   484,   500,   512,   524,   535,   539,   540,
      550,   558,   561,   582,   583,   584,   587,   594,   594,   600,
-     600,   601,   605,   604,   612,   611,   621,   622
+     600,   601,   605,   604,   613,   612,   623,   624
 };
 #endif
 
@@ -1983,13 +1983,13 @@ yyreduce:
 
   case 79: /* $@5: %empty  */
 #line 600 "y.y"
-               {stb_list.create_table();}
+               {stb_list.popTable();stb_list.create_table();}
 #line 1988 "y.tab.cpp"
     break;
 
   case 80: /* ELSE_stmt: ELSE $@5 func_stmts END IF  */
 #line 600 "y.y"
-                                                            {Trace("if-ELSE stmt");stb_list.popTable();}
+                                                                                {Trace("if-ELSE stmt");stb_list.popTable();}
 #line 1994 "y.tab.cpp"
     break;
 
@@ -2011,29 +2011,31 @@ yyreduce:
 #line 608 "y.y"
             {
                 Trace("loop");
+                stb_list.popTable();
             }
-#line 2016 "y.tab.cpp"
+#line 2017 "y.tab.cpp"
     break;
 
   case 84: /* $@7: %empty  */
-#line 612 "y.y"
+#line 613 "y.y"
             {
                 if((yyvsp[-3].Inf)->f_type != CONST_f || (yyvsp[0].Inf)->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
                 stb_list.create_table();
             }
-#line 2025 "y.tab.cpp"
+#line 2026 "y.tab.cpp"
     break;
 
   case 85: /* loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@7 func_stmts END FOR  */
-#line 616 "y.y"
+#line 617 "y.y"
             {
                 Trace("For loop");
+                stb_list.popTable();
             }
-#line 2033 "y.tab.cpp"
+#line 2035 "y.tab.cpp"
     break;
 
 
-#line 2037 "y.tab.cpp"
+#line 2039 "y.tab.cpp"
 
       default: break;
     }
@@ -2226,7 +2228,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 628 "y.y"
+#line 630 "y.y"
 
 
 

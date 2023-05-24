@@ -70,13 +70,17 @@ end for
 
 for test: 2+3+5 .. 2+3+6
     put ("hello world")
+    var k:int
     exit
 end for
 
 loop
     put ("hello world")
+    var k:int
     exit
 end loop
+
+
 
 z := a[1+2+3]
 z := a[5]

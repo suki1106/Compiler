@@ -597,7 +597,7 @@ conditional_stmt:   IF{stb_list.create_table();} EXPRESSION THEN func_stmts ELSE
                     }
                 ;
 
-ELSE_stmt: ELSE{stb_list.create_table();} func_stmts END IF {Trace("if-ELSE stmt");stb_list.popTable();}
+ELSE_stmt: ELSE{stb_list.popTable();stb_list.create_table();} func_stmts END IF {Trace("if-ELSE stmt");stb_list.popTable();}
         | END IF {Trace("if stmt");stb_list.popTable();}
         ;
 
@@ -607,6 +607,7 @@ loop_stmt: LOOP
             }func_stmts END LOOP
             {
                 Trace("loop");
+                stb_list.popTable();
             }
         |   FOR opt_r ID':' EXPRESSION'.''.'EXPRESSION 
             {
@@ -615,6 +616,7 @@ loop_stmt: LOOP
             }func_stmts END FOR
             {
                 Trace("For loop");
+                stb_list.popTable();
             }
         ;
 
