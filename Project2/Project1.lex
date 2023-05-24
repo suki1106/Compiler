@@ -25,7 +25,7 @@ char strbuf[MAX_LINE_LENG];
 
 %}
 
-LETTER [A-za-z]
+LETTER [A-Za-z]
 DIGIT [0-9]
 DIGITS {DIGIT}+
 INTEGER {DIGITS}
@@ -104,6 +104,7 @@ WHITESPACE [ \t]+
 {IDENTIFIER} {
         tokenString(identifer,yytext);
         //yylval = insert(table,yytext);
+        //cout << "yytext: " << yytext << endl;
         yylval.s_v = new string(yytext);
         return ID;
 }

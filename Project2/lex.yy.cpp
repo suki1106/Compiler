@@ -395,7 +395,7 @@ static const YY_CHAR yy_ec[256] =
        18,   19,    1,    1,   20,   20,   20,   20,   20,   20,
        20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
        20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
-       21,   20,   22,   20,   20,   20,   23,   24,   25,   26,
+       21,    1,   22,    1,    1,    1,   23,   24,   25,   26,
 
        27,   28,   29,   30,   31,   20,   32,   33,   34,   35,
        36,   37,   20,   38,   39,   40,   41,   42,   43,   44,
@@ -420,7 +420,7 @@ static const YY_CHAR yy_meta[48] =
     {   0,
         1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    3,    1,    1,    1,    1,    1,    3,
-        3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+        1,    1,    3,    3,    3,    3,    3,    3,    3,    3,
         3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
         3,    3,    3,    3,    3,    1,    1
     } ;
@@ -429,7 +429,7 @@ static const flex_int16_t yy_base[183] =
     {   0,
         0,    0,   45,   46,   49,   51,  189,  190,  186,  190,
       190,    0,  190,  190,  190,  190,  190,  190,  190,  190,
-       44,  169,  190,  168,  190,  167,    0,    0,    0,   22,
+       44,  169,  190,  168,  190,  167,    0,  190,  190,   22,
        32,   31,   35,   30,   41,  157,   38,  147,  146,  145,
        41,   34,  153,   38,   46,  156,  148,  172,  190,  190,
       190,  129,  190,  190,  190,  173,    0,  160,   69,  190,
@@ -453,7 +453,7 @@ static const flex_int16_t yy_def[183] =
     {   0,
       178,    1,  179,  179,  180,  180,  178,  178,  178,  178,
       178,  181,  178,  178,  178,  178,  178,  178,  178,  178,
-      178,  178,  178,  178,  178,  178,  182,  182,  182,  182,
+      178,  178,  178,  178,  178,  178,  182,  178,  178,  182,
       182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
       182,  182,  182,  182,  182,  182,  182,  178,  178,  178,
       178,  178,  178,  178,  178,  178,  181,  178,  178,  178,
@@ -1135,13 +1135,14 @@ YY_RULE_SETUP
 {
         tokenString(identifer,yytext);
         //yylval = insert(table,yytext);
+        //cout << "yytext: " << yytext << endl;
         yylval.s_v = new string(yytext);
         return ID;
 }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 112 "Project1.lex"
+#line 113 "Project1.lex"
 {
                 tokenString(Real,yytext);
                 yylval.r_v = atof(yytext);        
@@ -1150,7 +1151,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 118 "Project1.lex"
+#line 119 "Project1.lex"
 {
         tokenString(Integer,yytext); 
         yylval.i_v = atoi(yytext);
@@ -1159,7 +1160,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 126 "Project1.lex"
+#line 127 "Project1.lex"
 {
         LIST;
         BEGIN STR;
@@ -1167,7 +1168,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 131 "Project1.lex"
+#line 132 "Project1.lex"
 {
         char c = yyinput();
         if(c == '"'){
@@ -1186,7 +1187,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 148 "Project1.lex"
+#line 149 "Project1.lex"
 {
         LIST;
         strcat(strbuf,yytext);
@@ -1194,14 +1195,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 153 "Project1.lex"
+#line 154 "Project1.lex"
 {
         LIST;
 }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 157 "Project1.lex"
+#line 158 "Project1.lex"
 {
         LIST;
         BEGIN COMMENT;
@@ -1209,7 +1210,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 163 "Project1.lex"
+#line 164 "Project1.lex"
 {
         LIST;
         BEGIN 0;
@@ -1218,7 +1219,7 @@ YY_RULE_SETUP
 case 65:
 /* rule 65 can match eol */
 YY_RULE_SETUP
-#line 169 "Project1.lex"
+#line 170 "Project1.lex"
 {
         LIST;
         printf("%d: %s", linenum++, buf);
@@ -1227,14 +1228,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 175 "Project1.lex"
+#line 176 "Project1.lex"
 {
         LIST;
 }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 179 "Project1.lex"
+#line 180 "Project1.lex"
 {
         LIST;
 }
@@ -1242,7 +1243,7 @@ YY_RULE_SETUP
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 183 "Project1.lex"
+#line 184 "Project1.lex"
 {
         LIST;
         printf("%d: %s", linenum++, buf);
@@ -1251,7 +1252,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 189 "Project1.lex"
+#line 190 "Project1.lex"
 {
         LIST;
         printf("%d:%s\n", linenum+1, buf);
@@ -1261,10 +1262,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 196 "Project1.lex"
+#line 197 "Project1.lex"
 ECHO;
 	YY_BREAK
-#line 1268 "lex.yy.cpp"
+#line 1269 "lex.yy.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(STR):
@@ -2271,7 +2272,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 196 "Project1.lex"
+#line 197 "Project1.lex"
 
 
 

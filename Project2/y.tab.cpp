@@ -602,12 +602,12 @@ static const yytype_int16 yyrline[] =
 {
        0,    63,    63,    65,    66,    69,    70,    74,    75,    76,
       79,    90,   106,   107,   108,   109,   119,   120,   121,   122,
-     125,   131,   145,   158,   167,   166,   195,   194,   218,   219,
-     224,   225,   226,   229,   230,   231,   234,   242,   243,   244,
-     245,   248,   247,   259,   273,   277,   289,   296,   300,   301,
-     307,   311,   318,   336,   354,   372,   389,   395,   407,   423,
-     439,   455,   471,   487,   503,   515,   527,   538,   542,   543,
-     553,   560,   563,   583,   584,   585,   588,   595,   595,   601,
+     125,   131,   145,   158,   169,   168,   197,   196,   220,   221,
+     226,   227,   228,   231,   232,   233,   236,   244,   245,   246,
+     247,   250,   249,   261,   269,   273,   283,   292,   296,   297,
+     303,   307,   314,   332,   350,   368,   385,   393,   405,   421,
+     437,   453,   469,   485,   501,   513,   525,   536,   540,   541,
+     551,   559,   562,   583,   584,   585,   588,   595,   595,   601,
      601,   602,   606,   605,   613,   612,   622,   623
 };
 #endif
@@ -1435,13 +1435,15 @@ yyreduce:
         {
             Trace("Array declaration");
             Symboltable* tb = stb_list.getCurrentTable();
-            if(tb->Insert(Info(*((yyvsp[-8].s_v)), (yyvsp[0].d_t),ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
+            Info tmp = Info(*((yyvsp[-8].s_v)), (yyvsp[0].d_t),ARRAY_f);
+            tmp.size = (yyvsp[-2].i_v) - (yyvsp[-5].i_v) +1; // store array size
+            if(tb->Insert(tmp) == -1)yyerror("<ERROR> identifier already exists");
         }
-#line 1441 "y.tab.cpp"
+#line 1443 "y.tab.cpp"
     break;
 
   case 24: /* $@1: %empty  */
-#line 167 "y.y"
+#line 169 "y.y"
         {
             //if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
 
@@ -1459,11 +1461,11 @@ yyreduce:
             //tb->printTableSize();
             args_info.clear();
         }
-#line 1463 "y.tab.cpp"
+#line 1465 "y.tab.cpp"
     break;
 
   case 25: /* func_dec: FUNCTION ID '(' args ')' ':' TYPE $@1 func_stmts END ID  */
-#line 185 "y.y"
+#line 187 "y.y"
         {
             if(*(yyvsp[-9].s_v) != *(yyvsp[0].s_v)) yyerror("<ERROR> Func declaration error");
             //check result expression ?
@@ -1473,11 +1475,11 @@ yyreduce:
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1477 "y.tab.cpp"
+#line 1479 "y.tab.cpp"
     break;
 
   case 26: /* $@2: %empty  */
-#line 195 "y.y"
+#line 197 "y.y"
         {
             Trace("procedure declaration");
             // new symbol table
@@ -1492,135 +1494,129 @@ yyreduce:
             //tb->printTableSize();
             args_info.clear();
         }
-#line 1496 "y.tab.cpp"
+#line 1498 "y.tab.cpp"
     break;
 
   case 27: /* func_dec: PROCEDURE ID '(' args ')' $@2 func_stmts END ID  */
-#line 209 "y.y"
+#line 211 "y.y"
         {
             if(*(yyvsp[-7].s_v) != *(yyvsp[0].s_v)) yyerror("<ERROR> Procedure declaration error");
             //check return?
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1507 "y.tab.cpp"
+#line 1509 "y.tab.cpp"
     break;
 
   case 36: /* arg: ID ':' TYPE  */
-#line 235 "y.y"
+#line 237 "y.y"
     {
         args_info.push_back(arg_info(*(yyvsp[-2].s_v),(yyvsp[0].d_t)));
     }
-#line 1515 "y.tab.cpp"
+#line 1517 "y.tab.cpp"
     break;
 
   case 41: /* $@3: %empty  */
-#line 248 "y.y"
+#line 250 "y.y"
         {
             stb_list.create_table();
         }
-#line 1523 "y.tab.cpp"
+#line 1525 "y.tab.cpp"
     break;
 
   case 42: /* BLOCK_stmt: BEG $@3 func_stmts END  */
-#line 250 "y.y"
+#line 252 "y.y"
                         {
             Trace("find block stmt");
             // BLOCK ends, call popTable
             stb_list.dumpCurrentTable();
             stb_list.popTable();
         }
-#line 1534 "y.tab.cpp"
+#line 1536 "y.tab.cpp"
     break;
 
   case 43: /* simple_stmt: ID AS EXPRESSION  */
-#line 260 "y.y"
+#line 262 "y.y"
             {
                 Trace("Assign value to ID");
-                /* check ID const or not*/
-                //Symboltable* tb = stb_list.getCurrentTable();
-                //int idx=tb->lookup(*$1);
-                //if(idx == -1) yyerror("<ERROR> identifier not exists");
-                //Info* id = tb->getInfo(idx);
-
                 Info* id = stb_list.lookup(*(yyvsp[-2].s_v));
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
-                if(id->d_type != (yyvsp[0].Inf)->d_type) yyerror("type is not compatible"); // array?
+                if(sameType(*id,*(yyvsp[0].Inf)) == 0) yyerror("type is not compatible"); // array?
             }
-#line 1552 "y.tab.cpp"
+#line 1548 "y.tab.cpp"
     break;
 
   case 44: /* simple_stmt: PUT EXPRESSION  */
-#line 274 "y.y"
+#line 270 "y.y"
             {
                 Trace("Find PUT");
             }
-#line 1560 "y.tab.cpp"
+#line 1556 "y.tab.cpp"
     break;
 
   case 45: /* simple_stmt: GET ID  */
-#line 278 "y.y"
+#line 274 "y.y"
             {
                 Trace("Find GET");
                 //Symboltable* tb = stb_list.getCurrentTable();
                 //int idx=tb->lookup(*$2);
                 //if(idx == -1) yyerror("<ERROR> identifier not exists");
-                
                 Info* id = stb_list.lookup(*(yyvsp[0].s_v));
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
-
                 //Info* id = tb->getInfo(idx);
             }
-#line 1576 "y.tab.cpp"
+#line 1570 "y.tab.cpp"
     break;
 
   case 46: /* simple_stmt: RESULT EXPRESSION  */
-#line 290 "y.y"
+#line 284 "y.y"
             {
                 Trace("Find result");
                 result_stmt = 1;
-                if((yyvsp[0].Inf)->d_type != stb_list.getFunc()->d_type)yyerror("function return type is not compatible");
+                Info* func_info = stb_list.getFunc();
+                if(func_info== NULL || func_info->f_type != FUNC_f) yyerror("could't find function declaration");
+                if((yyvsp[0].Inf)->d_type != func_info->d_type)yyerror("function return type is not compatible");
                 // check function type
             }
-#line 1587 "y.tab.cpp"
+#line 1583 "y.tab.cpp"
     break;
 
   case 47: /* simple_stmt: RETURN  */
-#line 297 "y.y"
+#line 293 "y.y"
             {
                 Trace("Find RETURN");
             }
-#line 1595 "y.tab.cpp"
+#line 1591 "y.tab.cpp"
     break;
 
   case 49: /* simple_stmt: SKIP  */
-#line 302 "y.y"
+#line 298 "y.y"
             {
                 Trace("Find skip");
             }
-#line 1603 "y.tab.cpp"
+#line 1599 "y.tab.cpp"
     break;
 
   case 50: /* EXIT_STMT: EXIT  */
-#line 308 "y.y"
+#line 304 "y.y"
             {
                 Trace("Find EXIT");
             }
-#line 1611 "y.tab.cpp"
+#line 1607 "y.tab.cpp"
     break;
 
   case 51: /* EXIT_STMT: EXIT WHEN EXPRESSION  */
-#line 312 "y.y"
+#line 308 "y.y"
             {
                 Trace("Find EXIT with expression");
                 if((yyvsp[0].Inf)->d_type != BOOL_TYPE)yyerror("<ERROR> EXIT WHEN EXPRESSION, EXPRESSION SHOULD BE BOOL_EXPR");
             }
-#line 1620 "y.tab.cpp"
+#line 1616 "y.tab.cpp"
     break;
 
   case 52: /* EXPRESSION: EXPRESSION '+' EXPRESSION  */
-#line 319 "y.y"
+#line 315 "y.y"
             {
                 Trace("expression + expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1638,11 +1634,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
                 }
             }
-#line 1642 "y.tab.cpp"
+#line 1638 "y.tab.cpp"
     break;
 
   case 53: /* EXPRESSION: EXPRESSION '-' EXPRESSION  */
-#line 337 "y.y"
+#line 333 "y.y"
             {
                 Trace("expression - expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1660,11 +1656,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
                 }
             }
-#line 1664 "y.tab.cpp"
+#line 1660 "y.tab.cpp"
     break;
 
   case 54: /* EXPRESSION: EXPRESSION '*' EXPRESSION  */
-#line 355 "y.y"
+#line 351 "y.y"
             {
                 Trace("expression * expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1682,11 +1678,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
                 }
             }
-#line 1686 "y.tab.cpp"
+#line 1682 "y.tab.cpp"
     break;
 
   case 55: /* EXPRESSION: EXPRESSION '/' EXPRESSION  */
-#line 373 "y.y"
+#line 369 "y.y"
             {
                 Trace("expression / expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1703,21 +1699,23 @@ yyreduce:
                     (yyval.Inf) = new Info("",(yyvsp[-2].Inf)->d_type,VAR_f);
                 }
             }
-#line 1707 "y.tab.cpp"
+#line 1703 "y.tab.cpp"
     break;
 
   case 56: /* EXPRESSION: '-' EXPRESSION  */
-#line 390 "y.y"
+#line 386 "y.y"
             {
                 Trace("- expression");
                 if((yyvsp[0].Inf)->d_type != REAL_TYPE && (yyvsp[0].Inf)->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if((yyvsp[0].Inf)->f_type == ARRAY_f) yyerror("unary minus is not support array");
+
+                (yyval.Inf) = ((yyvsp[0].Inf)->d_type == INT_TYPE) ? new Info("",INT_TYPE,(yyvsp[0].Inf)->f_type,-(yyvsp[0].Inf)->i_v): new Info("",REAL_TYPE,(yyvsp[0].Inf)->f_type,-(yyvsp[0].Inf)->r_v);
             }
-#line 1717 "y.tab.cpp"
+#line 1715 "y.tab.cpp"
     break;
 
   case 57: /* EXPRESSION: EXPRESSION MOD EXPRESSION  */
-#line 396 "y.y"
+#line 394 "y.y"
             {
                 Trace("expression mod expression");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1729,11 +1727,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",INT_TYPE,VAR_f);
                 }
             }
-#line 1733 "y.tab.cpp"
+#line 1731 "y.tab.cpp"
     break;
 
   case 58: /* EXPRESSION: EXPRESSION '>' EXPRESSION  */
-#line 408 "y.y"
+#line 406 "y.y"
             {
                 Trace("EXPRESSION > EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1749,11 +1747,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1753 "y.tab.cpp"
+#line 1751 "y.tab.cpp"
     break;
 
   case 59: /* EXPRESSION: EXPRESSION '<' EXPRESSION  */
-#line 424 "y.y"
+#line 422 "y.y"
             {
                 Trace("EXPRESSION < EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1769,11 +1767,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1773 "y.tab.cpp"
+#line 1771 "y.tab.cpp"
     break;
 
   case 60: /* EXPRESSION: EXPRESSION '=' EXPRESSION  */
-#line 440 "y.y"
+#line 438 "y.y"
             {
                 Trace("EXPRESSION = EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1789,11 +1787,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1793 "y.tab.cpp"
+#line 1791 "y.tab.cpp"
     break;
 
   case 61: /* EXPRESSION: EXPRESSION NE EXPRESSION  */
-#line 456 "y.y"
+#line 454 "y.y"
             {
                 Trace("EXPRESSION != EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1809,11 +1807,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1813 "y.tab.cpp"
+#line 1811 "y.tab.cpp"
     break;
 
   case 62: /* EXPRESSION: EXPRESSION LE EXPRESSION  */
-#line 472 "y.y"
+#line 470 "y.y"
             {
                 Trace("EXPRESSION <= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1829,11 +1827,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1833 "y.tab.cpp"
+#line 1831 "y.tab.cpp"
     break;
 
   case 63: /* EXPRESSION: EXPRESSION GE EXPRESSION  */
-#line 488 "y.y"
+#line 486 "y.y"
             {
                 Trace("EXPRESSION >= EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1849,11 +1847,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1853 "y.tab.cpp"
+#line 1851 "y.tab.cpp"
     break;
 
   case 64: /* EXPRESSION: EXPRESSION AND EXPRESSION  */
-#line 504 "y.y"
+#line 502 "y.y"
             {
                 Trace("EXPRESSION and EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1865,11 +1863,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1869 "y.tab.cpp"
+#line 1867 "y.tab.cpp"
     break;
 
   case 65: /* EXPRESSION: EXPRESSION OR EXPRESSION  */
-#line 516 "y.y"
+#line 514 "y.y"
             {
                 Trace("EXPRESSION or EXPRESSION");
                 if((yyvsp[-2].Inf)->d_type != (yyvsp[0].Inf)->d_type) yyerror("Type not compatible");
@@ -1881,11 +1879,11 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1885 "y.tab.cpp"
+#line 1883 "y.tab.cpp"
     break;
 
   case 66: /* EXPRESSION: NOT EXPRESSION  */
-#line 528 "y.y"
+#line 526 "y.y"
             {
                 Trace("Negation operator");
                 if((yyvsp[0].Inf)->d_type != BOOL_TYPE) yyerror("Type should be BOOLEAN");
@@ -1896,25 +1894,25 @@ yyreduce:
                     (yyval.Inf) = new Info("",BOOL_TYPE,VAR_f);
                 }
             }
-#line 1900 "y.tab.cpp"
+#line 1898 "y.tab.cpp"
     break;
 
   case 67: /* EXPRESSION: '(' EXPRESSION ')'  */
-#line 539 "y.y"
+#line 537 "y.y"
             {
                 (yyval.Inf) = (yyvsp[-1].Inf);
             }
-#line 1908 "y.tab.cpp"
+#line 1906 "y.tab.cpp"
     break;
 
   case 68: /* EXPRESSION: const_val  */
-#line 542 "y.y"
+#line 540 "y.y"
                       {Trace("const_value");}
-#line 1914 "y.tab.cpp"
+#line 1912 "y.tab.cpp"
     break;
 
   case 69: /* EXPRESSION: ID  */
-#line 544 "y.y"
+#line 542 "y.y"
             {
                 //Symboltable* tb = stb_list.getCurrentTable(); 
                 //int idx = tb->lookup(*$1);
@@ -1924,22 +1922,23 @@ yyreduce:
                 if(id == NULL) yyerror("ID not exists");
                 (yyval.Inf) = id;           
             }
-#line 1928 "y.tab.cpp"
+#line 1926 "y.tab.cpp"
     break;
 
   case 70: /* EXPRESSION: ID '[' EXPRESSION ']'  */
-#line 554 "y.y"
+#line 552 "y.y"
             {
                 Trace("Array reference");
                 //check expression type
                 if((yyvsp[-1].Inf)->d_type != INT_TYPE)yyerror("expression should be INT_EXPR");
                 if((yyvsp[-1].Inf)->f_type == FUNC_f || (yyvsp[-1].Inf)->f_type== ARRAY_f)yyerror("can not pass Array or Function id");
+                (yyval.Inf) = new Info("",(yyvsp[-1].Inf)->d_type,VAR_f);
             }
-#line 1939 "y.tab.cpp"
+#line 1938 "y.tab.cpp"
     break;
 
   case 72: /* func_inv: ID '(' actual_params ')'  */
-#line 564 "y.y"
+#line 563 "y.y"
         {
             Trace("function invocation");
             //Symboltable* tb =stb_list.getCurrentTable();
@@ -1951,6 +1950,7 @@ yyreduce:
             if(func_info == NULL)yyerror("function not exists");
             if(params.size() != func_info->params.size())yyerror("number of parameters are not the same");
             // compare type
+
             for(int i = 0 ;i <params.size();i++){
                 if(params[i].d_type != func_info->params[i].d_type) yyerror("<ERROR>type is different");
             }

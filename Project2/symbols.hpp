@@ -64,6 +64,7 @@ struct Info {
     data_type d_type;
     form_type f_type;
     vector<arg_info> params; // function parameter
+    int size; // for array
     union{
         int i_v;
         bool b_v;
@@ -74,12 +75,14 @@ struct Info {
     ~Info();
     
     Info(string name, data_type d_type, form_type f_type);
-    Info(string name, data_type d_type, form_type f_type,int i_v) : name(name), d_type(d_type),f_type(f_type), i_v(i_v) {}
-    Info(string name, data_type d_type, form_type f_type,bool b_v) : name(name), d_type(d_type), f_type(f_type),b_v(b_v) {}
-    Info(string name, data_type d_type, form_type f_type,string* s_v) : name(name), d_type(d_type), f_type(f_type),s_v(s_v) {}
-    Info(string name, data_type d_type, form_type f_type,double r_v) : name(name), d_type(d_type), f_type(f_type),r_v(r_v) {}
-    Info(string name, data_type d_type, form_type f_type,const vector<arg_info>& params) : name(name), d_type(d_type),f_type(f_type),params(params){}
+    Info(string name, data_type d_type, form_type f_type,int i_v) : name(name), d_type(d_type),f_type(f_type), i_v(i_v) {this->size=1;}
+    Info(string name, data_type d_type, form_type f_type,bool b_v) : name(name), d_type(d_type), f_type(f_type),b_v(b_v) {this->size=1;}
+    Info(string name, data_type d_type, form_type f_type,string* s_v) : name(name), d_type(d_type), f_type(f_type),s_v(s_v) {this->size=1;}
+    Info(string name, data_type d_type, form_type f_type,double r_v) : name(name), d_type(d_type), f_type(f_type),r_v(r_v) {this->size=1;}
+    Info(string name, data_type d_type, form_type f_type,const vector<arg_info>& params) : name(name), d_type(d_type),f_type(f_type),params(params){this->size=1;}
 };
+
+bool sameType(Info,Info);
 
 class Symboltable{
     public:

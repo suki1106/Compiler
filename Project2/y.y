@@ -159,7 +159,9 @@ var_dec: VAR ID ':'TYPE
         {
             Trace("Array declaration");
             Symboltable* tb = stb_list.getCurrentTable();
-            if(tb->Insert(Info(*($2), $10,ARRAY_f)) == -1)yyerror("<ERROR> identifier already exists");
+            Info tmp = Info(*($2), $10,ARRAY_f);
+            tmp.size = $8 - $5 +1; // store array size
+            if(tb->Insert(tmp) == -1)yyerror("<ERROR> identifier already exists");
         }
         ;
 
@@ -259,16 +261,10 @@ BLOCK_stmt: BEG
 simple_stmt: ID AS EXPRESSION 
             {
                 Trace("Assign value to ID");
-                /* check ID const or not*/
-                //Symboltable* tb = stb_list.getCurrentTable();
-                //int idx=tb->lookup(*$1);
-                //if(idx == -1) yyerror("<ERROR> identifier not exists");
-                //Info* id = tb->getInfo(idx);
-
                 Info* id = stb_list.lookup(*$1);
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
-                if(id->d_type != $3->d_type) yyerror("type is not compatible"); // array?
+                if(sameType(*id,*$3) == 0) yyerror("type is not compatible"); // array?
             }
             | PUT EXPRESSION
             {
@@ -280,7 +276,6 @@ simple_stmt: ID AS EXPRESSION
                 //Symboltable* tb = stb_list.getCurrentTable();
                 //int idx=tb->lookup(*$2);
                 //if(idx == -1) yyerror("<ERROR> identifier not exists");
-            
                 Info* id = stb_list.lookup(*$2);
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
                 //Info* id = tb->getInfo(idx);
@@ -289,7 +284,9 @@ simple_stmt: ID AS EXPRESSION
             {
                 Trace("Find result");
                 result_stmt = 1;
-                if($2->d_type != stb_list.getFunc()->d_type)yyerror("function return type is not compatible");
+                Info* func_info = stb_list.getFunc();
+                if(func_info== NULL || func_info->f_type != FUNC_f) yyerror("could't find function declaration");
+                if($2->d_type != func_info->d_type)yyerror("function return type is not compatible");
                 // check function type
             }
             | RETURN
@@ -390,6 +387,8 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 Trace("- expression");
                 if($2->d_type != REAL_TYPE && $2->d_type != INT_TYPE) yyerror("Type should be REAL/INT");
                 if($2->f_type == ARRAY_f) yyerror("unary minus is not support array");
+
+                $$ = ($2->d_type == INT_TYPE) ? new Info("",INT_TYPE,$2->f_type,-$2->i_v): new Info("",REAL_TYPE,$2->f_type,-$2->r_v);
             }
         |   EXPRESSION MOD EXPRESSION
             {
@@ -555,6 +554,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 //check expression type
                 if($3->d_type != INT_TYPE)yyerror("expression should be INT_EXPR");
                 if($3->f_type == FUNC_f || $3->f_type== ARRAY_f)yyerror("can not pass Array or Function id");
+                $$ = new Info("",$3->d_type,VAR_f);
             }
         |   func_inv
         ;   
@@ -571,6 +571,7 @@ func_inv: ID '('actual_params')'
             if(func_info == NULL)yyerror("function not exists");
             if(params.size() != func_info->params.size())yyerror("number of parameters are not the same");
             // compare type
+
             for(int i = 0 ;i <params.size();i++){
                 if(params[i].d_type != func_info->params[i].d_type) yyerror("<ERROR>type is different");
             }

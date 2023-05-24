@@ -18,6 +18,7 @@ Info::Info(string name, data_type d_type, form_type f_type){
     this->name = name;
     this->d_type = d_type;
     this->f_type = f_type;
+    this->size = 1;
     switch (d_type) {
         case INT_TYPE:
             this->i_v = 0;
@@ -31,6 +32,18 @@ Info::Info(string name, data_type d_type, form_type f_type){
         case REAL_TYPE:
             this->r_v = 0.0;
             break;
+    }
+}
+
+bool sameType(Info a,Info b){
+    if(a.f_type == ARRAY_f || b.f_type == ARRAY_f){
+        if(a.f_type == b.f_type && a.d_type == b.d_type && a.size == b.size){
+            return 1;
+        }else{
+            return 0;
+        }
+    }else{
+        return a.d_type == b.d_type;
     }
 }
 
@@ -52,6 +65,7 @@ int Symboltable::Insert(Info id){
         identifiers[index].name = id.name;
         identifiers[index].d_type = id.d_type;
         identifiers[index].f_type = id.f_type;
+        identifiers[index].size = id.size;
 
         if(id.f_type != FUNC_f){
         
@@ -177,7 +191,10 @@ void Symboltable::dump(){
         << setw(20)  << id.name 
         << setw(20) << getType(id.d_type) 
         << setw(20) << getForm(id.f_type);
-        if(id.f_type != FUNC_f){
+        if(id.f_type == ARRAY_f){
+            cout << setw(20);
+            cout << id.size << endl;
+        }else if(id.f_type != FUNC_f){
             cout << setw(20);
             switch (id.d_type) {
                 case INT_TYPE:
@@ -197,9 +214,11 @@ void Symboltable::dump(){
         }else{
             // print formal parameters
             //cout << "\tsize:" << id.params.size();
-            cout << setw(8);
-            for(auto& arg : id.params)
-                cout << "(" << arg.name << ":" << getType(arg.d_type) << ")";
+            if(id.params.size() >0){
+                cout << setw(8);
+                for(auto& arg : id.params)
+                    cout << "(" << arg.name << ":" << getType(arg.d_type) << ")";
+            }
             cout << endl;
             
         }
