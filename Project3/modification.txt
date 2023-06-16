@@ -1,0 +1,7 @@
+lex modification:
+
+1.  把main function砍掉
+2.  return token給yyparse
+3.  透過yylval傳值給yyparse
+4.  將symbol table獨立出來，並改用std::map和std::vector實作table
+5.  #include "y.tab.hpp"
