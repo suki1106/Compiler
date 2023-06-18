@@ -141,14 +141,18 @@ Grammar
 
    90 $@13: ε
 
-   91 loop_stmt: LOOP $@13 func_stmts END LOOP
+   91 $@14: ε
 
-   92 $@14: ε
+   92 loop_stmt: LOOP $@13 func_stmts $@14 END LOOP
 
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR
+   93 $@15: ε
 
-   94 opt_r: DECREASING
-   95      | ε
+   94 $@16: ε
+
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
+
+   96 opt_r: DECREASING
+   97      | ε
 
 
 Terminals, with rules where they appear
@@ -160,9 +164,9 @@ Terminals, with rules where they appear
     '+' (43) 59
     ',' (44) 38 81
     '-' (45) 60 63
-    '.' (46) 28 93
+    '.' (46) 28 95
     '/' (47) 62
-    ':' (58) 14 23 25 28 30 41 93
+    ':' (58) 14 23 25 28 30 41 95
     '<' (60) 66
     '=' (61) 67
     '>' (62) 65
@@ -184,16 +188,16 @@ Terminals, with rules where they appear
     AND (270) 71
     OR (271) 72
     NOT (272) 73
-    DECREASING (273) 94
+    DECREASING (273) 96
     DEFAULT (274)
     DO (275)
     ELSE (276) 88
-    END (277) 30 32 47 88 89 91 93
+    END (277) 30 32 47 88 89 92 95
     EXIT (278) 57 58
-    FOR (279) 93
+    FOR (279) 95
     GET (280) 51
     IF (281) 86 88 89
-    LOOP (282) 91
+    LOOP (282) 92
     PUT (283) 50
     PROCEDURE (284) 32
     RESULT (285) 52
@@ -205,7 +209,7 @@ Terminals, with rules where they appear
     LE (291) 69
     GE (292) 70
     NE (293) 68
-    ID <s_v> (294) 12 14 23 25 27 28 30 32 41 48 51 76 77 79 80 93
+    ID <s_v> (294) 12 14 23 25 27 28 30 32 41 48 51 76 77 79 80 95
     val_STR <s_v> (295) 17
     val_INTEGER <i_v> (296) 16 28
     val_REAL <r_v> (297) 15
@@ -270,7 +274,7 @@ Nonterminals, with rules where they appear
         on right: 32
     func_stmts (77)
         on left: 33 34
-        on right: 30 32 33 47 86 88 91 93
+        on right: 30 32 33 47 86 88 92 95
     func_stmt (78)
         on left: 35 36 37
         on right: 33
@@ -300,7 +304,7 @@ Nonterminals, with rules where they appear
         on right: 54
     EXPRESSION <Inf> (87)
         on left: 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78
-        on right: 12 14 25 27 48 50 52 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 77 84 86 93
+        on right: 12 14 25 27 48 50 52 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 77 84 86 95
     func_inv <Inf> (88)
         on left: 79
         on right: 78
@@ -326,17 +330,23 @@ Nonterminals, with rules where they appear
         on left: 87
         on right: 88
     loop_stmt (96)
-        on left: 91 93
+        on left: 92 95
         on right: 45
     $@13 (97)
         on left: 90
-        on right: 91
+        on right: 92
     $@14 (98)
-        on left: 92
-        on right: 93
-    opt_r (99)
-        on left: 94 95
-        on right: 93
+        on left: 91
+        on right: 92
+    $@15 (99)
+        on left: 93
+        on right: 95
+    $@16 (100)
+        on left: 94
+        on right: 95
+    opt_r (101)
+        on left: 96 97
+        on right: 95
 
 
 State 0
@@ -611,11 +621,11 @@ State 25
 
 State 26
 
-   93 loop_stmt: FOR • opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR • opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
     DECREASING  shift, and go to state 58
 
-    $default  reduce using rule 95 (opt_r)
+    $default  reduce using rule 97 (opt_r)
 
     opt_r  go to state 59
 
@@ -647,7 +657,7 @@ State 28
 
 State 29
 
-   91 loop_stmt: LOOP • $@13 func_stmts END LOOP
+   92 loop_stmt: LOOP • $@13 func_stmts $@14 END LOOP
 
     $default  reduce using rule 90 ($@13)
 
@@ -929,14 +939,14 @@ State 57
 
 State 58
 
-   94 opt_r: DECREASING •
+   96 opt_r: DECREASING •
 
-    $default  reduce using rule 94 (opt_r)
+    $default  reduce using rule 96 (opt_r)
 
 
 State 59
 
-   93 loop_stmt: FOR opt_r • ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r • ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
     ID  shift, and go to state 89
 
@@ -1091,7 +1101,7 @@ State 71
 
 State 72
 
-   91 loop_stmt: LOOP $@13 • func_stmts END LOOP
+   92 loop_stmt: LOOP $@13 • func_stmts $@14 END LOOP
 
     VAR     shift, and go to state 4
     CONST   shift, and go to state 5
@@ -1423,7 +1433,7 @@ State 88
 
 State 89
 
-   93 loop_stmt: FOR opt_r ID • ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID • ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
     ':'  shift, and go to state 127
 
@@ -1812,9 +1822,11 @@ State 110
 
 State 111
 
-   91 loop_stmt: LOOP $@13 func_stmts • END LOOP
+   92 loop_stmt: LOOP $@13 func_stmts • $@14 END LOOP
 
-    END  shift, and go to state 145
+    $default  reduce using rule 91 ($@14)
+
+    $@14  go to state 145
 
 
 State 112
@@ -2087,7 +2099,7 @@ State 126
 
 State 127
 
-   93 loop_stmt: FOR opt_r ID ':' • EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' • EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
     NOT          shift, and go to state 61
     ID           shift, and go to state 62
@@ -2514,9 +2526,9 @@ State 144
 
 State 145
 
-   91 loop_stmt: LOOP $@13 func_stmts END • LOOP
+   92 loop_stmt: LOOP $@13 func_stmts $@14 • END LOOP
 
-    LOOP  shift, and go to state 159
+    END  shift, and go to state 159
 
 
 State 146
@@ -2668,7 +2680,7 @@ State 155
    70           | EXPRESSION • GE EXPRESSION
    71           | EXPRESSION • AND EXPRESSION
    72           | EXPRESSION • OR EXPRESSION
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION • '.' '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION • '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
     MOD  shift, and go to state 95
     AND  shift, and go to state 96
@@ -2712,9 +2724,9 @@ State 158
 
 State 159
 
-   91 loop_stmt: LOOP $@13 func_stmts END LOOP •
+   92 loop_stmt: LOOP $@13 func_stmts $@14 END • LOOP
 
-    $default  reduce using rule 91 (loop_stmt)
+    LOOP  shift, and go to state 168
 
 
 State 160
@@ -2728,7 +2740,7 @@ State 161
 
    28 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER • OF TYPE
 
-    OF  shift, and go to state 168
+    OF  shift, and go to state 169
 
 
 State 162
@@ -2753,7 +2765,7 @@ State 162
 
     const_dec         go to state 109
     var_dec           go to state 110
-    func_stmts        go to state 169
+    func_stmts        go to state 170
     func_stmt         go to state 112
     stmt              go to state 113
     BLOCK_stmt        go to state 38
@@ -2768,14 +2780,14 @@ State 163
 
    32 func_dec: PROCEDURE ID '(' args ')' $@8 func_stmts END • ID
 
-    ID  shift, and go to state 170
+    ID  shift, and go to state 171
 
 
 State 164
 
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' • '.' EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' • '.' EXPRESSION $@15 func_stmts $@16 END FOR
 
-    '.'  shift, and go to state 171
+    '.'  shift, and go to state 172
 
 
 State 165
@@ -2784,14 +2796,14 @@ State 165
 
     $default  reduce using rule 87 ($@12)
 
-    $@12  go to state 172
+    $@12  go to state 173
 
 
 State 166
 
    89 ELSE_stmt: END • IF
 
-    IF  shift, and go to state 173
+    IF  shift, and go to state 174
 
 
 State 167
@@ -2803,6 +2815,13 @@ State 167
 
 State 168
 
+   92 loop_stmt: LOOP $@13 func_stmts $@14 END LOOP •
+
+    $default  reduce using rule 92 (loop_stmt)
+
+
+State 169
+
    28 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF • TYPE
 
     BOOL    shift, and go to state 45
@@ -2810,26 +2829,26 @@ State 168
     INT     shift, and go to state 47
     STRING  shift, and go to state 48
 
-    TYPE  go to state 174
-
-
-State 169
-
-   30 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@7 func_stmts • END ID
-
-    END  shift, and go to state 175
+    TYPE  go to state 175
 
 
 State 170
+
+   30 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@7 func_stmts • END ID
+
+    END  shift, and go to state 176
+
+
+State 171
 
    32 func_dec: PROCEDURE ID '(' args ')' $@8 func_stmts END ID •
 
     $default  reduce using rule 32 (func_dec)
 
 
-State 171
+State 172
 
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' • EXPRESSION $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' • EXPRESSION $@15 func_stmts $@16 END FOR
 
     NOT          shift, and go to state 61
     ID           shift, and go to state 62
@@ -2841,11 +2860,11 @@ State 171
     '('          shift, and go to state 68
 
     const_val   go to state 69
-    EXPRESSION  go to state 176
+    EXPRESSION  go to state 177
     func_inv    go to state 71
 
 
-State 172
+State 173
 
    88 ELSE_stmt: ELSE $@12 • func_stmts END IF
 
@@ -2867,7 +2886,7 @@ State 172
 
     const_dec         go to state 109
     var_dec           go to state 110
-    func_stmts        go to state 177
+    func_stmts        go to state 178
     func_stmt         go to state 112
     stmt              go to state 113
     BLOCK_stmt        go to state 38
@@ -2878,28 +2897,28 @@ State 172
     loop_stmt         go to state 43
 
 
-State 173
+State 174
 
    89 ELSE_stmt: END IF •
 
     $default  reduce using rule 89 (ELSE_stmt)
 
 
-State 174
+State 175
 
    28 var_dec: VAR ID ':' ARRAY val_INTEGER '.' '.' val_INTEGER OF TYPE •
 
     $default  reduce using rule 28 (var_dec)
 
 
-State 175
+State 176
 
    30 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@7 func_stmts END • ID
 
-    ID  shift, and go to state 178
+    ID  shift, and go to state 179
 
 
-State 176
+State 177
 
    59 EXPRESSION: EXPRESSION • '+' EXPRESSION
    60           | EXPRESSION • '-' EXPRESSION
@@ -2914,7 +2933,7 @@ State 176
    70           | EXPRESSION • GE EXPRESSION
    71           | EXPRESSION • AND EXPRESSION
    72           | EXPRESSION • OR EXPRESSION
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION • $@14 func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION • $@15 func_stmts $@16 END FOR
 
     MOD  shift, and go to state 95
     AND  shift, and go to state 96
@@ -2930,28 +2949,28 @@ State 176
     '*'  shift, and go to state 107
     '/'  shift, and go to state 108
 
-    $default  reduce using rule 92 ($@14)
+    $default  reduce using rule 93 ($@15)
 
-    $@14  go to state 179
-
-
-State 177
-
-   88 ELSE_stmt: ELSE $@12 func_stmts • END IF
-
-    END  shift, and go to state 180
+    $@15  go to state 180
 
 
 State 178
+
+   88 ELSE_stmt: ELSE $@12 func_stmts • END IF
+
+    END  shift, and go to state 181
+
+
+State 179
 
    30 func_dec: FUNCTION ID '(' args ')' ':' TYPE $@7 func_stmts END ID •
 
     $default  reduce using rule 30 (func_dec)
 
 
-State 179
+State 180
 
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 • func_stmts END FOR
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 • func_stmts $@16 END FOR
 
     VAR     shift, and go to state 4
     CONST   shift, and go to state 5
@@ -2971,7 +2990,7 @@ State 179
 
     const_dec         go to state 109
     var_dec           go to state 110
-    func_stmts        go to state 181
+    func_stmts        go to state 182
     func_stmt         go to state 112
     stmt              go to state 113
     BLOCK_stmt        go to state 38
@@ -2982,36 +3001,45 @@ State 179
     loop_stmt         go to state 43
 
 
-State 180
+State 181
 
    88 ELSE_stmt: ELSE $@12 func_stmts END • IF
 
-    IF  shift, and go to state 182
-
-
-State 181
-
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts • END FOR
-
-    END  shift, and go to state 183
+    IF  shift, and go to state 183
 
 
 State 182
+
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts • $@16 END FOR
+
+    $default  reduce using rule 94 ($@16)
+
+    $@16  go to state 184
+
+
+State 183
 
    88 ELSE_stmt: ELSE $@12 func_stmts END IF •
 
     $default  reduce using rule 88 (ELSE_stmt)
 
 
-State 183
-
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END • FOR
-
-    FOR  shift, and go to state 184
-
-
 State 184
 
-   93 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@14 func_stmts END FOR •
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 • END FOR
 
-    $default  reduce using rule 93 (loop_stmt)
+    END  shift, and go to state 185
+
+
+State 185
+
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END • FOR
+
+    FOR  shift, and go to state 186
+
+
+State 186
+
+   95 loop_stmt: FOR opt_r ID ':' EXPRESSION '.' '.' EXPRESSION $@15 func_stmts $@16 END FOR •
+
+    $default  reduce using rule 95 (loop_stmt)

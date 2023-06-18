@@ -3,8 +3,14 @@ begin
     var j:int
     var i:int
     if (false) then
-        i := 5
+        i := 1
+        if (false) then
+            i := 2
+        else
+            i := 3
+        end if
+        put ("hello world")
     else
-        i := 10
-    end if
+        i := 4
+    end if    
 end

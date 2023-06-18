@@ -5,14 +5,26 @@ class empty
 	max_locals 15
 	{
 		iconst_0
-		ifeq L0
-		sipush 5
-		istore 2
-		goto L1
-		L0:
-		sipush 10
-		istore 2
-		L1:
+ifeq L0
+		sipush 1
+istore 2
+		iconst_0
+ifeq L2
+		sipush 2
+istore 2
+goto L3
+L2:
+		sipush 3
+istore 2
+L3:
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "hello world"
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+goto L1
+L0:
+		sipush 4
+istore 2
+L1:
 		return
 	}
 }

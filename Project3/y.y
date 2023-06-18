@@ -25,6 +25,13 @@ int result_stmt = 0;
 
 int counter_local_var = 0; // for project3
 int label_index=0;
+stack<int> st_label;
+
+//int label_used=0;
+
+
+
+
 bool isConst_Exp = 0;
 
 
@@ -377,6 +384,11 @@ EXIT_STMT :  EXIT
             {
                 Trace("Find EXIT with expression");
                 if($3->d_type != BOOL_TYPE)yyerror("<ERROR> EXIT WHEN EXPRESSION, EXPRESSION SHOULD BE BOOL_EXPR");
+
+                int index=st_label.top();
+                out_f << "ifne L" << index+1 << "\n";
+
+
             }
             ;
 
@@ -493,6 +505,8 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+
+
                 if(!isConst_Exp){
                     out_f << "isub\n";
                     out_f << "ifgt L" << label_index << "\n";
@@ -810,7 +824,14 @@ conditional_stmt:   IF EXPRESSION THEN
                     {                    
                         stb_list.create_table();
                         // jump to L0
-                        out_f << "ifeq L" <<label_index << "\n"; 
+                        //label_temp = label_index;
+
+                        st_label.push(label_index);
+                        out_f << "ifeq L" << label_index << "\n";
+                        label_index+=2;
+
+
+                        //label_max_tmp = max(label_index,label_max_tmp);
                     }
                     func_stmts ELSE_stmt
                     {
@@ -826,42 +847,103 @@ ELSE_stmt: ELSE
             stb_list.popTable();
             stb_list.create_table();
             //jump to lexit
-            out_f << "goto L" << label_index+1 << "\n";
-            out_f << "L" << label_index <<":\n";
-
             
+            int index = st_label.top();
+            //int base = label_index - (label_used);
+            out_f << "goto L" << index+1 << "\n";
+            out_f << "L" << index <<":\n";
+        
         } func_stmts END IF 
         {
             Trace("if-ELSE stmt");
             stb_list.popTable();
-            out_f << "L" << label_index+1 << ":\n";
-            label_index += 2;
+            
+            //int base = label_index - (label_used);
+            
+            int index = st_label.top();
+            out_f << "L" << index+1 << ":\n";
+            
+            st_label.pop();
+         
         }
         | END IF 
         {
             Trace("if stmt");
             stb_list.popTable();
-            out_f << "L" << label_index << ":\n";
-            label_index += 1;
+
+            //int base = label_index - (label_used);
+
+            int index = st_label.top();
+            out_f << "L" << index << ":\n";
+
+            st_label.pop();
+
+            //label_index += 1; // should be modified (due to Nested if)
+            
+            //label_index-=2;
+           
         }
         ;
 
 loop_stmt: LOOP 
             {
                 stb_list.create_table();
-            }func_stmts END LOOP
+                st_label.push(label_index);
+                out_f << "L" << label_index <<":" << "\n"; // begin
+                label_index+=2;
+            }func_stmts 
+            {
+                int index= st_label.top();
+                out_f << "goto L" << index  << "\n";
+            }
+            END LOOP
             {
                 Trace("loop");
                 stb_list.popTable();
+                int index= st_label.top();
+                out_f << "L" << index+1 << ":" << "\n";
+                st_label.pop();
             }
         |   FOR opt_r ID':' EXPRESSION'.''.'EXPRESSION 
             {
+                Info* id = stb_list.lookup(*$3);
+                if(id==NULL)yyerror("<ERROR> can't find identifier definition");
                 if($5->f_type != CONST_f || $8->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
                 stb_list.create_table();
-            }func_stmts END FOR
+                
+                // decreasing index check?
+
+                out_f << "sipush " << getValue_IntBool(*$5) << "\n";
+                out_f << "istore " << id->index_local << "\n";
+
+                st_label.push(label_index);
+
+                out_f << "L" << label_index << ":\n";
+                out_f << "iload " << id->index_local << "\n";
+                out_f << "sipush " << getValue_IntBool(*$8) << "\n";
+                out_f << "isub\n";
+                out_f << "ifgt L" << label_index+1 << "\n"; // for increasing, decreasing(iflt)
+
+
+                label_index+=2;
+            }func_stmts 
+            {
+                Info* id = stb_list.lookup(*$3);
+                int index= st_label.top();
+                out_f << "iload " << id->index_local << "\n";
+                out_f << "sipush 1" << "\n"; // increase 1
+                out_f << "iadd\n";
+                out_f << "istore " << id->index_local << "\n";
+                out_f << "goto L" << index << "\n";
+            }
+            END FOR
             {
                 Trace("For loop");
                 stb_list.popTable();
+                int index= st_label.top();
+
+                st_label.pop();
+                out_f << "L" << index+1 << ":\n";
             }
         ;
 
