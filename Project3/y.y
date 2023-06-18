@@ -23,6 +23,11 @@ Symboltable_List stb_list;
 
 int result_stmt = 0;
 
+int counter_local_var = 0; // for project3
+int label_index=0;
+bool isConst_Exp = 0;
+
+
 %}
 
 %union{
@@ -63,7 +68,28 @@ int result_stmt = 0;
 
 
 %%
-program:  {out_f << "class example\n{";}dec_stmts stmts {out_f << "}"; out_f.close();};
+program:   
+        {
+            out_f << "class " << out_name.substr(0,out_name.find(".")) << "\n{\n";
+        }
+        dec_stmts 
+        {
+            // enter main block
+            out_f << "\tmethod public static void main(java.lang.String[])\n";
+            out_f << "\tmax_stack 15\n";
+            out_f << "\tmax_locals 15\n";
+            out_f << "\t{\n";
+
+        }
+        stmts
+        {
+            out_f << "\t\treturn\n";
+            out_f << "\t}\n";
+            out_f << "}";
+            out_f.close();
+        }
+
+        ;
 
 dec_stmts:  dec_stmt dec_stmts
         | 
@@ -79,29 +105,31 @@ dec_stmt: var_dec
         | func_dec
         ;
 
-const_dec:  CONST ID AS EXPRESSION
+const_dec:  CONST ID AS{isConst_Exp=1;} EXPRESSION
         {
             Trace("constant declaration without type declaration");
-            if($4->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
+            if($5->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             //$4->name = *$2;
-            Info tmp = *$4;
+            Info tmp = *$5;
             tmp.name = *$2;
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
+            isConst_Exp=0;
             //tb.dump();
         }
-        | CONST ID ':'TYPE AS EXPRESSION
+        | CONST ID ':'TYPE AS{isConst_Exp=1;} EXPRESSION
         {
             Trace("constant declaration with type declaration");
-            if($6->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
+            if($7->f_type != CONST_f) yyerror("<ERROR> expression should be constant");
             // check expression type
-            if($6->d_type != $4) yyerror("type is not compatible");
+            if($7->d_type != $4) yyerror("type is not compatible");
             //$6->name = *$2;
-            Info tmp = *$6;
+            Info tmp = *$7;
             tmp.name = *$2;
             tmp.d_type = $4;
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) ==-1)yyerror("<ERROR> identifier already exists");
+            isConst_Exp=0;
             //tb.dump();
         }
         ;
@@ -130,32 +158,56 @@ var_dec: VAR ID ':'TYPE
             Trace("variable declaration without value initialization");
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(Info(*($2),$4,VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
+            if(stb_list.isGlobal()){
+                out_f << "\t" << "field static " << getType($4) << " " << *$2 << "\n"; // global
+            }else{
+                Info* data = tb->getInfo(tb->lookup(*$2));
+                data->index_local = counter_local_var++;
+            }
         }
-        | VAR ID ':'TYPE AS EXPRESSION
+        | VAR ID ':'TYPE AS{isConst_Exp=1;} EXPRESSION
         {
             Trace("variable declaration with value initialization and type");
-
-
-            Info tmp = *$6;
+            isConst_Exp=0;
+            Info tmp = *$7;
             if(tmp.d_type != $4)  yyerror("<ERROR> Type not compatible");
             if(tmp.f_type != CONST_f) yyerror("<ERROR> expression should be constant_expr");
             Symboltable* tb = stb_list.getCurrentTable();
             tmp.name = *$2;
             tmp.f_type = VAR_f;
             if(tb->Insert(tmp)  == -1) yyerror("<ERROR> identifier already exists");
+            if(stb_list.isGlobal()){
+                out_f << "\t" << "field static " << getType($4) << " " << *$2 << " = " << getValue_IntBool(tmp) <<"\n";
+            }else{
+                Info* data = tb->getInfo(tb->lookup(*$2));
+                data->index_local = counter_local_var;
+                out_f << "\t\t" << "sipush " << getValue_IntBool(*data) <<"\n";
+                out_f << "\t\t" << "istore " << counter_local_var << "\n";
+                ++counter_local_var;
+            }
         }
-        | VAR ID AS EXPRESSION
+        | VAR ID AS{isConst_Exp=1;} EXPRESSION
         {
             Trace("variable declaration iwth value initialization but not type");
+            isConst_Exp=0;
             //$4->name = *$2;
             //$4->f_type = VAR_f;
-            Info tmp = *$4;
+            Info tmp = *$5;
             if(tmp.f_type != CONST_f) yyerror("<ERROR> expression should be constant_expr");
             tmp.name = *$2;
             tmp.f_type = VAR_f;
             
             Symboltable* tb = stb_list.getCurrentTable();
             if(tb->Insert(tmp) == -1)yyerror("<ERROR> identifier already exists");
+            if(stb_list.isGlobal()){
+                out_f << "\t" << "field static " << getType(tmp.d_type) << " " << *$2 << " = " << getValue_IntBool(tmp) <<"\n";
+            }else{
+                Info* data = tb->getInfo(tb->lookup(*$2));
+                data->index_local = counter_local_var;
+                out_f << "\t\t" << "sipush " << getValue_IntBool(*data) <<"\n";
+                out_f << "\t\t" << "istore " << counter_local_var << "\n";
+                ++counter_local_var;
+            }
         }   
         | VAR ID ':' ARRAY val_INTEGER '.''.' val_INTEGER OF TYPE
         {
@@ -266,10 +318,23 @@ simple_stmt: ID AS EXPRESSION
                 if(id == NULL) yyerror("<ERROR> identifier not exists");
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
                 if(sameType(*id,*$3) == 0) yyerror("type is not compatible"); // array?
+                if(id->isGlobalVar == 1){
+                    out_f << "putstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + id->name << "\n";
+                }else{
+                    out_f << "istore " << id->index_local << "\n";
+                }
             }
-            | PUT EXPRESSION
+            | PUT
+            {
+                out_f << "getstatic java.io.PrintStream java.lang.System.out\n";
+            } EXPRESSION
             {
                 Trace("Find PUT");
+                if($3->d_type ==INT_TYPE || $3->d_type == BOOL_TYPE){
+                    out_f << "invokevirtual void java.io.PrintStream.print(int)\n";
+                }else{ // string
+                    out_f << "invokevirtual void java.io.PrintStream.print(java.lang.String)\n";
+                }
             }
             | GET ID
             {
@@ -298,6 +363,8 @@ simple_stmt: ID AS EXPRESSION
             | SKIP
             {
                 Trace("Find skip");
+                out_f << "getstatic java.io.PrintStream java.lang.System.out\n";
+                out_f << "invokevirtual void java.io.PrintStream.println()\n";
             }
             | proc_inv
             ;
@@ -330,6 +397,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",$1->d_type,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "iadd\n";
             }
         |   EXPRESSION '-' EXPRESSION
             {
@@ -348,6 +416,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",$1->d_type,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "isub\n";
             }    
         |   EXPRESSION '*' EXPRESSION
             {
@@ -366,6 +435,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",$1->d_type,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "imul\n";
             }
         |   EXPRESSION '/' EXPRESSION
             {
@@ -383,6 +453,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",$1->d_type,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "idiv\n";
             }
         |   '-' EXPRESSION %prec UMINUS
             {
@@ -391,6 +462,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 if($2->f_type == ARRAY_f) yyerror("unary minus is not support array");
 
                 $$ = ($2->d_type == INT_TYPE) ? new Info("",INT_TYPE,$2->f_type,-$2->i_v): new Info("",REAL_TYPE,$2->f_type,-$2->r_v);
+                if(!isConst_Exp)out_f << "ineg\n";
             }
         |   EXPRESSION MOD EXPRESSION
             {
@@ -403,6 +475,8 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",INT_TYPE,VAR_f);
                 }
+
+                if(!isConst_Exp)out_f << "irem\n";
             }
         |   EXPRESSION '>' EXPRESSION
             {
@@ -419,6 +493,16 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "ifgt L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
+                }
+
             }
         |   EXPRESSION '<' EXPRESSION
             {
@@ -434,6 +518,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                     }
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "iflt L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
                 }
             }
         |   EXPRESSION '=' EXPRESSION
@@ -451,6 +544,17 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "ifeq L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
+                }
+
             }
         |   EXPRESSION NE EXPRESSION
             {
@@ -466,6 +570,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                     }
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
+                }
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "ifne L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
                 }
             }
         |   EXPRESSION LE EXPRESSION
@@ -483,6 +596,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "ifle L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
+                }
             }
         |   EXPRESSION GE EXPRESSION
             {
@@ -499,6 +621,15 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                if(!isConst_Exp){
+                    out_f << "isub\n";
+                    out_f << "ifge L" << label_index << "\n";
+                    out_f << "iconst_0" << "\n";
+                    out_f << "goto L" << label_index+1 << "\n";
+                    out_f << "L" << label_index << ": iconst_1\n";
+                    out_f << "L" << label_index+1 << ":\n";
+                    label_index+=2;
+                }
             }
         |   EXPRESSION AND EXPRESSION
             {
@@ -511,6 +642,9 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                
+                if(!isConst_Exp)out_f << "iand\n";
+
             }
         |   EXPRESSION OR EXPRESSION
             {
@@ -523,6 +657,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "ior\n";
             }
         |   NOT EXPRESSION
             {
@@ -534,22 +669,67 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
+                if(!isConst_Exp)out_f << "ixor\n";
             }
         |   '(' EXPRESSION ')'
             {
                 $$ = $2;
             }
-        |   const_val {Trace("const_value");}
+        |   const_val 
+            {
+                Trace("const_value");
+                // what if const variable declaration?
+                if(!isConst_Exp){
+                    switch($1->d_type){
+                        case INT_TYPE:
+                            out_f << "\t\t" << "sipush " << getValue_IntBool(*$1) << "\n";
+                            break;
+                        case STR_TYPE:
+                            out_f << "\t\t" << "ldc " <<"\"" +*($1->s_v)+"\"" << "\n";
+                            break;
+                        case BOOL_TYPE:
+                            out_f << "\t\t" << "iconst_" << getValue_IntBool(*$1) << "\n";
+                            break;
+                        default:
+                            cout << "Not support for real type" << endl;
+                            exit(1);
+                    }
+                }
+            }
         |   ID 
             {
-                //Symboltable* tb = stb_list.getCurrentTable(); 
-                //int idx = tb->lookup(*$1);
-                //if(idx == -1) yyerror("ID not exists");
-                //$$ = tb->getInfo(idx);
                 Info* id = stb_list.lookup(*$1);
                 if(id == NULL) yyerror("ID not exists");
                 if(id->f_type == FUNC_f) yyerror("func invocation error");
                 $$ = id;           
+                
+                if(id->f_type == CONST_f){
+                    // iconst_value for bool
+                    // sipush for int
+                    // ldc for string
+                    switch(id->d_type){
+                        case INT_TYPE:
+                            out_f << "\t\t" << "sipush " << getValue_IntBool(*id) << "\n";
+                            break;
+                        case STR_TYPE:
+                            out_f << "\t\t" << "ldc " <<"\"" +*(id->s_v)+"\"" << "\n";
+                            break;
+                        case BOOL_TYPE:
+                            out_f << "\t\t" << "iconst_" << getValue_IntBool(*id) << "\n";
+                            break;
+                        default:
+                            cout << "Not support for real type" << endl;
+                            exit(1);
+                    }
+                }else{
+                    if(id->isGlobalVar == 1){
+                        string tmp = out_name.substr(0,out_name.find(".")) + "." + id->name; // example.a
+                        out_f << "\t\t" << "getstatic " << getType(id->d_type) << " " << tmp << "\n";
+                    }else{
+                        int local_var_number = id->index_local;
+                        out_f << "\t\t" << "iload " << local_var_number << "\n";
+                    }
+                }
             }
         |   ID'['EXPRESSION']'
             {
@@ -626,14 +806,44 @@ actual_param: EXPRESSION
             ;
 
 
-conditional_stmt:   IF{stb_list.create_table();} EXPRESSION THEN func_stmts ELSE_stmt
+conditional_stmt:   IF EXPRESSION THEN
+                    {                    
+                        stb_list.create_table();
+                        // jump to L0
+                        out_f << "ifeq L" <<label_index << "\n"; 
+                    }
+                    func_stmts ELSE_stmt
                     {
-                        if($3->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
+                        // jump to L1 ? (Lexit)
+                        // if stmt (Lexit = L0)
+                        // if-else (Lexit != L0)
+                        if($2->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
                     }
                 ;
 
-ELSE_stmt: ELSE{stb_list.popTable();stb_list.create_table();} func_stmts END IF {Trace("if-ELSE stmt");stb_list.popTable();}
-        | END IF {Trace("if stmt");stb_list.popTable();}
+ELSE_stmt: ELSE
+        {
+            stb_list.popTable();
+            stb_list.create_table();
+            //jump to lexit
+            out_f << "goto L" << label_index+1 << "\n";
+            out_f << "L" << label_index <<":\n";
+
+            
+        } func_stmts END IF 
+        {
+            Trace("if-ELSE stmt");
+            stb_list.popTable();
+            out_f << "L" << label_index+1 << ":\n";
+            label_index += 2;
+        }
+        | END IF 
+        {
+            Trace("if stmt");
+            stb_list.popTable();
+            out_f << "L" << label_index << ":\n";
+            label_index += 1;
+        }
         ;
 
 loop_stmt: LOOP 
@@ -692,7 +902,7 @@ int main(int argc , char*argv[])
 
     if(dot_pos != string::npos && out_name.substr(dot_pos) == ".st"){
         out_name = out_name.replace(dot_pos+1,2,"jasm");
-
+        
         out_f.open(out_name);
         if(!out_f.is_open()){
             cout << "unable to write file";
@@ -706,7 +916,7 @@ int main(int argc , char*argv[])
 
 
     yyparse();
-
+    stb_list.dumpAllTable();
 
     return 0;
 }

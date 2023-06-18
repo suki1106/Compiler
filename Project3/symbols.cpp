@@ -13,6 +13,8 @@ Info::~Info(){
 
 }
 
+
+
 // without initial value
 Info::Info(string name, data_type d_type, form_type f_type){
     this->name = name;
@@ -34,7 +36,9 @@ Info::Info(string name, data_type d_type, form_type f_type){
             break;
     }
 }
-
+int getValue_IntBool(const Info& info){
+    return info.d_type == INT_TYPE ? info.i_v : info.b_v ;
+}
 bool sameType(Info a,Info b){
     if(a.f_type == ARRAY_f || b.f_type == ARRAY_f){
         if(a.f_type == b.f_type && a.d_type == b.d_type && a.size == b.size){
@@ -49,6 +53,7 @@ bool sameType(Info a,Info b){
 
 Symboltable::Symboltable(){
     index=0;
+    isGlobalScope=0;
 }
 
 Symboltable::~Symboltable(){
@@ -66,7 +71,10 @@ int Symboltable::Insert(Info id){
         identifiers[index].d_type = id.d_type;
         identifiers[index].f_type = id.f_type;
         identifiers[index].size = id.size;
-
+        if(this->isGlobalScope)
+            identifiers[index].isGlobalVar = 1;
+        else
+            identifiers[index].isGlobalVar = 0;
         if(id.f_type != FUNC_f){
         
             switch (id.d_type) {
@@ -93,37 +101,37 @@ int Symboltable::Insert(Info id){
     }
 }
 
-int Symboltable::Insert(string id,data_type d_type, form_type f_type,value v){
-    if( table.find(id) != table.end() ){
-        table[id] = index;
+// int Symboltable::Insert(string id,data_type d_type, form_type f_type,value v){
+//     if( table.find(id) == table.end() ){
+//         table[id] = index;
 
-        this->identifiers.push_back(Info());
+//         this->identifiers.push_back(Info());
         
-        identifiers[index].name = id;
-        identifiers[index].d_type = d_type;
-        identifiers[index].f_type = f_type;
+//         identifiers[index].name = id;
+//         identifiers[index].d_type = d_type;
+//         identifiers[index].f_type = f_type;
         
-        switch (d_type) {
-            case INT_TYPE:
-                identifiers[index].i_v = v.i_v;
-                break;
-            case BOOL_TYPE:
-                identifiers[index].b_v = v.b_v;
-                break;
-            case STR_TYPE:
+//         switch (d_type) {
+//             case INT_TYPE:
+//                 identifiers[index].i_v = v.i_v;
+//                 break;
+//             case BOOL_TYPE:
+//                 identifiers[index].b_v = v.b_v;
+//                 break;
+//             case STR_TYPE:
 
-                identifiers[index].s_v = v.s_v;
-                break;
-            case REAL_TYPE:
-                identifiers[index].r_v = v.r_v;
-                break;
-        }
-        return index++;   
-    }else{
-        // already exists
-        return -1;
-    }
-}
+//                 identifiers[index].s_v = v.s_v;
+//                 break;
+//             case REAL_TYPE:
+//                 identifiers[index].r_v = v.r_v;
+//                 break;
+//         }
+//         return index++;   
+//     }else{
+//         // already exists
+//         return -1;
+//     }
+// }
 
 Info* Symboltable::getInfo(int index){
     return (index < this->identifiers.size())? &identifiers[index] :  NULL; 
@@ -136,7 +144,27 @@ int Symboltable::lookup(string id){
         return -1;
     }
 }
-
+string getType(int Type){
+    switch (Type) {
+            case INT_TYPE:
+                return "int";
+                break;
+            case BOOL_TYPE:
+                return "bool";
+                break;
+            case STR_TYPE:            
+                return "string";
+                break;
+            case REAL_TYPE:
+                return "real";
+                break;
+            case VOID_TYPE:
+                return "void";
+            default:
+                return "ERROR!";
+                break;
+        }
+}
 string Symboltable::getType(int Type){
     switch (Type) {
             case INT_TYPE:
@@ -200,19 +228,24 @@ void Symboltable::dump(){
             cout << setw(20);
             switch (id.d_type) {
                 case INT_TYPE:
-                    cout  <<id.i_v << endl;
+                    cout  <<id.i_v;
                     break;
                 case BOOL_TYPE:
-                    cout   << id.b_v << endl;
+                    cout   << id.b_v;
                     break;
                 case STR_TYPE:
-                    if(id.s_v != NULL)cout << *(id.s_v) << endl;
-                    else cout  << "\"\"" << endl; //empty string
+                    if(id.s_v != NULL)cout << *(id.s_v);
+                    else cout  << "\"\"";//empty string
                     break;
                 case REAL_TYPE:
-                    cout  << id.r_v << endl;
+                    cout  << id.r_v ;
                     break;
             }
+            //for test
+            if(id.f_type == VAR_f)
+                cout << "\t" << id.index_local;
+            cout << endl;
+
         }else{
             // print formal parameters
             //cout << "\tsize:" << id.params.size();
@@ -232,6 +265,7 @@ void Symboltable::dump(){
 Symboltable_List::Symboltable_List(){
     Symboltables.push_back(Symboltable());
     this->index=0;
+    Symboltables[0].setGlobal();
     st.push(this->index);
 }
 
