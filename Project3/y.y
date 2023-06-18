@@ -64,6 +64,7 @@ bool isConst_Exp = 0;
 
 %type <d_t> TYPE
 %type <Inf> EXPRESSION const_val func_inv
+%type <b_v> opt_r
 
 %left OR
 %left AND
@@ -82,6 +83,8 @@ program:
         dec_stmts 
         {
             // enter main block
+            counter_local_var=0;
+
             out_f << "\tmethod public static void main(java.lang.String[])\n";
             out_f << "\tmax_stack 15\n";
             out_f << "\tmax_locals 15\n";
@@ -229,7 +232,6 @@ var_dec: VAR ID ':'TYPE
 func_dec: FUNCTION ID '('args')'':'TYPE
         {
             //if(*$2 != *$11) yyerror("<ERROR> Func declaration error");
-
             Trace("Func declaration");
 
             Symboltable* tb = stb_list.getCurrentTable();
@@ -238,10 +240,30 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             // create new symbol table and switch
             stb_list.create_table();
             tb = stb_list.getCurrentTable(); // copy constructor?
-            for(auto& arg:args_info)
-                tb->Insert(Info(arg.name,arg.d_type,VAR_f)); // insert arg into table
-            
+
+
+            for(auto& arg:args_info){
+                Info data = Info(arg.name,arg.d_type,VAR_f);
+                data.index_local = counter_local_var++;
+                tb->Insert(data); // insert arg into table
+            }
             //tb->printTableSize();
+
+
+            out_f << "method public static int " << *$2 << "(";
+
+            for(int i = 0 ; i != args_info.size();i++){
+                out_f << getType(args_info[i].d_type);
+                if(i != args_info.size()-1)out_f << ",";
+            }
+            out_f << ")\n";
+
+            
+            out_f << "\tmax_stack 15\n";
+            out_f << "\tmax_locals 15\n";
+            out_f << "\t{\n";
+
+
             args_info.clear();
         } 
         func_stmts END ID
@@ -251,7 +273,11 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             if(result_stmt == 0) yyerror("<ERROR> Function should return value");
             
             result_stmt=0;
-            stb_list.dumpCurrentTable();
+            counter_local_var=0;
+            //stb_list.dumpCurrentTable();
+
+            out_f << "\t}\n";
+            
             stb_list.popTable();
         }
         | PROCEDURE ID '('args')' 
@@ -264,14 +290,36 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             //create new table and switch, store args info in new table
             stb_list.create_table();
             tb = stb_list.getCurrentTable();
-            for(auto& arg:args_info)
-                tb->Insert(Info(arg.name,arg.d_type,VAR_f)); // store parameter info     
-            //tb->printTableSize();
+
+            for(auto& arg:args_info){
+                Info data = Info(arg.name,arg.d_type,VAR_f);
+                data.index_local = counter_local_var++;
+                tb->Insert(data); // insert arg into table
+            }
+
+            out_f << "method public static void " << *$2 << "(";
+
+            for(int i = 0 ; i != args_info.size();i++){
+                out_f << getType(args_info[i].d_type);
+                if(i != args_info.size()-1)out_f << ",";
+            }
+
+
+            out_f << ")\n";
+
+            
+            out_f << "\tmax_stack 15\n";
+            out_f << "\tmax_locals 15\n";
+            out_f << "\t{\n";
             args_info.clear();
+            
         }func_stmts END ID
         {
             if(*$2 != *$9) yyerror("<ERROR> Procedure declaration error");
-            stb_list.dumpCurrentTable();
+
+            counter_local_var=0;
+            //stb_list.dumpCurrentTable();
+            out_f << "\t}\n";
             stb_list.popTable();
         }
         ;
@@ -361,10 +409,13 @@ simple_stmt: ID AS EXPRESSION
                 if(func_info== NULL || func_info->f_type != FUNC_f) yyerror("could't find function declaration");
                 if($2->d_type != func_info->d_type)yyerror("function return type is not compatible");
                 // check function type
+
+                out_f << "ireturn\n";
             }
             | RETURN
             {
                 Trace("Find RETURN");
+                out_f << "return\n";
             }
             | EXIT_STMT
             | SKIP
@@ -781,6 +832,13 @@ func_inv: ID '('actual_params')'
             }
             params.clear();
             $$ = new Info("",func_info->d_type,VAR_f);
+
+            out_f << "invokestatic " << getType(func_info->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + func_info->name + "(";
+            for(int i =0 ; i<func_info->params.size();i++){
+                out_f << getType(func_info->params[i].d_type);
+                if(i!=func_info->params.size()-1)out_f << ", ";
+            }
+            out_f << ")\n";
         }
         ;
 
@@ -804,6 +862,13 @@ proc_inv: ID '('actual_params')'
             }
             params.clear();
             //$$ = new Info("",func_info->d_type,VAR_f);
+            
+            out_f << "invokestatic " << getType(func_info->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + func_info->name + "(";
+            for(int i =0 ; i<func_info->params.size();i++){
+                out_f << getType(func_info->params[i].d_type);
+                if(i!=func_info->params.size()-1)out_f << ", ";
+            }
+            out_f << ")\n";
         }
         ;
 
@@ -912,6 +977,12 @@ loop_stmt: LOOP
                 stb_list.create_table();
                 
                 // decreasing index check?
+                
+                
+                if($2 == 1 && getValue_IntBool(*$5) < getValue_IntBool(*$8) ){
+                    // decreasing
+                    yyerror("<ERROR>First expression should greater than second one");
+                }
 
                 out_f << "sipush " << getValue_IntBool(*$5) << "\n";
                 out_f << "istore " << id->index_local << "\n";
@@ -922,7 +993,13 @@ loop_stmt: LOOP
                 out_f << "iload " << id->index_local << "\n";
                 out_f << "sipush " << getValue_IntBool(*$8) << "\n";
                 out_f << "isub\n";
-                out_f << "ifgt L" << label_index+1 << "\n"; // for increasing, decreasing(iflt)
+
+                if($2!=0){
+                    out_f << "ifgt L" << label_index+1 << "\n"; 
+                }else{
+                    out_f << "iflt L" << label_index+1 << "\n"; 
+                }
+                
 
 
                 label_index+=2;
@@ -931,8 +1008,13 @@ loop_stmt: LOOP
                 Info* id = stb_list.lookup(*$3);
                 int index= st_label.top();
                 out_f << "iload " << id->index_local << "\n";
-                out_f << "sipush 1" << "\n"; // increase 1
-                out_f << "iadd\n";
+                out_f << "sipush 1" << "\n";
+                if($2==0){
+                    out_f << "iadd\n";
+                }else{
+                    // decreasing
+                    out_f << "isub\n";
+                }
                 out_f << "istore " << id->index_local << "\n";
                 out_f << "goto L" << index << "\n";
             }
@@ -947,8 +1029,8 @@ loop_stmt: LOOP
             }
         ;
 
-opt_r: DECREASING
-        | 
+opt_r: DECREASING {$$=1;}
+        | {$$=0;}
         ;
 
 

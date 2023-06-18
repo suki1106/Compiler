@@ -344,7 +344,7 @@ Nonterminals, with rules where they appear
     $@16 (100)
         on left: 94
         on right: 95
-    opt_r (101)
+    opt_r <b_v> (101)
         on left: 96 97
         on right: 95
 
