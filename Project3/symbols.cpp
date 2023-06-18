@@ -71,6 +71,7 @@ int Symboltable::Insert(Info id){
         identifiers[index].d_type = id.d_type;
         identifiers[index].f_type = id.f_type;
         identifiers[index].size = id.size;
+        identifiers[index].index_local = id.index_local; 
         if(this->isGlobalScope)
             identifiers[index].isGlobalVar = 1;
         else

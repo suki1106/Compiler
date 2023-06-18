@@ -238,17 +238,19 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             if(tb->Insert(Info(*$2,$7,FUNC_f,args_info) ) ==-1)yyerror("<ERROR> identifier already exists");
             
             // create new symbol table and switch
-            stb_list.create_table();
-            tb = stb_list.getCurrentTable(); // copy constructor?
 
+            stb_list.create_table();
+            tb = stb_list.getCurrentTable(); 
 
             for(auto& arg:args_info){
                 Info data = Info(arg.name,arg.d_type,VAR_f);
+                cout << "local_var:" <<counter_local_var << "\n";
                 data.index_local = counter_local_var++;
+                //cout << data.index_local;
                 tb->Insert(data); // insert arg into table
             }
             //tb->printTableSize();
-
+            tb->dump();
 
             out_f << "method public static int " << *$2 << "(";
 
@@ -862,7 +864,7 @@ proc_inv: ID '('actual_params')'
             }
             params.clear();
             //$$ = new Info("",func_info->d_type,VAR_f);
-            
+
             out_f << "invokestatic " << getType(func_info->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + func_info->name + "(";
             for(int i =0 ; i<func_info->params.size();i++){
                 out_f << getType(func_info->params[i].d_type);

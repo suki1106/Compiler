@@ -553,6 +553,7 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #include "y.tab.hpp"
@@ -570,12 +571,12 @@ using namespace std;
 int linenum = 1;
 char buf[MAX_LINE_LENG];
 char strbuf[MAX_LINE_LENG];
+//ofstream out_f;
 
 
+#line 578 "lex.yy.cpp"
 
-#line 577 "lex.yy.cpp"
-
-#line 579 "lex.yy.cpp"
+#line 580 "lex.yy.cpp"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -794,10 +795,10 @@ YY_DECL
 		}
 
 	{
-#line 42 "Project1.lex"
+#line 43 "Project1.lex"
 
 
-#line 801 "lex.yy.cpp"
+#line 802 "lex.yy.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -856,282 +857,282 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 44 "Project1.lex"
+#line 45 "Project1.lex"
 {token('.'); return yytext[0];}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 45 "Project1.lex"
+#line 46 "Project1.lex"
 {token(','); return yytext[0];}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "Project1.lex"
+#line 47 "Project1.lex"
 {token(":"); return yytext[0];}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "Project1.lex"
+#line 48 "Project1.lex"
 {token(";"); return yytext[0];}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 48 "Project1.lex"
+#line 49 "Project1.lex"
 {token('('); return yytext[0];}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 49 "Project1.lex"
+#line 50 "Project1.lex"
 {token(')'); return yytext[0];}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "Project1.lex"
+#line 51 "Project1.lex"
 {token('['); return yytext[0];}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 51 "Project1.lex"
+#line 52 "Project1.lex"
 {token(']'); return yytext[0];}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 52 "Project1.lex"
+#line 53 "Project1.lex"
 {token('{'); return yytext[0];}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 53 "Project1.lex"
+#line 54 "Project1.lex"
 {token('}'); return yytext[0];}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 56 "Project1.lex"
+#line 57 "Project1.lex"
 {token('+'); return yytext[0];}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 57 "Project1.lex"
+#line 58 "Project1.lex"
 {token('-'); return yytext[0];}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 58 "Project1.lex"
+#line 59 "Project1.lex"
 {token('*'); return yytext[0];}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 59 "Project1.lex"
+#line 60 "Project1.lex"
 {token('/'); return yytext[0];}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 60 "Project1.lex"
+#line 61 "Project1.lex"
 {token('MOD'); return MOD;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 61 "Project1.lex"
+#line 62 "Project1.lex"
 {token(':='); return AS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 62 "Project1.lex"
+#line 63 "Project1.lex"
 {token('<'); return yytext[0];}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 63 "Project1.lex"
+#line 64 "Project1.lex"
 {token('<='); return LE;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 64 "Project1.lex"
+#line 65 "Project1.lex"
 {token('>='); return GE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 65 "Project1.lex"
+#line 66 "Project1.lex"
 {token('>'); return yytext[0];}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 66 "Project1.lex"
+#line 67 "Project1.lex"
 {token('='); return yytext[0];}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 67 "Project1.lex"
+#line 68 "Project1.lex"
 {token('not='); return NE;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 68 "Project1.lex"
+#line 69 "Project1.lex"
 {token('and'); return AND;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 69 "Project1.lex"
+#line 70 "Project1.lex"
 {token('or'); return OR;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 70 "Project1.lex"
+#line 71 "Project1.lex"
 {token('not'); return NOT;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 72 "Project1.lex"
+#line 73 "Project1.lex"
 {token(ARRAY); return ARRAY;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 73 "Project1.lex"
+#line 74 "Project1.lex"
 {token(BEGIN); return BEG;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 74 "Project1.lex"
+#line 75 "Project1.lex"
 {token(BOOL); return BOOL;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 75 "Project1.lex"
+#line 76 "Project1.lex"
 {token(CHAR); return CHAR;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 76 "Project1.lex"
+#line 77 "Project1.lex"
 {token(CONST); return CONST;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 77 "Project1.lex"
+#line 78 "Project1.lex"
 {token(DECREASING); return DECREASING;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 78 "Project1.lex"
+#line 79 "Project1.lex"
 {token(DEFAULT); return DEFAULT;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 79 "Project1.lex"
+#line 80 "Project1.lex"
 {token(DO); return DO;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 80 "Project1.lex"
+#line 81 "Project1.lex"
 {token(ELSE);return ELSE;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 81 "Project1.lex"
+#line 82 "Project1.lex"
 {token(END);return END;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 82 "Project1.lex"
+#line 83 "Project1.lex"
 {token(EXIT);return EXIT;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 83 "Project1.lex"
+#line 84 "Project1.lex"
 {token(FALSE); yylval.b_v = 0;return val_BOOL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 84 "Project1.lex"
+#line 85 "Project1.lex"
 {token(FOR); return FOR;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 85 "Project1.lex"
+#line 86 "Project1.lex"
 {token(FUNCTION); return FUNCTION;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 86 "Project1.lex"
+#line 87 "Project1.lex"
 {token(GET); return GET;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 87 "Project1.lex"
+#line 88 "Project1.lex"
 {token(IF); return IF;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 88 "Project1.lex"
+#line 89 "Project1.lex"
 {token(INT); return INT;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 89 "Project1.lex"
+#line 90 "Project1.lex"
 {token(LOOP); return LOOP;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 90 "Project1.lex"
+#line 91 "Project1.lex"
 {token(OF); return OF;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 91 "Project1.lex"
+#line 92 "Project1.lex"
 {token(PUT);return PUT;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 92 "Project1.lex"
+#line 93 "Project1.lex"
 {token(PROCEDURE); return PROCEDURE;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 93 "Project1.lex"
+#line 94 "Project1.lex"
 {token(REAL); return REAL;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 94 "Project1.lex"
+#line 95 "Project1.lex"
 {token(RESULT); return RESULT;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 95 "Project1.lex"
+#line 96 "Project1.lex"
 {token(RETURN); return RETURN;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 96 "Project1.lex"
+#line 97 "Project1.lex"
 {token(SKIP); return SKIP;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 97 "Project1.lex"
+#line 98 "Project1.lex"
 {token(STRING); return STRING;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 98 "Project1.lex"
+#line 99 "Project1.lex"
 {token(THEN); return THEN;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 99 "Project1.lex"
+#line 100 "Project1.lex"
 {token(TRUE); yylval.b_v= 1;return val_BOOL;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 100 "Project1.lex"
+#line 101 "Project1.lex"
 {token(VAR); return VAR;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 101 "Project1.lex"
+#line 102 "Project1.lex"
 {token(WHEN); return WHEN;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 104 "Project1.lex"
+#line 105 "Project1.lex"
 {
         tokenString(identifer,yytext);
         //yylval = insert(table,yytext);
@@ -1142,7 +1143,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 113 "Project1.lex"
+#line 114 "Project1.lex"
 {
                 tokenString(Real,yytext);
                 yylval.r_v = atof(yytext);        
@@ -1151,7 +1152,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 119 "Project1.lex"
+#line 120 "Project1.lex"
 {
         tokenString(Integer,yytext); 
         yylval.i_v = atoi(yytext);
@@ -1160,7 +1161,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 127 "Project1.lex"
+#line 128 "Project1.lex"
 {
         LIST;
         BEGIN STR;
@@ -1168,7 +1169,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 132 "Project1.lex"
+#line 133 "Project1.lex"
 {
         char c = yyinput();
         if(c == '"'){
@@ -1189,7 +1190,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 151 "Project1.lex"
+#line 152 "Project1.lex"
 {
         LIST;
         strcat(strbuf,yytext);
@@ -1197,14 +1198,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 156 "Project1.lex"
+#line 157 "Project1.lex"
 {
         LIST;
 }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 160 "Project1.lex"
+#line 161 "Project1.lex"
 {
         LIST;
         BEGIN COMMENT;
@@ -1212,7 +1213,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 166 "Project1.lex"
+#line 167 "Project1.lex"
 {
         LIST;
         BEGIN 0;
@@ -1221,7 +1222,7 @@ YY_RULE_SETUP
 case 65:
 /* rule 65 can match eol */
 YY_RULE_SETUP
-#line 172 "Project1.lex"
+#line 173 "Project1.lex"
 {
         LIST;
         printf("%d: %s", linenum++, buf);
@@ -1230,14 +1231,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 178 "Project1.lex"
+#line 179 "Project1.lex"
 {
         LIST;
 }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 182 "Project1.lex"
+#line 183 "Project1.lex"
 {
         LIST;
 }
@@ -1245,28 +1246,30 @@ YY_RULE_SETUP
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 186 "Project1.lex"
+#line 187 "Project1.lex"
 {
-        LIST;
-        printf("%d: %s", linenum++, buf);
+        //LIST;
+        printf("%d: %s\n", linenum++, buf);
+        //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         buf[0] = '\0';
 }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 192 "Project1.lex"
+#line 194 "Project1.lex"
 {
         LIST;
         printf("%d:%s\n", linenum, buf);
+        //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         //exit(1);
         }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 198 "Project1.lex"
+#line 201 "Project1.lex"
 ECHO;
 	YY_BREAK
-#line 1270 "lex.yy.cpp"
+#line 1273 "lex.yy.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(STR):
@@ -2273,7 +2276,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 198 "Project1.lex"
+#line 201 "Project1.lex"
 
 
 

@@ -7,8 +7,13 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <fstream>
+
+
 
 using namespace std;
+
+//extern ofstream out_f;
 
 enum data_type{
     STR_TYPE,

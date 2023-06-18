@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #include "y.tab.hpp"
@@ -20,7 +21,7 @@ using namespace std;
 int linenum = 1;
 char buf[MAX_LINE_LENG];
 char strbuf[MAX_LINE_LENG];
-
+//ofstream out_f;
 
 
 %}
@@ -184,14 +185,16 @@ WHITESPACE [ \t]+
 }
 
 \n {
-        LIST;
-        printf("%d: %s", linenum++, buf);
+        //LIST;
+        printf("%d: %s\n", linenum++, buf);
+        //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         buf[0] = '\0';
 }
 
 .       {
         LIST;
         printf("%d:%s\n", linenum, buf);
+        //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         //exit(1);
         }
 
