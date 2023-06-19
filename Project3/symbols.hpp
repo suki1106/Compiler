@@ -138,5 +138,6 @@ class Symboltable_List{
 
 string getType(int); // use in project3
 int getValue_IntBool(const Info&);
+extern ofstream out_f;
 
 #endif

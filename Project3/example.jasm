@@ -1,0 +1,42 @@
+class example
+{
+method public static void add()
+	max_stack 15
+	max_locals 15
+	{
+/* 2: procedure add() */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "this is procedure add"
+/* 3:     put "this is procedure add" */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+return
+/* 4:     return */
+	}
+/* 5: end add */
+/* 6:  */
+method public static int add2()
+	max_stack 15
+	max_locals 15
+	{
+/* 7: function add2():int */
+		sipush 1
+/* 8:     result 1 */
+ireturn
+	}
+/* 9: end add2 */
+/* 10:  */
+	method public static void main(java.lang.String[])
+	max_stack 15
+	max_locals 15
+	{
+invokestatic void example.add()
+/* 11: add() */
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 12: skip */
+getstatic java.io.PrintStream java.lang.System.out
+invokestatic int example.add2()
+invokevirtual void java.io.PrintStream.print(int)
+		return
+	}
+}

@@ -4,27 +4,42 @@ class empty
 	max_stack 15
 	max_locals 15
 	{
+/* 2: begin */
+/* 3:     var k:int */
+/* 4:     var j:int */
+/* 5:     var i:int */
 		iconst_0
-		ifeq L0
+ifeq L0
+/* 6:     if (false) then */
 		sipush 1
-		istore 2
+/* 7:         i := 1 */
+istore 2
 		iconst_0
-		ifeq L2
+ifeq L2
+/* 8:         if (false) then */
 		sipush 2
-		istore 2
-		goto L3
-		L2:
+/* 9:             i := 2 */
+istore 2
+goto L3
+L2:
+/* 10:         else */
 		sipush 3
-		istore 2
-		L3:
-		getstatic java.io.PrintStream java.lang.System.out
+/* 11:             i := 3 */
+istore 2
+L3:
+/* 12:         end if */
+getstatic java.io.PrintStream java.lang.System.out
 		ldc "hello world"
-		invokevirtual void java.io.PrintStream.print(java.lang.String)
-		goto L1
-		L0:
+/* 13:         put ("hello world") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+goto L1
+L0:
+/* 14:     else */
 		sipush 4
-		istore 2
-		L1:
+/* 15:         i := 4 */
+istore 2
+L1:
+/* 16:     end if     */
 		return
 	}
 }

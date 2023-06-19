@@ -1,4 +1,4 @@
-.PHONY: clean
+.PHONY: clean run
 
 .DEFAULT_GOAL := compiler
 
@@ -14,3 +14,10 @@ lex.yy.cpp: Project1.lex
 clean:
 	rm -f compiler lex.yy.cpp y.tab.* y.output
 
+run : compiler
+	@test $(test)
+	@echo "=====start====="
+	./compiler $(test).st
+	./javaa $(test).jasm
+	@java $(test)
+	@echo "\n=====end====="

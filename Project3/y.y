@@ -26,6 +26,7 @@ int result_stmt = 0;
 int counter_local_var = 0; // for project3
 int label_index=0;
 stack<int> st_label;
+stack<Info*> st_id; // used in for loop
 
 //int label_used=0;
 
@@ -86,8 +87,8 @@ program:
             counter_local_var=0;
 
             out_f << "\tmethod public static void main(java.lang.String[])\n";
-            out_f << "\tmax_stack 15\n";
-            out_f << "\tmax_locals 15\n";
+            out_f << "\tmax_stack 30\n";
+            out_f << "\tmax_locals 30\n";
             out_f << "\t{\n";
 
         }
@@ -167,13 +168,17 @@ var_dec: VAR ID ':'TYPE
         {
             Trace("variable declaration without value initialization");
             Symboltable* tb = stb_list.getCurrentTable();
+            //cout << "this is S2:" << *($2) << endl;
+            //tb->dump();
             if(tb->Insert(Info(*($2),$4,VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
             if(stb_list.isGlobal()){
+                cout << "\t" << "field static " << getType($4) << " " << *$2 << "\n";
                 out_f << "\t" << "field static " << getType($4) << " " << *$2 << "\n"; // global
             }else{
                 Info* data = tb->getInfo(tb->lookup(*$2));
                 data->index_local = counter_local_var++;
             }
+            tb->dump();
         }
         | VAR ID ':'TYPE AS{isConst_Exp=1;} EXPRESSION
         {
@@ -261,8 +266,8 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             out_f << ")\n";
 
             
-            out_f << "\tmax_stack 15\n";
-            out_f << "\tmax_locals 15\n";
+            out_f << "\tmax_stack 30\n";
+            out_f << "\tmax_locals 30\n";
             out_f << "\t{\n";
 
 
@@ -310,8 +315,8 @@ func_dec: FUNCTION ID '('args')'':'TYPE
             out_f << ")\n";
 
             
-            out_f << "\tmax_stack 15\n";
-            out_f << "\tmax_locals 15\n";
+            out_f << "\tmax_stack 30\n";
+            out_f << "\tmax_locals 30\n";
             out_f << "\t{\n";
             args_info.clear();
             
@@ -376,7 +381,7 @@ simple_stmt: ID AS EXPRESSION
                 if(id->f_type == CONST_f) yyerror("const variable can not be assigned");
                 if(sameType(*id,*$3) == 0) yyerror("type is not compatible"); // array?
                 if(id->isGlobalVar == 1){
-                    out_f << "putstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + id->name << "\n";
+                    out_f << "putstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + *$1 << "\n";
                 }else{
                     out_f << "istore " << id->index_local << "\n";
                 }
@@ -432,6 +437,9 @@ simple_stmt: ID AS EXPRESSION
 EXIT_STMT :  EXIT
             {
                 Trace("Find EXIT");
+
+                int index=st_label.top();
+                out_f << "goto L" << index+1 << "\n";
             }
             | EXIT WHEN EXPRESSION
             {
@@ -736,7 +744,10 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     $$ = new Info("",BOOL_TYPE,VAR_f);
                 }
-                if(!isConst_Exp)out_f << "ixor\n";
+                if(!isConst_Exp){
+                    out_f << "iconst_1\n";
+                    out_f << "ixor\n";
+                }
             }
         |   '(' EXPRESSION ')'
             {
@@ -971,45 +982,86 @@ loop_stmt: LOOP
                 out_f << "L" << index+1 << ":" << "\n";
                 st_label.pop();
             }
-        |   FOR opt_r ID':' EXPRESSION'.''.'EXPRESSION 
+
+        |   FOR opt_r ID':'{isConst_Exp=1;}EXPRESSION'.''.'EXPRESSION 
             {
+                //cout << *$3 << endl;
+                //stb_list.dumpAllTable();
+                
                 Info* id = stb_list.lookup(*$3);
+                st_id.push(id);
+                
+                //cout << "name:" <<(*id).name << endl;
+                //cout << "name2:" << id->name << endl;
+
                 if(id==NULL)yyerror("<ERROR> can't find identifier definition");
-                if($5->f_type != CONST_f || $8->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
+
+                
+                if($6->f_type != CONST_f || $9->f_type != CONST_f) yyerror("form should be <for identifier : const_expr .. const_expr>");
+                
                 stb_list.create_table();
                 
                 // decreasing index check?
-                
-                
-                if($2 == 1 && getValue_IntBool(*$5) < getValue_IntBool(*$8) ){
+
+                if($2 == 1 && getValue_IntBool(*$6) < getValue_IntBool(*$9) ){
                     // decreasing
                     yyerror("<ERROR>First expression should greater than second one");
                 }
+                //cout << "sipush " << getValue_IntBool(*$6) << "\n";
 
-                out_f << "sipush " << getValue_IntBool(*$5) << "\n";
-                out_f << "istore " << id->index_local << "\n";
+                out_f << "sipush " << getValue_IntBool(*$6) << "\n";
+                // need to check id is global or local
+
+                //cout << id->name << endl;
+
+                if(id->isGlobalVar == 0){
+                    // local var
+                    out_f << "istore " << id->index_local << "\n";
+                }else{
+                    // global
+                    //out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + id->name << "\n"; //(id->name would cause error, i don't know why)
+                    out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + *$3 << "\n";
+                }
+
 
                 st_label.push(label_index);
 
                 out_f << "L" << label_index << ":\n";
-                out_f << "iload " << id->index_local << "\n";
-                out_f << "sipush " << getValue_IntBool(*$8) << "\n";
+
+                if(id->isGlobalVar==0){
+                    out_f << "iload " << id->index_local << "\n";
+                }else{
+                    out_f << "getstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + *$3 << "\n";
+                }
+
+                out_f << "sipush " << getValue_IntBool(*$9) << "\n";
                 out_f << "isub\n";
 
+                //cout << "test" << endl;
                 if($2!=0){
-                    out_f << "ifgt L" << label_index+1 << "\n"; 
-                }else{
+                    // decreasing goto lexit
                     out_f << "iflt L" << label_index+1 << "\n"; 
+                }else{
+                    out_f << "ifgt L" << label_index+1 << "\n"; 
                 }
                 
-
+                isConst_Exp=0;// correct?
 
                 label_index+=2;
             }func_stmts 
             {
-                Info* id = stb_list.lookup(*$3);
+                //Info* id = stb_list.lookup(*$3);
+                Info*id=st_id.top();
                 int index= st_label.top();
-                out_f << "iload " << id->index_local << "\n";
+
+                // need to check global or local
+                if(id->isGlobalVar==0){
+                    out_f << "iload " << id->index_local << "\n";
+                }else{
+                    //cout << "getstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + *$3 << "\n";
+                    out_f << "getstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + *$3 << "\n";
+                }
+
                 out_f << "sipush 1" << "\n";
                 if($2==0){
                     out_f << "iadd\n";
@@ -1017,17 +1069,27 @@ loop_stmt: LOOP
                     // decreasing
                     out_f << "isub\n";
                 }
-                out_f << "istore " << id->index_local << "\n";
+
+                // need to check global or local
+                if(id->isGlobalVar == 0){
+                    out_f << "istore " << id->index_local << "\n";
+                }else{
+                    out_f << "putstatic " << getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + *$3 << "\n";
+                }
+
                 out_f << "goto L" << index << "\n";
             }
             END FOR
             {
                 Trace("For loop");
                 stb_list.popTable();
+
                 int index= st_label.top();
 
                 st_label.pop();
+                st_id.pop();
                 out_f << "L" << index+1 << ":\n";
+                
             }
         ;
 

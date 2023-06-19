@@ -1,21 +1,10 @@
-{%
- % Example with Functions
- %}
+var a:int
+var b:int
+var c:int := 0
+for a : 1..10
+  for b: 1..10
+    c := c+1
+  end for
+end for
 
-% global variables
-const a: int := 5
-var c: int
-
-% function declaration
-function add (a: int, b: int) : int
-  result a+b
-end add
-
-% main block
-c := add(a, 10)
-if (c > 10) then
-  put -c
-else 
-  put c
-end if
-put "Hello World"
+put c

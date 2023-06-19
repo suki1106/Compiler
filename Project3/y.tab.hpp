@@ -1,9 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.8.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,7 +15,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,10 +30,6 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
-
 #ifndef YY_YY_Y_TAB_HPP_INCLUDED
 # define YY_YY_Y_TAB_HPP_INCLUDED
 /* Debug traces.  */
@@ -45,65 +40,56 @@
 extern int yydebug;
 #endif
 
-/* Token kinds.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    AS = 258,                      /* AS  */
-    VAR = 259,                     /* VAR  */
-    CONST = 260,                   /* CONST  */
-    FUNCTION = 261,                /* FUNCTION  */
-    BOOL = 262,                    /* BOOL  */
-    REAL = 263,                    /* REAL  */
-    INT = 264,                     /* INT  */
-    STRING = 265,                  /* STRING  */
-    ARRAY = 266,                   /* ARRAY  */
-    OF = 267,                      /* OF  */
-    CHAR = 268,                    /* CHAR  */
-    MOD = 269,                     /* MOD  */
-    AND = 270,                     /* AND  */
-    OR = 271,                      /* OR  */
-    NOT = 272,                     /* NOT  */
-    DECREASING = 273,              /* DECREASING  */
-    DEFAULT = 274,                 /* DEFAULT  */
-    DO = 275,                      /* DO  */
-    ELSE = 276,                    /* ELSE  */
-    END = 277,                     /* END  */
-    EXIT = 278,                    /* EXIT  */
-    FOR = 279,                     /* FOR  */
-    GET = 280,                     /* GET  */
-    IF = 281,                      /* IF  */
-    LOOP = 282,                    /* LOOP  */
-    PUT = 283,                     /* PUT  */
-    PROCEDURE = 284,               /* PROCEDURE  */
-    RESULT = 285,                  /* RESULT  */
-    RETURN = 286,                  /* RETURN  */
-    SKIP = 287,                    /* SKIP  */
-    THEN = 288,                    /* THEN  */
-    WHEN = 289,                    /* WHEN  */
-    BEG = 290,                     /* BEG  */
-    LE = 291,                      /* LE  */
-    GE = 292,                      /* GE  */
-    NE = 293,                      /* NE  */
-    ID = 294,                      /* ID  */
-    val_STR = 295,                 /* val_STR  */
-    val_INTEGER = 296,             /* val_INTEGER  */
-    val_REAL = 297,                /* val_REAL  */
-    val_BOOL = 298,                /* val_BOOL  */
-    UMINUS = 299                   /* UMINUS  */
+    AS = 258,
+    VAR = 259,
+    CONST = 260,
+    FUNCTION = 261,
+    BOOL = 262,
+    REAL = 263,
+    INT = 264,
+    STRING = 265,
+    ARRAY = 266,
+    OF = 267,
+    CHAR = 268,
+    MOD = 269,
+    AND = 270,
+    OR = 271,
+    NOT = 272,
+    DECREASING = 273,
+    DEFAULT = 274,
+    DO = 275,
+    ELSE = 276,
+    END = 277,
+    EXIT = 278,
+    FOR = 279,
+    GET = 280,
+    IF = 281,
+    LOOP = 282,
+    PUT = 283,
+    PROCEDURE = 284,
+    RESULT = 285,
+    RETURN = 286,
+    SKIP = 287,
+    THEN = 288,
+    WHEN = 289,
+    BEG = 290,
+    LE = 291,
+    GE = 292,
+    NE = 293,
+    ID = 294,
+    val_STR = 295,
+    val_INTEGER = 296,
+    val_REAL = 297,
+    val_BOOL = 298,
+    UMINUS = 299
   };
-  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
+/* Tokens.  */
 #define AS 258
 #define VAR 259
 #define CONST 260
@@ -149,9 +135,10 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+
 union YYSTYPE
 {
-#line 40 "y.y"
+#line 41 "y.y" /* yacc.c:1909  */
 
     int i_v;
     bool b_v;
@@ -160,9 +147,9 @@ union YYSTYPE
     data_type d_t;
     Info* Inf;
 
-#line 164 "y.tab.hpp"
-
+#line 151 "y.tab.hpp" /* yacc.c:1909  */
 };
+
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -171,8 +158,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-
 int yyparse (void);
-
 
 #endif /* !YY_YY_Y_TAB_HPP_INCLUDED  */

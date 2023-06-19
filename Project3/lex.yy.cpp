@@ -557,7 +557,7 @@ char *yytext;
 using namespace std;
 
 #include "y.tab.hpp"
-
+#include "symbols.hpp"
 
 #define LIST     strcat(buf,yytext)
 #define token(t) {LIST; printf("<%s>\n", #t); }
@@ -1250,7 +1250,7 @@ YY_RULE_SETUP
 {
         //LIST;
         printf("%d: %s\n", linenum++, buf);
-        //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
+        out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         buf[0] = '\0';
 }
 	YY_BREAK

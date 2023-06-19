@@ -1,0 +1,14 @@
+class test2_error
+{
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+getstatic java.io.PrintStream java.lang.System.out
+		iconst_1
+iconst_1
+ixor
+invokevirtual void java.io.PrintStream.print(int)
+		return
+	}
+}

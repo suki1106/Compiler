@@ -63,30 +63,19 @@ if false then
 end if
 
 
-for decreasing test: 2+3+6 .. 2+3+5
-    put ("hello world")
-    exit when (z>10)
-end for
 
-for test: 2+3+5 .. 2+3+6
+
+
+for z: 2+3+5 .. 2+3+6
     put ("hello world")
-    var k:int
+
     exit
 end for
-
-loop
-    put ("hello world")
-    var k:int
-    exit
-end loop
-
-
-
-z := a[1+2+3]
-z := a[5]
 
 z := add(10,8)
 z := cool()
+
+
 
 put z > i
 put z < i
@@ -95,6 +84,8 @@ put z <= i
 put z = i
 put z not= i
 
+
 put b1 and b2
 put b1 or b2
 put not b1
+
