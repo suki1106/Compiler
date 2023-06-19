@@ -802,6 +802,7 @@ EXPRESSION: EXPRESSION '+' EXPRESSION
                 }else{
                     if(id->isGlobalVar == 1){
                         string tmp = out_name.substr(0,out_name.find(".")) + "." + id->name; // example.a
+                        
                         out_f << "\t\t" << "getstatic " << getType(id->d_type) << " " << tmp << "\n";
                     }else{
                         int local_var_number = id->index_local;
@@ -1019,7 +1020,9 @@ loop_stmt: LOOP
                     out_f << "istore " << id->index_local << "\n";
                 }else{
                     // global
-                    //out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + id->name << "\n"; //(id->name would cause error, i don't know why)
+                    //string tmp = out_name.substr(0,out_name.find(".")) + "." + id->name; // example.a
+                    //out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + id->name << "\n"; //(id->name would cause error, i don't know why)
+                    
                     out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + *$3 << "\n";
                 }
 

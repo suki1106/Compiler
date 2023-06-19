@@ -1,8 +1,5 @@
 %% test declaration
 
-var a: array 1..10 of int 
-var t: array 1..6 of real
-
 const s :string := "Hey There"
 const i := -25
 const f := 3.14
@@ -74,7 +71,6 @@ end for
 
 z := add(10,8)
 z := cool()
-
 
 
 put z > i

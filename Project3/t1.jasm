@@ -1,0 +1,83 @@
+class t1
+{
+/* 4: %} */
+/* 5: % global variables */
+/* 6: const a :int := 5 */
+/* 7: var c :int */
+	field static int c
+/* 8: var b :int */
+/* 9: % function declaration */
+	field static int b
+method public static int add(int,int)
+	max_stack 30
+	max_locals 30
+	{
+/* 10: function add (a :int, b :int) :int */
+		iload 0
+/* 11: result a+b */
+		iload 1
+iadd
+ireturn
+	}
+/* 12: end add */
+/* 13: % main block */
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+		sipush 1
+		sipush 5
+/* 14: c :=1+5 */
+iadd
+putstatic int t1.c
+		sipush 3
+		sipush 99
+invokestatic int t1.add(int, int)
+/* 15: b:=add(3,99) */
+putstatic int t1.b
+		getstatic int t1.c
+		sipush 10
+isub
+ifgt L0
+iconst_0
+goto L1
+L0: iconst_1
+L1:
+ifeq L2
+/* 16: if (c > 10) then */
+getstatic java.io.PrintStream java.lang.System.out
+/* 17:     put -c */
+		getstatic int t1.c
+ineg
+invokevirtual void java.io.PrintStream.print(int)
+goto L3
+L2:
+/* 18:     else */
+		getstatic int t1.b
+		sipush 10
+isub
+ifgt L4
+iconst_0
+goto L5
+L4: iconst_1
+L5:
+ifeq L6
+/* 19:     if(b>10) then */
+getstatic java.io.PrintStream java.lang.System.out
+/* 20:         put b */
+		getstatic int t1.b
+invokevirtual void java.io.PrintStream.print(int)
+L6:
+/* 21:     end if */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "just for test"
+/* 22:     put("just for test") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+L3:
+/* 23: end if */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "Hello World"
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+		return
+	}
+}

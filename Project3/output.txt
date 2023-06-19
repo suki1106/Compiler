@@ -1,0 +1,11 @@
+after 1 10
+after 2 20
+after 3 30
+after 4 40
+after 5 50
+after 6 60
+after 7 70
+after 8 80
+after 9 90
+after 10 100
+result :100

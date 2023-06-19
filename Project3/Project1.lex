@@ -19,10 +19,13 @@ using namespace std;
 
 
 int linenum = 1;
+
 char buf[MAX_LINE_LENG];
 char strbuf[MAX_LINE_LENG];
+
 //ofstream out_f;
 
+int DEBUG=1; // set 1 to show st code in java assembly code
 
 %}
 
@@ -187,12 +190,12 @@ WHITESPACE [ \t]+
 \n {
         //LIST;
         printf("%d: %s\n", linenum++, buf);
-        out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
+        if(DEBUG)out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         buf[0] = '\0';
 }
 
 .       {
-        LIST;
+        //LIST;
         printf("%d:%s\n", linenum, buf);
         //out_f << "/* " << linenum << ": " << string(buf) << " */" << "\n";
         //exit(1);

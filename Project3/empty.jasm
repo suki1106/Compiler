@@ -1,8 +1,8 @@
 class empty
 {
 	method public static void main(java.lang.String[])
-	max_stack 15
-	max_locals 15
+	max_stack 30
+	max_locals 30
 	{
 /* 2: begin */
 /* 3:     var k:int */

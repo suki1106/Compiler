@@ -1,75 +1,76 @@
 class test
 {
-/* 2: var cnt:int :=0 */
+/* 2: var cnt:int :=0 */
 	field static int cnt = 0
+/* 3: var i:int */
+	field static int i
+/* 4: var j:int := 0 */
+	field static int j = 0
 	method public static void main(java.lang.String[])
-	max_stack 15
-	max_locals 15
+	max_stack 30
+	max_locals 30
 	{
-/* 3: begin */
-/* 4:     var i:int */
-/* 5:     var j:int := 0 */
-		sipush 0
-		istore 1
-/* 6:     for i : 1..10 */
+/* 5: begin */
+/* 6:  */
+/* 7:     for i : 1..10 */
 sipush 1
-istore 0
+putstatic int test.i
 L0:
-iload 0
+getstatic int test.i
 sipush 10
 isub
 ifgt L1
-/* 7:         for j: 1..10 */
+/* 8:         for j: 1..10 */
 sipush 1
-istore 1
+putstatic int test.j
 L2:
-iload 1
+getstatic int test.j
 sipush 10
 isub
 ifgt L3
 		getstatic int test.cnt
 		sipush 1
-/* 8:             cnt := cnt+1 */
+/* 9:             cnt := cnt+1 */
 iadd
 putstatic int test.cnt
-iload 1
+getstatic int test.j
 sipush 1
 iadd
-istore 1
+putstatic int test.j
 goto L2
 L3:
-/* 9:         end for */
+/* 10:         end for */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "after "
-/* 10:         put ("after ") */
+/* 11:         put ("after ") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 getstatic java.io.PrintStream java.lang.System.out
-/* 11:         put i */
-		iload 0
+/* 12:         put i */
+		getstatic int test.i
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		ldc " "
-/* 12:         put (" ") */
+/* 13:         put (" ") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 getstatic java.io.PrintStream java.lang.System.out
-/* 13:         put cnt */
+/* 14:         put cnt */
 		getstatic int test.cnt
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 invokevirtual void java.io.PrintStream.println()
-/* 14:         skip */
-iload 0
+/* 15:         skip */
+getstatic int test.i
 sipush 1
 iadd
-istore 0
+putstatic int test.i
 goto L0
 L1:
-/* 15:     end for */
-/* 16: end */
-/* 17:  */
+/* 16:     end for */
+/* 17: end */
+/* 18:  */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "result :"
-/* 18: put ("result :") */
+/* 19: put ("result :") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test.cnt

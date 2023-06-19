@@ -1,0 +1,95 @@
+class sigma
+{
+/* 5:  %} */
+/* 6:  */
+/* 7: % constant and variable declarations */
+/* 8: const n: int := 10 */
+/* 9: var sum: int */
+	field static int sum
+/* 10: var index: int */
+/* 11:  */
+/* 12: % main statements */
+	field static int index
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+		sipush 0
+/* 13: sum := 0 */
+putstatic int sigma.sum
+/* 14: for index: 1 .. n  */
+		sipush 10
+sipush 1
+putstatic int sigma.index
+L0:
+getstatic int sigma.index
+sipush 10
+isub
+ifgt L1
+		getstatic int sigma.sum
+/* 15:   sum := sum + index */
+		getstatic int sigma.index
+iadd
+putstatic int sigma.sum
+getstatic int sigma.index
+sipush 1
+iadd
+putstatic int sigma.index
+goto L0
+L1:
+/* 16: end for */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "The result is "
+/* 17: put "The result is " */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+/* 18: put sum */
+		getstatic int sigma.sum
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 19: skip */
+/* 20:  */
+/* 21: % loop */
+		sipush 0
+/* 22: sum := 0 */
+putstatic int sigma.sum
+		sipush 1
+/* 23: index := 1 */
+putstatic int sigma.index
+L2:
+/* 24: loop */
+		getstatic int sigma.sum
+/* 25:   sum := sum + index */
+		getstatic int sigma.index
+iadd
+putstatic int sigma.sum
+		getstatic int sigma.index
+		sipush 1
+/* 26:   index := index + 1 */
+iadd
+putstatic int sigma.index
+		getstatic int sigma.index
+/* 27:   exit when index = n */
+		sipush 10
+isub
+ifeq L4
+iconst_0
+goto L5
+L4: iconst_1
+L5:
+ifne L3
+goto L2
+L3:
+/* 28: end loop */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "The result is "
+/* 29: put "The result is " */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+/* 30: put sum */
+		getstatic int sigma.sum
+invokevirtual void java.io.PrintStream.print(int)
+		return
+	}
+}

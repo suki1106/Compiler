@@ -2,123 +2,120 @@ class test1_correct
 {
 /* 2: %% test declaration */
 /* 3:  */
-/* 4: var a: array 1..10 of int  */
-/* 5: var t: array 1..6 of real */
-/* 6:  */
-/* 7: const s :string := "Hey There" */
-/* 8: const i := -25 */
-/* 9: const f := 3.14 */
-/* 10: const b :bool := true */
+/* 4: const s :string := "Hey There" */
+/* 5: const i := -25 */
+/* 6: const f := 3.14 */
+/* 7: const b :bool := true */
+/* 8:  */
+/* 9: const b1 := true */
+/* 10: const b2 := false */
 /* 11:  */
-/* 12: const b1 := true */
-/* 13: const b2 := false */
+/* 12: var z:int */
+/* 13:  */
 /* 14:  */
-/* 15: var z:int */
-/* 16:  */
+/* 15:  */
+/* 16: %% test func_dec */
 /* 17:  */
-/* 18:  */
-/* 19: %% test func_dec */
-/* 20:  */
-/* 21: %% function decclaration */
+/* 18: %% function decclaration */
 	field static int z
 method public static int add(int,int)
 	max_stack 30
 	max_locals 30
 	{
-/* 22: function add (a :int, b :int) :int */
+/* 19: function add (a :int, b :int) :int */
 		iload 0
-/* 23:     result a+b */
+/* 20:     result a+b */
 		iload 1
 iadd
 ireturn
 	}
-/* 24: end add */
-/* 25:  */
+/* 21: end add */
+/* 22:  */
 method public static int cool()
 	max_stack 30
 	max_locals 30
 	{
-/* 26: function cool():int */
+/* 23: function cool():int */
 		sipush 1
-/* 27:     result 1 */
+/* 24:     result 1 */
 ireturn
 	}
-/* 28: end cool */
-/* 29:  */
+/* 25: end cool */
+/* 26:  */
 method public static void ptest()
 	max_stack 30
 	max_locals 30
 	{
-/* 30: procedure ptest() */
-/* 31:     var s:int */
+/* 27: procedure ptest() */
+/* 28:     var s:int */
 return
-/* 32:     return */
+/* 29:     return */
 	}
-/* 33: end ptest */
-/* 34:  */
-/* 35:  */
+/* 30: end ptest */
+/* 31:  */
+/* 32:  */
 	method public static void main(java.lang.String[])
 	max_stack 30
 	max_locals 30
 	{
-/* 36: begin */
-/* 37:     var s:int */
-/* 38:     var s1:int */
-/* 39:     begin */
-/* 40:         var s:int */
-/* 41:         var s2:real */
-/* 42:         begin  */
-/* 43:             var s:int */
-/* 44:             var s3:real */
-/* 45:         end  */
-/* 46:     end */
-/* 47: end */
-/* 48:  */
+/* 33: begin */
+/* 34:     var s:int */
+/* 35:     var s1:int */
+/* 36:     begin */
+/* 37:         var s:int */
+/* 38:         var s2:real */
+/* 39:         begin  */
+/* 40:             var s:int */
+/* 41:             var s3:real */
+/* 42:         end  */
+/* 43:     end */
+/* 44: end */
+/* 45:  */
 		iconst_1
 ifeq L0
-/* 49: if true then  */
-/* 50:     var g:int */
+/* 46: if true then  */
+/* 47:     var g:int */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "hello world"
-/* 51:     put ("hello world") */
+/* 48:     put ("hello world") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 		iconst_0
 ifeq L2
-/* 52:     if false then */
-/* 53:         var g:int */
+/* 49:     if false then */
+/* 50:         var g:int */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "false"
-/* 54:         put ("false") */
+/* 51:         put ("false") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 L2:
-/* 55:     end if */
+/* 52:     end if */
 goto L1
 L0:
-/* 56: else */
-/* 57:     var g:int */
+/* 53: else */
+/* 54:     var g:int */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "wow"
-/* 58:     put ("wow") */
+/* 55:     put ("wow") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 L1:
-/* 59: end if */
-/* 60:  */
+/* 56: end if */
+/* 57:  */
 		iconst_0
 ifeq L4
-/* 61: if false then */
-/* 62:     var g:int */
+/* 58: if false then */
+/* 59:     var g:int */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "false"
-/* 63:     put ("false") */
+/* 60:     put ("false") */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 L4:
-/* 64: end if */
+/* 61: end if */
+/* 62:  */
+/* 63:  */
+/* 64:  */
 /* 65:  */
 /* 66:  */
-/* 67:  */
-/* 68:  */
-/* 69:  */
-/* 70: for z: 2+3+5 .. 2+3+6 */
+/* 67: for z: 2+3+5 .. 2+3+6 */
 sipush 10
 putstatic int test1_correct.z
 L6:
@@ -128,10 +125,10 @@ isub
 ifgt L7
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "hello world"
-/* 71:     put ("hello world") */
-/* 72:  */
+/* 68:     put ("hello world") */
+/* 69:  */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
-/* 73:     exit */
+/* 70:     exit */
 goto L7
 getstatic int test1_correct.z
 sipush 1
@@ -139,22 +136,22 @@ iadd
 putstatic int test1_correct.z
 goto L6
 L7:
-/* 74: end for */
-/* 75:  */
+/* 71: end for */
+/* 72:  */
 		sipush 10
 		sipush 8
 invokestatic int test1_correct.add(int, int)
-/* 76: z := add(10,8) */
+/* 73: z := add(10,8) */
 putstatic int test1_correct.z
 invokestatic int test1_correct.cool()
-/* 77: z := cool() */
-/* 78:  */
-/* 79:  */
-/* 80:  */
+/* 74: z := cool() */
+/* 75:  */
+/* 76:  */
+/* 77:  */
 putstatic int test1_correct.z
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 81: put z > i */
+/* 78: put z > i */
 		sipush -25
 isub
 ifgt L8
@@ -165,7 +162,7 @@ L9:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 82: put z < i */
+/* 79: put z < i */
 		sipush -25
 isub
 iflt L10
@@ -176,7 +173,7 @@ L11:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 83: put z >= i */
+/* 80: put z >= i */
 		sipush -25
 isub
 ifge L12
@@ -187,7 +184,7 @@ L13:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 84: put z <= i */
+/* 81: put z <= i */
 		sipush -25
 isub
 ifle L14
@@ -198,7 +195,7 @@ L15:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 85: put z = i */
+/* 82: put z = i */
 		sipush -25
 isub
 ifeq L16
@@ -209,9 +206,9 @@ L17:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		getstatic int test1_correct.z
-/* 86: put z not= i */
-/* 87:  */
-/* 88:  */
+/* 83: put z not= i */
+/* 84:  */
+/* 85:  */
 		sipush -25
 isub
 ifne L18
@@ -222,19 +219,19 @@ L19:
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		iconst_1
-/* 89: put b1 and b2 */
+/* 86: put b1 and b2 */
 		iconst_0
 iand
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 		iconst_1
-/* 90: put b1 or b2 */
+/* 87: put b1 or b2 */
 		iconst_0
 ior
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
-/* 91: put not b1 */
-/* 92:  */
+/* 88: put not b1 */
+/* 89:  */
 		iconst_1
 iconst_1
 ixor

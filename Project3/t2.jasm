@@ -1,0 +1,63 @@
+class t2
+{
+/* 4:  %} */
+/* 5:  */
+/* 6: % global variables */
+/* 7: const a: int := 5 */
+/* 8: var c: int */
+/* 9:  */
+/* 10: % function declaration */
+	field static int c
+method public static int add(int,int)
+	max_stack 30
+	max_locals 30
+	{
+/* 11: function add (a: int, b: int) : int */
+		iload 0
+/* 12:   result a+b */
+		iload 1
+iadd
+ireturn
+	}
+/* 13: end add */
+/* 14:  */
+/* 15: % main block */
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+		sipush 5
+		sipush 10
+invokestatic int t2.add(int, int)
+/* 16: c := add(a, 10) */
+putstatic int t2.c
+		getstatic int t2.c
+		sipush 10
+isub
+ifgt L0
+iconst_0
+goto L1
+L0: iconst_1
+L1:
+ifeq L2
+/* 17: if (c > 10) then */
+getstatic java.io.PrintStream java.lang.System.out
+/* 18:   put -c */
+		getstatic int t2.c
+ineg
+invokevirtual void java.io.PrintStream.print(int)
+goto L3
+L2:
+/* 19: else  */
+getstatic java.io.PrintStream java.lang.System.out
+/* 20:   put c */
+		getstatic int t2.c
+invokevirtual void java.io.PrintStream.print(int)
+L3:
+/* 21: end if */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "Hello World"
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+		return
+	}
+}

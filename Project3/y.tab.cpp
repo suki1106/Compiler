@@ -564,9 +564,9 @@ static const yytype_uint16 yyrline[] =
      347,   348,   351,   359,   360,   361,   362,   365,   364,   376,
      390,   389,   401,   411,   422,   427,   428,   434,   437,   444,
      456,   475,   494,   513,   531,   540,   554,   582,   607,   634,
-     659,   684,   709,   724,   737,   752,   756,   777,   812,   822,
-     825,   859,   889,   890,   891,   894,   902,   901,   924,   923,
-     947,   967,   973,   966,   986,   987,  1052,   986,  1096,  1097
+     659,   684,   709,   724,   737,   752,   756,   777,   813,   823,
+     826,   860,   890,   891,   892,   895,   903,   902,   925,   924,
+     948,   968,   974,   967,   987,   988,  1055,   987,  1099,  1100
 };
 #endif
 
@@ -2381,6 +2381,7 @@ yyreduce:
                 }else{
                     if(id->isGlobalVar == 1){
                         string tmp = out_name.substr(0,out_name.find(".")) + "." + id->name; // example.a
+                        
                         out_f << "\t\t" << "getstatic " << getType(id->d_type) << " " << tmp << "\n";
                     }else{
                         int local_var_number = id->index_local;
@@ -2388,11 +2389,11 @@ yyreduce:
                     }
                 }
             }
-#line 2392 "y.tab.cpp" /* yacc.c:1646  */
+#line 2393 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 813 "y.y" /* yacc.c:1646  */
+#line 814 "y.y" /* yacc.c:1646  */
     {
                 Trace("Array reference");
                 //check expression type
@@ -2402,11 +2403,11 @@ yyreduce:
                 if((yyvsp[-1].Inf)->f_type == FUNC_f || (yyvsp[-1].Inf)->f_type== ARRAY_f)yyerror("can not pass Array or Function id");
                 (yyval.Inf) = new Info("",id->d_type,VAR_f);
             }
-#line 2406 "y.tab.cpp" /* yacc.c:1646  */
+#line 2407 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 826 "y.y" /* yacc.c:1646  */
+#line 827 "y.y" /* yacc.c:1646  */
     {
             Trace("function invocation");
             //Symboltable* tb =stb_list.getCurrentTable();
@@ -2437,11 +2438,11 @@ yyreduce:
             }
             out_f << ")\n";
         }
-#line 2441 "y.tab.cpp" /* yacc.c:1646  */
+#line 2442 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 860 "y.y" /* yacc.c:1646  */
+#line 861 "y.y" /* yacc.c:1646  */
     {
             Trace("procedure invocation");
 
@@ -2468,19 +2469,19 @@ yyreduce:
             }
             out_f << ")\n";
         }
-#line 2472 "y.tab.cpp" /* yacc.c:1646  */
+#line 2473 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 895 "y.y" /* yacc.c:1646  */
+#line 896 "y.y" /* yacc.c:1646  */
     {
                 params.push_back(*(yyvsp[0].Inf));
             }
-#line 2480 "y.tab.cpp" /* yacc.c:1646  */
+#line 2481 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 902 "y.y" /* yacc.c:1646  */
+#line 903 "y.y" /* yacc.c:1646  */
     {                    
                         stb_list.create_table();
                         // jump to L0
@@ -2493,22 +2494,22 @@ yyreduce:
 
                         //label_max_tmp = max(label_index,label_max_tmp);
                     }
-#line 2497 "y.tab.cpp" /* yacc.c:1646  */
+#line 2498 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 915 "y.y" /* yacc.c:1646  */
+#line 916 "y.y" /* yacc.c:1646  */
     {
                         // jump to L1 ? (Lexit)
                         // if stmt (Lexit = L0)
                         // if-else (Lexit != L0)
                         if((yyvsp[-4].Inf)->d_type != BOOL_TYPE) yyerror("condition should be bool_expr");
                     }
-#line 2508 "y.tab.cpp" /* yacc.c:1646  */
+#line 2509 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 924 "y.y" /* yacc.c:1646  */
+#line 925 "y.y" /* yacc.c:1646  */
     {
             stb_list.popTable();
             stb_list.create_table();
@@ -2520,11 +2521,11 @@ yyreduce:
             out_f << "L" << index <<":\n";
         
         }
-#line 2524 "y.tab.cpp" /* yacc.c:1646  */
+#line 2525 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 935 "y.y" /* yacc.c:1646  */
+#line 936 "y.y" /* yacc.c:1646  */
     {
             Trace("if-ELSE stmt");
             stb_list.popTable();
@@ -2537,11 +2538,11 @@ yyreduce:
             st_label.pop();
          
         }
-#line 2541 "y.tab.cpp" /* yacc.c:1646  */
+#line 2542 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 948 "y.y" /* yacc.c:1646  */
+#line 949 "y.y" /* yacc.c:1646  */
     {
             Trace("if stmt");
             stb_list.popTable();
@@ -2558,31 +2559,31 @@ yyreduce:
             //label_index-=2;
            
         }
-#line 2562 "y.tab.cpp" /* yacc.c:1646  */
+#line 2563 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 967 "y.y" /* yacc.c:1646  */
+#line 968 "y.y" /* yacc.c:1646  */
     {
                 stb_list.create_table();
                 st_label.push(label_index);
                 out_f << "L" << label_index <<":" << "\n"; // begin
                 label_index+=2;
             }
-#line 2573 "y.tab.cpp" /* yacc.c:1646  */
+#line 2574 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 973 "y.y" /* yacc.c:1646  */
+#line 974 "y.y" /* yacc.c:1646  */
     {
                 int index= st_label.top();
                 out_f << "goto L" << index  << "\n";
             }
-#line 2582 "y.tab.cpp" /* yacc.c:1646  */
+#line 2583 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 978 "y.y" /* yacc.c:1646  */
+#line 979 "y.y" /* yacc.c:1646  */
     {
                 Trace("loop");
                 stb_list.popTable();
@@ -2590,17 +2591,17 @@ yyreduce:
                 out_f << "L" << index+1 << ":" << "\n";
                 st_label.pop();
             }
-#line 2594 "y.tab.cpp" /* yacc.c:1646  */
+#line 2595 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 986 "y.y" /* yacc.c:1646  */
+#line 987 "y.y" /* yacc.c:1646  */
     {isConst_Exp=1;}
-#line 2600 "y.tab.cpp" /* yacc.c:1646  */
+#line 2601 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 987 "y.y" /* yacc.c:1646  */
+#line 988 "y.y" /* yacc.c:1646  */
     {
                 //cout << *$3 << endl;
                 //stb_list.dumpAllTable();
@@ -2636,7 +2637,9 @@ yyreduce:
                     out_f << "istore " << id->index_local << "\n";
                 }else{
                     // global
-                    //out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + id->name << "\n"; //(id->name would cause error, i don't know why)
+                    //string tmp = out_name.substr(0,out_name.find(".")) + "." + id->name; // example.a
+                    //out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")) + "." + id->name << "\n"; //(id->name would cause error, i don't know why)
+                    
                     out_f << "putstatic " <<getType(id->d_type) << " " << out_name.substr(0,out_name.find(".")+1) + *(yyvsp[-6].s_v) << "\n";
                 }
 
@@ -2666,11 +2669,11 @@ yyreduce:
 
                 label_index+=2;
             }
-#line 2670 "y.tab.cpp" /* yacc.c:1646  */
+#line 2673 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 1052 "y.y" /* yacc.c:1646  */
+#line 1055 "y.y" /* yacc.c:1646  */
     {
                 //Info* id = stb_list.lookup(*$3);
                 Info*id=st_id.top();
@@ -2701,11 +2704,11 @@ yyreduce:
 
                 out_f << "goto L" << index << "\n";
             }
-#line 2705 "y.tab.cpp" /* yacc.c:1646  */
+#line 2708 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 1083 "y.y" /* yacc.c:1646  */
+#line 1086 "y.y" /* yacc.c:1646  */
     {
                 Trace("For loop");
                 stb_list.popTable();
@@ -2717,23 +2720,23 @@ yyreduce:
                 out_f << "L" << index+1 << ":\n";
                 
             }
-#line 2721 "y.tab.cpp" /* yacc.c:1646  */
+#line 2724 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 1096 "y.y" /* yacc.c:1646  */
+#line 1099 "y.y" /* yacc.c:1646  */
     {(yyval.b_v)=1;}
-#line 2727 "y.tab.cpp" /* yacc.c:1646  */
+#line 2730 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 1097 "y.y" /* yacc.c:1646  */
+#line 1100 "y.y" /* yacc.c:1646  */
     {(yyval.b_v)=0;}
-#line 2733 "y.tab.cpp" /* yacc.c:1646  */
+#line 2736 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2737 "y.tab.cpp" /* yacc.c:1646  */
+#line 2740 "y.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2961,7 +2964,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1103 "y.y" /* yacc.c:1906  */
+#line 1106 "y.y" /* yacc.c:1906  */
 
 
 

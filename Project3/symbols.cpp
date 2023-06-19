@@ -151,7 +151,7 @@ string getType(int Type){
                 return "int";
                 break;
             case BOOL_TYPE:
-                return "bool";
+                return "int";
                 break;
             case STR_TYPE:            
                 return "string";

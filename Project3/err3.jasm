@@ -1,0 +1,10 @@
+class err3
+{
+	field static int b = 48
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+		return
+	}
+}

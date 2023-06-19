@@ -1,7 +1,8 @@
 var cnt:int :=0
+var i:int
+var j:int := 0
 begin
-    var i:int
-    var j:int := 0
+
     for i : 1..10
         for j: 1..10
             cnt := cnt+1

@@ -15,7 +15,6 @@ clean:
 	rm -f compiler lex.yy.cpp y.tab.* y.output
 
 run : compiler
-	@test $(test)
 	@echo "=====start====="
 	./compiler $(test).st
 	./javaa $(test).jasm
