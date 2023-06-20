@@ -1,28 +1,14 @@
 class fib
 {
-/* 3:     using iteration. %} */
-/* 4:  */
-/* 5: % global variables */
-/* 6: const  n: int := 8 */
-/* 7:  */
-/* 8: % iterative function */
 method public static int itFibonacci(int)
 	max_stack 30
 	max_locals 30
 	{
-/* 9: function itFibonacci (n: int) : int */
-/* 10:   var Fn: int */
-/* 11:   var FNminus1: int */
-/* 12:   var temp: int */
-/* 13:  */
 		sipush 1
-/* 14:   Fn := 1 */
 istore 1
 		sipush 1
-/* 15:   FNminus1 := 1 */
 istore 2
 L0:
-/* 16:   loop */
 		iload 0
 		sipush 2
 isub
@@ -31,58 +17,42 @@ iconst_0
 goto L3
 L2: iconst_1
 L3:
-/* 17:     exit when (n <= 2)  */
 ifne L1
-/* 18:     temp := Fn */
 		iload 1
 istore 3
 		iload 1
-/* 19:     Fn := Fn + FNminus1 */
 		iload 2
 iadd
 istore 1
-/* 20:     FNminus1 := temp */
 		iload 3
 istore 2
 		iload 0
 		sipush 1
-/* 21:     n := n - 1 */
 isub
 istore 0
 goto L0
 L1:
-/* 22:   end loop */
-/* 23:   result Fn */
 		iload 1
 ireturn
 	}
-/* 24: end itFibonacci */
-/* 25:  */
-/* 26: % main program  */
 	method public static void main(java.lang.String[])
 	max_stack 30
 	max_locals 30
 	{
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "N: "
-/* 27: put "N: " */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 getstatic java.io.PrintStream java.lang.System.out
-/* 28: put n */
 		sipush 8
 invokevirtual void java.io.PrintStream.print(int)
 getstatic java.io.PrintStream java.lang.System.out
 invokevirtual void java.io.PrintStream.println()
-/* 29: skip */
 getstatic java.io.PrintStream java.lang.System.out
 		ldc "Result of iterative computation:  "
-/* 30: put "Result of iterative computation:  " */
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 getstatic java.io.PrintStream java.lang.System.out
 		sipush 8
 invokestatic int fib.itFibonacci(int)
-/* 31: put itFibonacci(n) */
-/* 32:  */
 invokevirtual void java.io.PrintStream.print(int)
 		return
 	}

@@ -1,8 +1,8 @@
 {% This test program computes the Nth Fibonacci number
-    using iteration. %}
+    using recursion and iteration. %}
 
 % global variables
-const  n: int := 8
+const  n: int := 08
 
 % iterative function
 function itFibonacci (n: int) : int
@@ -28,4 +28,5 @@ put n
 skip
 put "Result of iterative computation:  "
 put itFibonacci(n)
+
 

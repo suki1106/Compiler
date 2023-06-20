@@ -1,15 +1,11 @@
-class HelloWorld
+class helloworld
 {
-/* 2: % Hello World Example  */
-/* 3:    */
-/* 4: % Print text to the console */
 	method public static void main(java.lang.String[])
-	max_stack 15
-	max_locals 15
+	max_stack 30
+	max_locals 30
 	{
 getstatic java.io.PrintStream java.lang.System.out
-		ldc "Hello World"
-/* 5: put ("Hello World") */
+		ldc "aa""bb"
 invokevirtual void java.io.PrintStream.print(java.lang.String)
 		return
 	}

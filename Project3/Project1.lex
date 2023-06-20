@@ -25,7 +25,7 @@ char strbuf[MAX_LINE_LENG];
 
 //ofstream out_f;
 
-int DEBUG=0; // set 1 to show st code in java assembly code
+int DEBUG=1; // set 1 to show st code in java assembly code
 
 %}
 

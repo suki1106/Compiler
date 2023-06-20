@@ -172,7 +172,7 @@ var_dec: VAR ID ':'TYPE
             //tb->dump();
             if(tb->Insert(Info(*($2),$4,VAR_f))  == -1) yyerror("<ERROR> identifier already exists"); 
             if(stb_list.isGlobal()){
-                cout << "\t" << "field static " << getType($4) << " " << *$2 << "\n";
+                //cout << "\t" << "field static " << getType($4) << " " << *$2 << "\n";
                 out_f << "\t" << "field static " << getType($4) << " " << *$2 << "\n"; // global
             }else{
                 Info* data = tb->getInfo(tb->lookup(*$2));

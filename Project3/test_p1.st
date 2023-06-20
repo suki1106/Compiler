@@ -7,12 +7,20 @@ const a:int := 1
 var cnt := 0
 
 procedure p()
+    var a:=1
+    var b:=44
     put ("this is procedure_test")
+    skip
+    put a+b
     skip
     return
 end p
 
 function f(k:int,j:int):int
+    var s:int:=0
+    %%local var should be 2
+    put s 
+    skip
     result k+j+a+b
 end f
 

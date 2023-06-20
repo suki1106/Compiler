@@ -1,42 +1,45 @@
 class example
 {
-method public static void add()
-	max_stack 15
-	max_locals 15
+	field static int c
+method public static int add(int,int)
+	max_stack 30
+	max_locals 30
 	{
-/* 2: procedure add() */
-getstatic java.io.PrintStream java.lang.System.out
-		ldc "this is procedure add"
-/* 3:     put "this is procedure add" */
-invokevirtual void java.io.PrintStream.print(java.lang.String)
-return
-/* 4:     return */
-	}
-/* 5: end add */
-/* 6:  */
-method public static int add2()
-	max_stack 15
-	max_locals 15
-	{
-/* 7: function add2():int */
-		sipush 1
-/* 8:     result 1 */
+		iload 0
+		iload 1
+iadd
 ireturn
 	}
-/* 9: end add2 */
-/* 10:  */
 	method public static void main(java.lang.String[])
-	max_stack 15
-	max_locals 15
+	max_stack 30
+	max_locals 30
 	{
-invokestatic void example.add()
-/* 11: add() */
+		sipush 5
+		sipush 10
+invokestatic int example.add(int, int)
+putstatic int example.c
+		getstatic int example.c
+		sipush 10
+isub
+ifgt L0
+iconst_0
+goto L1
+L0: iconst_1
+L1:
+ifeq L2
 getstatic java.io.PrintStream java.lang.System.out
-invokevirtual void java.io.PrintStream.println()
-/* 12: skip */
-getstatic java.io.PrintStream java.lang.System.out
-invokestatic int example.add2()
+		getstatic int example.c
+ineg
 invokevirtual void java.io.PrintStream.print(int)
+goto L3
+L2:
+getstatic java.io.PrintStream java.lang.System.out
+		getstatic int example.c
+invokevirtual void java.io.PrintStream.print(int)
+L3:
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "Hello World"
+invokevirtual void java.io.PrintStream.print(java.lang.String)
 		return
 	}
 }

@@ -1,0 +1,542 @@
+class test_p1
+{
+/* 2: var a :int := 1 */
+	field static int a = 1
+/* 3: var b := 10 */
+	field static int b = 10
+/* 4: var c :int */
+	field static int c
+/* 5: var i:int := 0 */
+	field static int i = 0
+/* 6: var j:int */
+	field static int j
+/* 7: const a:int := 1 */
+/* 8: var cnt := 0 */
+/* 9:  */
+	field static int cnt = 0
+method public static void p()
+	max_stack 30
+	max_locals 30
+	{
+/* 10: procedure p() */
+/* 11:     var a:=1 */
+		sipush 1
+		istore 0
+/* 12:     var b:=44 */
+		sipush 44
+		istore 1
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "this is procedure_test"
+/* 13:     put ("this is procedure_test") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 14:     skip */
+getstatic java.io.PrintStream java.lang.System.out
+		iload 0
+/* 15:     put a+b */
+		iload 1
+iadd
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 16:     skip */
+return
+/* 17:     return */
+	}
+/* 18: end p */
+/* 19:  */
+method public static int f(int,int)
+	max_stack 30
+	max_locals 30
+	{
+/* 20: function f(k:int,j:int):int */
+/* 21:     var s:int:=0 */
+/* 22:     %%local var should be 2 */
+		sipush 0
+		istore 2
+getstatic java.io.PrintStream java.lang.System.out
+/* 23:     put s  */
+		iload 2
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 24:     skip */
+		iload 0
+		iload 1
+iadd
+		getstatic int test_p1.a
+iadd
+/* 25:     result k+j+a+b */
+		getstatic int test_p1.b
+iadd
+ireturn
+	}
+/* 26: end f */
+/* 27:  */
+/* 28:  */
+/* 29: % recursive test */
+method public static int fib(int)
+	max_stack 30
+	max_locals 30
+	{
+/* 30: function fib (i:int):int */
+		iload 0
+		sipush 1
+isub
+ifeq L0
+iconst_0
+goto L1
+L0: iconst_1
+L1:
+		iload 0
+		sipush 0
+isub
+ifeq L2
+iconst_0
+goto L3
+L2: iconst_1
+L3:
+ior
+ifeq L4
+/* 31:     if(i = 1 or i =0) then */
+		sipush 1
+/* 32:         result 1 */
+ireturn
+L4:
+/* 33:     end if */
+		iload 0
+		sipush 1
+isub
+invokestatic int test_p1.fib(int)
+		iload 0
+		sipush 2
+isub
+invokestatic int test_p1.fib(int)
+/* 34:     result fib(i-1) + fib(i-2) */
+iadd
+ireturn
+	}
+/* 35: end fib */
+/* 36:  */
+/* 37:  */
+/* 38:  */
+	method public static void main(java.lang.String[])
+	max_stack 30
+	max_locals 30
+	{
+/* 39: begin */
+/* 40:     var i :int := 0 */
+		sipush 0
+		istore 0
+/* 41:     var j :int */
+/* 42:     begin */
+/* 43:         var k :int */
+		iload 0
+		sipush 2
+/* 44:         i := i+2 */
+iadd
+istore 0
+/* 45:     end */
+/* 46:     begin */
+/* 47:         var i :int := 100 */
+		sipush 100
+		istore 3
+/* 48:         var j :int */
+/* 49:         var k :int */
+getstatic java.io.PrintStream java.lang.System.out
+/* 50:         put i */
+		iload 3
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 51:         skip */
+/* 52:     end */
+/* 53:     % i = 2 */
+getstatic java.io.PrintStream java.lang.System.out
+/* 54:     put i  */
+		iload 0
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 55:     skip */
+/* 56: end */
+/* 57:  */
+invokestatic void test_p1.p()
+/* 58: p() */
+		sipush 1
+		sipush 2
+invokestatic int test_p1.f(int, int)
+/* 59: c := f(1,2) */
+putstatic int test_p1.c
+getstatic java.io.PrintStream java.lang.System.out
+/* 60: put c */
+		getstatic int test_p1.c
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 61: skip */
+/* 62:  */
+L6:
+/* 63: loop */
+		getstatic int test_p1.i
+		sipush 1
+/* 64:     i := i+1 */
+iadd
+putstatic int test_p1.i
+getstatic java.io.PrintStream java.lang.System.out
+/* 65:     put i */
+		getstatic int test_p1.i
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 66:     skip */
+		getstatic int test_p1.i
+		sipush 10
+isub
+ifgt L8
+iconst_0
+goto L9
+L8: iconst_1
+L9:
+/* 67:     exit when (i>10) */
+ifne L7
+goto L6
+L7:
+/* 68: end loop */
+/* 69:  */
+		sipush 0
+/* 70: i := 0 */
+putstatic int test_p1.i
+L10:
+/* 71: loop */
+		getstatic int test_p1.cnt
+		sipush 1
+/* 72:     cnt := cnt+1 */
+iadd
+putstatic int test_p1.cnt
+		sipush 0
+/* 73:     j := 0 */
+putstatic int test_p1.j
+L12:
+/* 74:     loop */
+		getstatic int test_p1.i
+		sipush 1
+/* 75:         i := i+1 */
+iadd
+putstatic int test_p1.i
+		getstatic int test_p1.j
+		sipush 1
+/* 76:         j := j+1 */
+iadd
+putstatic int test_p1.j
+getstatic java.io.PrintStream java.lang.System.out
+/* 77:         put i */
+		getstatic int test_p1.i
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 78:         skip */
+		getstatic int test_p1.j
+		sipush 5
+isub
+ifgt L14
+iconst_0
+goto L15
+L14: iconst_1
+L15:
+/* 79:         exit when (j>5) */
+ifne L13
+goto L12
+L13:
+/* 80:     end loop */
+		getstatic int test_p1.cnt
+		sipush 5
+isub
+ifeq L16
+iconst_0
+goto L17
+L16: iconst_1
+L17:
+/* 81:     exit when (cnt=5) */
+ifne L11
+goto L10
+L11:
+/* 82: end loop */
+/* 83:  */
+getstatic java.io.PrintStream java.lang.System.out
+/* 84: put i */
+		getstatic int test_p1.i
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 85: skip */
+/* 86:  */
+/* 87:  */
+/* 88: for i:1..5 */
+sipush 1
+putstatic int test_p1.i
+L18:
+getstatic int test_p1.i
+sipush 5
+isub
+ifgt L19
+/* 89:     for j:1..5 */
+sipush 1
+putstatic int test_p1.j
+L20:
+getstatic int test_p1.j
+sipush 5
+isub
+ifgt L21
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "*"
+/* 90:         put("*") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic int test_p1.j
+sipush 1
+iadd
+putstatic int test_p1.j
+goto L20
+L21:
+/* 91:     end for */
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 92:     skip */
+getstatic int test_p1.i
+sipush 1
+iadd
+putstatic int test_p1.i
+goto L18
+L19:
+/* 93: end for */
+/* 94:  */
+/* 95: for i:1..5 */
+sipush 1
+putstatic int test_p1.i
+L22:
+getstatic int test_p1.i
+sipush 5
+isub
+ifgt L23
+/* 96:     for j:1..5 */
+sipush 1
+putstatic int test_p1.j
+L24:
+getstatic int test_p1.j
+sipush 5
+isub
+ifgt L25
+		getstatic int test_p1.i
+		getstatic int test_p1.j
+isub
+ifeq L26
+iconst_0
+goto L27
+L26: iconst_1
+L27:
+ifeq L28
+/* 97:         if(i=j) then */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "*"
+/* 98:             put("*") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+goto L29
+L28:
+/* 99:         else */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "-"
+/* 100:             put("-") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+L29:
+/* 101:         end if */
+getstatic int test_p1.j
+sipush 1
+iadd
+putstatic int test_p1.j
+goto L24
+L25:
+/* 102:     end for */
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 103:     skip */
+getstatic int test_p1.i
+sipush 1
+iadd
+putstatic int test_p1.i
+goto L22
+L23:
+/* 104: end for */
+/* 105:  */
+/* 106:  */
+		iconst_1
+ifeq L30
+/* 107: if (true) then */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "t"
+/* 108:         put ("t") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 109:         skip */
+		getstatic int test_p1.i
+		sipush 6
+isub
+ifeq L32
+iconst_0
+goto L33
+L32: iconst_1
+L33:
+ifeq L34
+/* 110:         if (i = 6) then */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "i=6"
+/* 111:             put("i=6") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 112:             skip */
+L34:
+/* 113:         end if */
+goto L31
+L30:
+/* 114:     else */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "f"
+/* 115:         put("f") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 116:         skip */
+L31:
+/* 117: end if */
+/* 118:  */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "call recursive fib(5): "
+/* 119: put ("call recursive fib(5): ") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+		sipush 5
+invokestatic int test_p1.fib(int)
+/* 120: put fib(5) */
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 121: skip */
+/* 122:  */
+		sipush 0
+/* 123: cnt:=0 */
+putstatic int test_p1.cnt
+/* 124: begin */
+/* 125:     const a:int := 5 */
+/* 126:     const b:int := 10 */
+getstatic java.io.PrintStream java.lang.System.out
+		sipush 1
+		sipush 2
+iadd
+		sipush 3
+iadd
+/* 127:     put 1+2+3+a */
+		sipush 5
+iadd
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 128:     skip */
+getstatic java.io.PrintStream java.lang.System.out
+		sipush 5
+		sipush 10
+iadd
+		sipush 1
+/* 129:     put 5+b+1 */
+iadd
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 130:     skip */
+getstatic java.io.PrintStream java.lang.System.out
+		sipush 5
+		sipush 10
+iadd
+		sipush 1
+iadd
+		sipush 1
+		sipush 2
+iadd
+		sipush 3
+iadd
+/* 131:     put 5+b+1 > 1+2+3+a */
+		sipush 5
+iadd
+isub
+ifgt L36
+iconst_0
+goto L37
+L36: iconst_1
+L37:
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 132:     skip */
+getstatic java.io.PrintStream java.lang.System.out
+		ldc "difference: "
+/* 133:     put ("difference: ") */
+invokevirtual void java.io.PrintStream.print(java.lang.String)
+getstatic java.io.PrintStream java.lang.System.out
+		sipush 5
+		sipush 10
+iadd
+		sipush 1
+iadd
+		sipush 1
+		sipush 2
+iadd
+		sipush 3
+iadd
+		sipush 5
+iadd
+/* 134:     put (5+b+1) - (1+2+3+a) */
+isub
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 135:     skip */
+		sipush 5
+		sipush 10
+/* 136:     for i: 1+2+3+a .. 5+b+1 */
+sipush 11
+putstatic int test_p1.i
+L38:
+getstatic int test_p1.i
+sipush 16
+isub
+ifgt L39
+getstatic java.io.PrintStream java.lang.System.out
+/* 137:         put i */
+		getstatic int test_p1.i
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 138:         skip */
+		getstatic int test_p1.cnt
+		sipush 1
+/* 139:         cnt := cnt+1 */
+iadd
+putstatic int test_p1.cnt
+getstatic int test_p1.i
+sipush 1
+iadd
+putstatic int test_p1.i
+goto L38
+L39:
+/* 140:     end for */
+getstatic java.io.PrintStream java.lang.System.out
+/* 141:     put cnt */
+		getstatic int test_p1.cnt
+invokevirtual void java.io.PrintStream.print(int)
+getstatic java.io.PrintStream java.lang.System.out
+invokevirtual void java.io.PrintStream.println()
+/* 142:     skip */
+		return
+	}
+}
