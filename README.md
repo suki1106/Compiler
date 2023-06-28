@@ -7,4 +7,6 @@ Project2 parser(yacc)
 Project3 code generation
 
 
-可能有BUG
+不支援浮點數 和 array
+
+可能有bug
