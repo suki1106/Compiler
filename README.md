@@ -4,7 +4,7 @@ Project1 scanner(lex)
 
 Project2 parser(yacc)
 
-Project3 generate javabyte code
+Project3 generate java bytecode
 
 
 可能有BUG
